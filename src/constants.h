@@ -1,3 +1,4 @@
+#include <vector>
 
 // Access with PieceType::ANY_FOLLOWING_OPTION
 enum PieceType {
@@ -31,7 +32,7 @@ enum Position{
 // Access with normal ways of accessing an array.
 // OR lie so DEFAULT_BOARD[Position::G1] would equal PieceType::W_KNIGHT
 // TODO make function to convert x and y to board num, and vis versa.
-const int DEFAULT_BOARD[64] = {
+const std::vector<PieceType> DEFAULT_BOARD = {
 	W_ROOK, W_KNIGHT, W_BISHOP, W_QUEEN, W_KING, W_BISHOP, W_KNIGHT, W_ROOK, 
 	W_PAWN, W_PAWN, W_PAWN, W_PAWN, W_PAWN, W_PAWN, W_PAWN, W_PAWN, 
 	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, 
@@ -41,6 +42,7 @@ const int DEFAULT_BOARD[64] = {
 	B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, 
 	B_ROOK, B_KNIGHT, B_BISHOP, B_QUEEN, B_KING, B_BISHOP, B_KNIGHT, B_ROOK	
 };
+
 
 namespace Rank{
 	const int A[8] = {A1, A2, A3, A4, A5, A6, A7, A8};
