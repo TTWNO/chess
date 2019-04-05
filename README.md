@@ -9,7 +9,7 @@ Will turn into game eventually.
 
 `make && ./chess.out`
 
-#### Comiling Tests
+#### Compiling Tests
 `cd tests`
 
 `make && ./tests.out -s`
