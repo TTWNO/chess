@@ -1,4 +1,4 @@
 default: build
 
 build:
-	g++ -o main.out main.cpp -std=c++11
+	g++ -o chess.out chess.cpp -std=c++11
