@@ -1,5 +1,6 @@
-#ifdef CHESS_CONSTANTS
-#define CHESS_CONSTANTS
+#ifndef CHESS_CONSTANTS_H
+#define CHESS_CONSTANTS_H
+
 #include <vector>
 #include <array>
 #include <string>
