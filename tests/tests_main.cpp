@@ -1,5 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
+#include "test_boards.h"
 #include <sstream>
 #include <functions.h>
 
@@ -74,7 +75,7 @@ namespace Catch {
 			for (int pi = 0; pi < poss.size(); ++pi){
 				pi == poss.size()-1 ? ss << poss[pi] << "(" << POSITION_STRING[poss[pi]] << ")" : ss << poss[pi] << "(" << POSITION_STRING[poss[pi]] << "), ";
 			}
-			ss << " }" << std::endl;
+			ss << " } }" << std::endl;
 			return ss.str();
 		}
 	};
@@ -129,38 +130,21 @@ TEST_CASE("Test where this piece may move to", "[get_possible_moves]"){
 	CHECK(get_possible_moves(Position::A7, DEFAULT_BOARD) == black_A_pawn_possible_moves);
 }
 
-TEST_CASE("Test all possible and impossible moves", "[get_all_moves]"){
-	std::vector<Position> white_right_knight_all_moves = {Position::F3, Position::H3, Position::E2, Position::G1};     	
+TEST_CASE("Test all possible and impossible moves for black pieces", "[get_all_moves][black]"){
+	CHECK(get_all_moves(B_KING_POS, B_KING_BOARD) == B_KING_ALL_MOVES);
+	CHECK(get_all_moves(B_QUEEN_POS, B_QUEEN_BOARD) == B_QUEEN_ALL_MOVES);
+	CHECK(get_all_moves(B_ROOK_POS, B_ROOK_BOARD) == B_ROOK_ALL_MOVES);
+	CHECK(get_all_moves(B_BISHOP_POS, B_BISHOP_BOARD) == B_BISHOP_ALL_MOVES);
+	CHECK(get_all_moves(B_KNIGHT_POS, B_KNIGHT_BOARD) == B_KNIGHT_ALL_MOVES);
+	CHECK(get_all_moves(B_PAWN_POS, B_PAWN_BOARD) == B_PAWN_ALL_MOVES);
 
-	std::vector<Position> black_A_pawn_all_moves = {Position::A7, Position::A6, Position::B6, Position::A5};
-
-	std::vector<Position> black_F_bishop_all_moves = {Position:F8, Position::E7, Position::G7, Position::D6, Position::H6, Position::C5, Position::B4, Position::A3};
-
-	std::vector<Position> black_queen_all_moves = {Position::A8, Position::B8, Position::C8, Position::D8, Position::E8, Position::F8, Position::G8, Position::H8, Position::C7, Position::D7, Position::E7, Position::B6, Position::D6, Position::F6, Position::A5, Position::D5, Position::G5, Position::D4, Position::H4, Position::D3, Position::D2, Position::D1};
-
-	std::vector<Position> white_A_rook_all_moves = {Position::A8, Position::A7, Position::A6, Position::A5, Position::A4, Position::A3, Position::A2, Position::A1, Position::B1, Position::C1, Position::D1, Position::E1, Position::F1, Position::G1, Position::H1};
-
-	std::vector<Position> white_king_all_moves = {Position::D2, Position::E2, Position::F2, Position::D1, Position::E1, Position::F1}; 
-
-	std::vector<Position> black_king_all_moves = {Position::D8, Position::E8, Position::F8, Position::D7, Position::E7, Position::F7};
-
-	std::vector<Position> white_F_bishop_all_moves = {Position::A6, Position::B5, Position::C4, Position::D3, Position::H3, Position::E2, Position::G2, Position::F1};
-
-	std::vector<Position> white_queen_all_moves = {Position::D8, Position::D7, Position::D6, Position::D5, Position::H5, Position::A4, Position::D4, Position::G4, Position::B3, Position::D3, Position::F3, Position::C2, Position::D2, Position::E2, Position::A1, Position::B1, Position::C1, Position::D1, Position::E1, Position::F1, Position::G1, Position::H1};
-
-	std::vector<Position> left_black_knight_all_moves = {Position::B8, Position::D7, Position::A6, Position::C6};
-
-	std::vector<Position> black_H_rook_all_moves = {Position::A8, Position::B8, Position::C8, Position::D8, Position::E8, Position::F8, Position::G8, Position::H8, Position::H7, Position::H6, Position::H5, Position::H4, Position::H3, Position::H2, Position::H1};
-	
-
-	CHECK(get_all_moves(Position::H8, DEFAULT_BOARD) == black_H_rook_all_moves);
-	CHECK(get_all_moves(Position::G1, DEFAULT_BOARD) == white_right_knight_all_moves);
-	CHECK(get_all_moves(Position::A7, DEFAULT_BOARD) == black_A_pawn_all_moves);
-	CHECK(get_all_moves(Position::F8, DEFAULT_BOARD) == black_F_bishop_all_moves);
-	CHECK(get_all_moves(Position::D8, DEFAULT_BOARD) == black_queen_all_moves);
-	CHECK(get_all_moves(Position::A1, DEFAULT_BOARD) == white_A_rook_all_moves);
-	CHECK(get_all_moves(Position::E1, DEFAULT_BOARD) == white_king_all_moves);
-	CHECK(get_all_moves(Position::D1, DEFAULT_BOARD) == white_queen_all_moves);
-	CHECK(get_all_moves(Position::B8, DEFAULT_BOARD) == left_black_knight_all_moves);
+}
+TEST_CASE("Test all possible and impossible moves for whtie pieces", "[get_all_moves][white]"){
+	CHECK(get_all_moves(W_KING_POS, W_KING_BOARD) == W_KING_ALL_MOVES);
+	CHECK(get_all_moves(W_QUEEN_POS, W_QUEEN_BOARD) == W_QUEEN_ALL_MOVES);
+	CHECK(get_all_moves(W_ROOK_POS, W_ROOK_BOARD) == W_ROOK_ALL_MOVES);
+	CHECK(get_all_moves(W_BISHOP_POS, W_BISHOP_BOARD) == W_BISHOP_ALL_MOVES);
+	CHECK(get_all_moves(W_KNIGHT_POS, W_KNIGHT_BOARD) == W_KNIGHT_ALL_MOVES);
+	CHECK(get_all_moves(W_PAWN_POS, W_PAWN_BOARD) == W_PAWN_ALL_MOVES);
 }
 
