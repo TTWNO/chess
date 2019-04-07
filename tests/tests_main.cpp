@@ -52,6 +52,7 @@ namespace Catch {
 				ss << 8-i << "|";
 				for (int j = 0; j < 8; ++j){
 					int index = (i*8)+j;
+					// This part loops through all positions in the list and checks if it contains the current index.
 					bool part_of_poss = false;
 					for (Position p : poss){
 						if (index == p) {
@@ -59,6 +60,8 @@ namespace Catch {
 							break;
 						}
 					}
+					// Justin, this is how this oporator works.
+					// (if) part_of_poss ?(then) do this :(else) do that.
 					part_of_poss ? ss << "* " : ss << "  ";
 				}
 				ss << "|" << 8-i;
