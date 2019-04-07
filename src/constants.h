@@ -1,3 +1,5 @@
+#ifdef CHESS_CONSTANTS
+#define CHESS_CONSTANTS
 #include <vector>
 #include <array>
 #include <string>
@@ -39,8 +41,7 @@ const std::vector<std::string> POSITION_STRING = {
 };
 
 // Access with normal ways of accessing an array.
-// OR lie so DEFAULT_BOARD[Position::G1] would equal PieceType::W_KNIGHT
-// TODO make function to convert x and y to board num, and vis versa.
+// OR like so DEFAULT_BOARD[Position::G1] would equal PieceType::W_KNIGHT
 const std::array<PieceType, 64> DEFAULT_BOARD = {
 	B_ROOK, B_KNIGHT, B_BISHOP, B_QUEEN, B_KING, B_BISHOP, B_KNIGHT, B_ROOK,	
 	B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, 
@@ -74,3 +75,4 @@ namespace File{
 	const int SEVEN[8] = {A7, B7, C7, D7, E7, F7, G7, H7};
 	const int EIGHT[8] = {A8, B8, C8, D8, E8, F8, G8, H8};
 }
+#endif
