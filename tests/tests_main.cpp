@@ -66,12 +66,12 @@ namespace Catch {
 			}
 			ss << files << std::endl;
 			ss << "}" << std::endl;
-			ss << "," << std::endl;
-			ss << "{ ";
+		        ss << "," << std::endl;
+		        ss << "{ ";
 			for (int pi = 0; pi < poss.size(); ++pi){
-				pi == poss.size()-1 ? ss << poss[pi] << "(" << POSITION_STRING[poss[pi]] << ") }" << std::endl : ss << poss[pi] << "(" << POSITION_STRING[poss[pi]] << "), ";
+				pi == poss.size()-1 ? ss << poss[pi] << "(" << POSITION_STRING[poss[pi]] << ")" : ss << poss[pi] << "(" << POSITION_STRING[poss[pi]] << "), ";
 			}
-			ss << "}" << std::endl;
+			ss << " }" << std::endl;
 			return ss.str();
 		}
 	};
