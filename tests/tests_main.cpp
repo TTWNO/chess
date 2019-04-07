@@ -40,7 +40,48 @@ namespace Catch {
 			return ss.str();
 		}
 	};
+	// This overrides vectors of positions. I want it to print a board with the positions that are selected so we can see a representation of what positions are selected.
+	template<>
+	struct StringMaker<std::vector<Position>> {
+		static std::string convert(std::vector<Position> const& poss){
+			std::stringstream ss;
+			std::string files = "  A B C D E F G H";
+			ss << "{ {" << std::endl;
+			ss << files << std::endl;
+			for (int i = 0; i < 8; ++i){
+				ss << 8-i << "|";
+				for (int j = 0; j < 8; ++j){
+					int index = (i*8)+j;
+					bool part_of_poss = false;
+					for (Position p : poss){
+						if (index == p) {
+							part_of_poss = true;
+							break;
+						}
+					}
+					part_of_poss ? ss << "* " : ss << "  ";
+				}
+				ss << "|" << 8-i;
+				ss << std::endl;
+			}
+			ss << files << std::endl;
+			ss << "}" << std::endl;
+			ss << "," << std::endl;
+			ss << "{ ";
+			for (int pi = 0; pi < poss.size(); ++pi){
+				pi == poss.size()-1 ? ss << poss[pi] << "(" << POSITION_STRING[poss[pi]] << ") }" << std::endl : ss << poss[pi] << "(" << POSITION_STRING[poss[pi]] << "), ";
+			}
+			ss << "}" << std::endl;
+			return ss.str();
+		}
+	};
+		
 }
+
+const std::array<PieceType, 64> TEST_MOVES = {
+	W_QUEEN, NONE, NONE, NONE, NONE, NONE, NONE, NONE, 	
+	NONE, NONE, B_KNIGHT
+};
 
 const std::array<PieceType, 64> DUMB_MOVE_1 = {
 	B_ROOK, B_KNIGHT, B_BISHOP, B_QUEEN, B_KING, B_BISHOP, B_KNIGHT, B_ROOK,	
@@ -74,13 +115,49 @@ TEST_CASE("Test convert method to go from a board position to an x and y", "[pos
 }
 
 TEST_CASE("Test what pieces may move where functon", "[get_possible_movers]"){
-	std::vector<Position> H1_possible_movers = {Position::G1, Position::G2};
+	std::vector<Position> H1_possible_movers = {Position::H2, Position::G1};
 	CHECK(get_possible_movers(Position::H3, DEFAULT_BOARD) == H1_possible_movers);
 }
 
 TEST_CASE("Test where this piece may move to", "[get_possible_moves]"){
-	std::vector<Position> black_right_knight_possible_moves = {Position::H3, Position::F3};
-	std::vector<Position> white_a_pawn_possible_moves = {Position::A6};
-	CHECK(get_possible_moves(Position::G1, DEFAULT_BOARD) == black_right_knight_possible_moves);
-	CHECK(get_possible_moves(Position::A7, DEFAULT_BOARD) == white_a_pawn_possible_moves);
+	std::vector<Position> white_right_knight_possible_moves = {Position::H3, Position::F3};
+	std::vector<Position> black_A_pawn_possible_moves = {Position::A6,Position::A5};
+	CHECK(get_possible_moves(Position::G1, DEFAULT_BOARD) == white_right_knight_possible_moves);
+	CHECK(get_possible_moves(Position::A7, DEFAULT_BOARD) == black_A_pawn_possible_moves);
 }
+
+TEST_CASE("Test all possible and impossible moves", "[get_all_moves]"){
+	std::vector<Position> white_right_knight_all_moves = {Position::F3, Position::H3, Position::E2, Position::G1};     	
+
+	std::vector<Position> black_A_pawn_all_moves = {Position::A7, Position::A6, Position::B6, Position::A5};
+
+	std::vector<Position> black_F_bishop_all_moves = {Position:F8, Position::E7, Position::G7, Position::D6, Position::H6, Position::C5, Position::B4, Position::A3};
+
+	std::vector<Position> black_queen_all_moves = {Position::A8, Position::B8, Position::C8, Position::D8, Position::E8, Position::F8, Position::G8, Position::H8, Position::C7, Position::D7, Position::E7, Position::B6, Position::D6, Position::F6, Position::A5, Position::D5, Position::G5, Position::D4, Position::H4, Position::D3, Position::D2, Position::D1};
+
+	std::vector<Position> white_A_rook_all_moves = {Position::A8, Position::A7, Position::A6, Position::A5, Position::A4, Position::A3, Position::A2, Position::A1, Position::B1, Position::C1, Position::D1, Position::E1, Position::F1, Position::G1, Position::H1};
+
+	std::vector<Position> white_king_all_moves = {Position::D2, Position::E2, Position::F2, Position::D1, Position::E1, Position::F1}; 
+
+	std::vector<Position> black_king_all_moves = {Position::D8, Position::E8, Position::F8, Position::D7, Position::E7, Position::F7};
+
+	std::vector<Position> white_F_bishop_all_moves = {Position::A6, Position::B5, Position::C4, Position::D3, Position::H3, Position::E2, Position::G2, Position::F1};
+
+	std::vector<Position> white_queen_all_moves = {Position::D8, Position::D7, Position::D6, Position::D5, Position::H5, Position::A4, Position::D4, Position::G4, Position::B3, Position::D3, Position::F3, Position::C2, Position::D2, Position::E2, Position::A1, Position::B1, Position::C1, Position::D1, Position::E1, Position::F1, Position::G1, Position::H1};
+
+	std::vector<Position> left_black_knight_all_moves = {Position::B8, Position::D7, Position::A6, Position::C6};
+
+	std::vector<Position> black_H_rook_all_moves = {Position::A8, Position::B8, Position::C8, Position::D8, Position::E8, Position::F8, Position::G8, Position::H8, Position::H7, Position::H6, Position::H5, Position::H4, Position::H3, Position::H2, Position::H1};
+	
+
+	CHECK(get_all_moves(Position::H8, DEFAULT_BOARD) == black_H_rook_all_moves);
+	CHECK(get_all_moves(Position::G1, DEFAULT_BOARD) == white_right_knight_all_moves);
+	CHECK(get_all_moves(Position::A7, DEFAULT_BOARD) == black_A_pawn_all_moves);
+	CHECK(get_all_moves(Position::F8, DEFAULT_BOARD) == black_F_bishop_all_moves);
+	CHECK(get_all_moves(Position::D8, DEFAULT_BOARD) == black_queen_all_moves);
+	CHECK(get_all_moves(Position::A1, DEFAULT_BOARD) == white_A_rook_all_moves);
+	CHECK(get_all_moves(Position::E1, DEFAULT_BOARD) == white_king_all_moves);
+	CHECK(get_all_moves(Position::D1, DEFAULT_BOARD) == white_queen_all_moves);
+	CHECK(get_all_moves(Position::B8, DEFAULT_BOARD) == left_black_knight_all_moves);
+}
+

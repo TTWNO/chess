@@ -1,4 +1,5 @@
 #include "functions.h"
+#include <sstream>
 #include <stdexcept>
 #include <cmath>
 #include <iostream>
@@ -22,10 +23,12 @@ Position pair_to_pos(std::pair<int, int> pr){
 		throw std::invalid_argument("Cannot use any pairs with values > 7 or < 0.");
 	}
 	int int_val = std::abs(pr.second - 7)*8 + pr.first;
-	if (int_val > 0 && int_val < 64) {
+	if (int_val >= 0 && int_val < 64) {
 		return static_cast<Position>(int_val);
 	} else {
-		throw std::invalid_argument("Something went terribly wrong. x and y < 8 && x and y > 0 but abs(y-7)*8 + x < 0 or >= 64");
+		std::stringstream ss;
+		ss << "Something went terribly wrong. x and y < 8 && x and y >= 0 but abs(y-7)*8 + x < 0 or >= 64. It equalled: " << int_val; 
+		throw std::invalid_argument(ss.str());
 	}
 }
 std::vector<Position> get_possible_movers(Position pn, std::array<PieceType, 64> board){
@@ -35,6 +38,30 @@ std::vector<Position> get_possible_movers(Position pn, std::array<PieceType, 64>
 
 std::vector<Position> get_possible_moves(Position pn, std::array<PieceType, 64> board){
 	std::vector<Position> pns = {Position::A1};
+	return pns;
+}
+
+std::vector<Position> get_all_moves(Position pn, std::array<PieceType, 64> board){
+	PieceType pt = board[pn];
+	std::vector<Position> pns;
+	int x = pos_to_pair(pn).first;
+	int y = pos_to_pair(pn).second;		
+	switch(pt){
+		case PieceType::B_ROOK:
+		case PieceType::W_ROOK:
+			for (int j = 7; j >= 0; j--){
+				if (j != y){
+			pns.push_back(pair_to_pos(std::make_pair(x,j)));
+				}
+				for (int i = 0; i < 8; i++){
+					if (j == y){
+				pns.push_back(pair_to_pos(std::make_pair(i,y)));
+					}
+		}
+		}
+		default:
+			break;
+	}
 	return pns;
 }
 

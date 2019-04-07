@@ -18,6 +18,9 @@ std::vector<Position> get_possible_movers(Position pn, std::array<PieceType, 64>
 // This may require helper functions for each individual piece.
 std::vector<Position> get_possible_moves(Position pn, std::array<PieceType, 64> pt);
 
+// Get all moved for piece in Position pn. 
+std::vector<Position> get_all_moves(Position pn, std::array<PieceType, 64> pt);
+
 // Dumb function to do board moves.
 // Does NOT check for valid moves. Only moves PieceType of Pos1 to Pos2, then replaces Pos1 with Piecetype::NONE
 std::array<PieceType, 64> dumb_move(Position from, Position to, std::array<PieceType, 64> board);
