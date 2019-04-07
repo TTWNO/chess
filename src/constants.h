@@ -20,7 +20,7 @@ enum PieceType {
 };
 
 // Access with CHESS_CHARS[PieceType] to get the character for the piece.
-const char CHESS_CHARS[13] = {
+const std::array<char, 13> CHESS_CHARS = {
 	' ',
 	'p', 'n', 'b', 'r', 'q', 'k',
 	'P', 'N', 'B', 'R', 'Q', 'K'
