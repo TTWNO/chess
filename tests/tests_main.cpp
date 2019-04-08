@@ -148,3 +148,15 @@ TEST_CASE("Test all possible and impossible moves for whtie pieces", "[get_all_m
 	CHECK(get_all_moves(W_PAWN_POS, W_PAWN_BOARD) == W_PAWN_ALL_MOVES);
 }
 
+TEST_CASE("Test all moves for white in edge cases.", "[get_all_moves][white]"){
+	CHECK(get_all_moves(W_KNIGHT_SIDE1_POS, W_KNIGHT_SIDE1_BOARD) == W_KNIGHT_SIDE1_ALL_MOVES);
+	CHECK(get_all_moves(W_KING_SIDE1_POS, W_KING_SIDE1_BOARD) == W_KING_SIDE1_ALL_MOVES);
+	CHECK(get_all_moves(W_PAWN_SIDE1_POS, W_PAWN_SIDE1_BOARD) == W_PAWN_SIDE1_ALL_MOVES);
+}
+TEST_CASE("Test all moves for black in edge cases.", "[get_all_moves][black]"){
+	CHECK(get_all_moves(B_KNIGHT_SIDE1_POS, B_KNIGHT_SIDE1_BOARD) == B_KNIGHT_SIDE1_ALL_MOVES);
+	CHECK(get_all_moves(B_KING_SIDE1_POS, B_KING_SIDE1_BOARD) == B_KING_SIDE1_ALL_MOVES);
+	CHECK(get_all_moves(B_PAWN_SIDE1_POS, B_PAWN_SIDE1_BOARD) == B_PAWN_SIDE1_ALL_MOVES);
+}
+
+
