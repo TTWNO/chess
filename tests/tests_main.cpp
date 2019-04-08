@@ -43,8 +43,9 @@ namespace Catch {
 	};
 	// This overrides vectors of positions. I want it to print a board with the positions that are selected so we can see a representation of what positions are selected.
 	template<>
-	struct StringMaker<std::vector<Position>> {
-		static std::string convert(std::vector<Position> const& poss){
+	struct StringMaker<std::unordered_set<Position>> {
+		static std::string convert(std::unordered_set<Position> const& uo_poss){
+			std::vector<Position> poss(uo_poss.begin(), uo_poss.end());
 			std::stringstream ss;
 			std::string files = "  A B C D E F G H";
 			ss << "{ {" << std::endl;
@@ -144,13 +145,13 @@ TEST_CASE("Test that invalid position ints return false", "[is_valid_position]")
 }
 
 TEST_CASE("Test what pieces may move where functon", "[get_possible_movers]"){
-	std::vector<Position> H1_possible_movers = {Position::H2, Position::G1};
+	std::unordered_set<Position> H1_possible_movers = {Position::H2, Position::G1};
 	CHECK(get_possible_movers(Position::H3, DEFAULT_BOARD) == H1_possible_movers);
 }
 
 TEST_CASE("Test where this piece may move to", "[get_possible_moves]"){
-	std::vector<Position> white_right_knight_possible_moves = {Position::H3, Position::F3};
-	std::vector<Position> black_A_pawn_possible_moves = {Position::A6,Position::A5};
+	std::unordered_set<Position> white_right_knight_possible_moves = {Position::H3, Position::F3};
+	std::unordered_set<Position> black_A_pawn_possible_moves = {Position::A6,Position::A5};
 	CHECK(get_possible_moves(Position::G1, DEFAULT_BOARD) == white_right_knight_possible_moves);
 	CHECK(get_possible_moves(Position::A7, DEFAULT_BOARD) == black_A_pawn_possible_moves);
 }
@@ -162,7 +163,6 @@ TEST_CASE("Test all possible and impossible moves for black pieces", "[get_all_m
 	CHECK(get_all_moves(B_BISHOP_POS, B_BISHOP_BOARD) == B_BISHOP_ALL_MOVES);
 	CHECK(get_all_moves(B_KNIGHT_POS, B_KNIGHT_BOARD) == B_KNIGHT_ALL_MOVES);
 	CHECK(get_all_moves(B_PAWN_POS, B_PAWN_BOARD) == B_PAWN_ALL_MOVES);
-
 }
 TEST_CASE("Test all possible and impossible moves for whtie pieces", "[get_all_moves][white]"){
 	CHECK(get_all_moves(W_KING_POS, W_KING_BOARD) == W_KING_ALL_MOVES);

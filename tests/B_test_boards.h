@@ -1,3 +1,4 @@
+#include <unordered_set>
 #include <constants.h>
 
 const Position B_QUEEN_POS = E4;
@@ -12,12 +13,12 @@ const std::array<PieceType, 64> B_QUEEN_BOARD = {
 	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE
 };
 
-const std::vector<Position> B_QUEEN_ALL_MOVES = {
+const std::unordered_set<Position> B_QUEEN_ALL_MOVES = {
 	A8, E8,
 	B7, E7, H7,
 	C6, E6, G6,
 	D5, E5, F5,
-	A4, B4, C4, D4, E4, F4, G4, H4,
+	A4, B4, C4, D4, F4, G4, H4,
 	D3, E3, F3,
 	C2, E2, G2,
 	B1, E1, H1
@@ -35,12 +36,11 @@ const std::array<PieceType, 64> B_BISHOP_BOARD = {
 	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE
 };
 
-const std::vector<Position> B_BISHOP_ALL_MOVES = {
+const std::unordered_set<Position> B_BISHOP_ALL_MOVES = {
 	H8,
 	A7, G7,
 	B6, F6,
 	C5, E5,
-	D4,
 	C3, E3,
 	B2, F2,
 	A1, G1
@@ -58,10 +58,9 @@ const std::array<PieceType, 64> B_KNIGHT_BOARD = {
 	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE
 };
 
-const std::vector<Position> B_KNIGHT_ALL_MOVES = {
+const std::unordered_set<Position> B_KNIGHT_ALL_MOVES = {
 	C7, E7,
 	B6, F6,
-	D5,
 	B4, F4,
 	C3, E3
 };
@@ -78,9 +77,9 @@ const std::array<PieceType, 64> B_ROOK_BOARD = {
 	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE
 };
 
-const std::vector<Position> B_ROOK_ALL_MOVES = {
+const std::unordered_set<Position> B_ROOK_ALL_MOVES = {
 	E8, E7, E6,
-	A5, B5, C5, D5, E5, F5, G5, H5,
+	A5, B5, C5, D5, F5, G5, H5,
 	E4, E3, E2, E1
 };
 
@@ -97,9 +96,9 @@ const std::array<PieceType, 64> B_KING_BOARD = {
 	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE
 };
 
-const std::vector<Position> B_KING_ALL_MOVES = {
+const std::unordered_set<Position> B_KING_ALL_MOVES = {
 	B5, C5, D5,
-	B4, C4, D4,
+	B4, D4,
 	B3, C3, D3
 };
 
@@ -116,8 +115,7 @@ const std::array<PieceType, 64> B_PAWN_BOARD = {
 	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE
 };
 
-const std::vector<Position> B_PAWN_ALL_MOVES = {
-	F4,
+const std::unordered_set<Position> B_PAWN_ALL_MOVES = {
 	E3, F3, G3,
 	F2
 };
@@ -132,9 +130,8 @@ const std::array<PieceType, 64> B_KNIGHT_SIDE1_BOARD = {
 	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, 	
 	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE
 };
-const std::vector<Position> B_KNIGHT_SIDE1_ALL_MOVES = {
+const std::unordered_set<Position> B_KNIGHT_SIDE1_ALL_MOVES = {
 	D8,
-	B7,
 	D6,
 	A5, C5
 };
@@ -149,8 +146,8 @@ const std::array<PieceType, 64> B_KING_SIDE1_BOARD = {
 	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, 	
 	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE
 };
-const std::vector<Position> B_KING_SIDE1_ALL_MOVES = {
-	A8,B8,
+const std::unordered_set<Position> B_KING_SIDE1_ALL_MOVES = {
+	B8,
 	A7,B7
 };
 
@@ -165,7 +162,7 @@ const std::array<PieceType, 64> B_PAWN_SIDE1_BOARD = {
 	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, 	
 	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE
 };
-const std::vector<Position> B_PAWN_SIDE1_ALL_MOVES = {
+const std::unordered_set<Position> B_PAWN_SIDE1_ALL_MOVES = {
 	A8,
 	A7, B7,
 	A6

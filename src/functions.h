@@ -1,4 +1,5 @@
 #include "constants.h"
+#include <unordered_set>
 #include <utility>
 #include <vector>
 #include <math.h>
@@ -26,14 +27,14 @@ bool is_valid_position(int x, int y);
 // Get all positions of pieces which can move to this square
 // This may require helper functions for each individual peice.
 // TODO rename to something less stupid.
-std::vector<Position> get_possible_movers(Position pn, std::array<PieceType, 64> pt);
+std::unordered_set<Position> get_possible_movers(Position pn, std::array<PieceType, 64> pt);
 
 // Get all possible moved for piece in Position pn.
 // This may require helper functions for each individual piece.
-std::vector<Position> get_possible_moves(Position pn, std::array<PieceType, 64> pt);
+std::unordered_set<Position> get_possible_moves(Position pn, std::array<PieceType, 64> pt);
 
 // Get all moved for piece in Position pn. 
-std::vector<Position> get_all_moves(Position pn, std::array<PieceType, 64> pt);
+std::unordered_set<Position> get_all_moves(Position pn, std::array<PieceType, 64> pt);
 
 // Dumb function to do board moves.
 // Does NOT check for valid moves. Only moves PieceType of Pos1 to Pos2, then replaces Pos1 with Piecetype::NONE
