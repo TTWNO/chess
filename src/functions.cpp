@@ -75,7 +75,6 @@ std::vector<Position> get_all_moves(Position pn, std::array<PieceType, 64> board
 					}
 				}
 			}
-		}
 		break;
 		case PieceType::B_KNIGHT:
 		case PieceType::W_KNIGHT:
