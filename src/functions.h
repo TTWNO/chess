@@ -12,9 +12,16 @@ int poly_knight_offset_y(int y);
 // Convert pair of x y coordinates to Position enum member.
 // If pr contains values above 7, or below 0 it will fail with an InvalidArgument exception.
 Position pair_to_pos(std::pair<int, int> pr);
+Position pair_to_pos(int x, int y);
 
 // Convert a Position number into a pair of x y coordiinates
 std::pair<int, int> pos_to_pair(Position pn);
+
+// Check if int is a valid position in enum of Position
+// Allow ints, and pairs to be checked.
+bool is_valid_position(int pos);
+bool is_valid_position(std::pair<int, int> pos);
+bool is_valid_position(int x, int y);
 
 // Get all positions of pieces which can move to this square
 // This may require helper functions for each individual peice.

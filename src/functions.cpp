@@ -32,6 +32,22 @@ Position pair_to_pos(std::pair<int, int> pr){
 		throw std::invalid_argument(ss.str());
 	}
 }
+Position pair_to_pos(int x, int y){
+	return pair_to_pos(std::make_pair(x, y));
+}
+
+bool is_valid_position(int pos){
+	return (pos >= 0 && pos < 64);
+}
+bool is_valid_position(std::pair<int, int> pos){
+	return (pos.first < 8 && pos.second < 8 &&
+			pos.first >= 0 && pos.second >=0);
+}
+bool is_valid_position(int x, int y){
+	return (x < 8 && x >= 0 &&
+			y < 8 && y >= 0);
+}
+
 std::vector<Position> get_possible_movers(Position pn, std::array<PieceType, 64> board){
 	std::vector<Position> pns = {Position::A1};
 	return pns;
@@ -42,38 +58,11 @@ std::vector<Position> get_possible_moves(Position pn, std::array<PieceType, 64> 
 	return pns;
 }
 
-int poly_knight_offset_x(int x) { 
-       	return round(-214.986133*pow(10,0)*pow(x,0) +
-	        +501.7139779*pow(10,0)*pow(x,1) +
-	       	-439.6717407*pow(10,0)*pow(x,2) +
-     		+192.48892*pow(10,0)*pow(x,3) +
-     		-46.34819552*pow(10,0)*pow(x,4) +
-     		+6.228063921*pow(10,0)*pow(x,5) +
-     		-4.373795219*pow(10,-1)*pow(x,6) +
-		+1.249282993*pow(10,-2)*pow(x,7) +
-    		+1.789952521*pow(10,-7)*pow(x,8));
-}
-
-int poly_knight_offset_y(int x) { 
-       	return round(-31.99806307*pow(10,0)*pow(x,0) +
-	        +79.90649854*pow(10,0)*pow(x,1) +
-	       	-70.06372154*pow(10,0)*pow(x,2) +
-     		+30.59414865*pow(10,0)*pow(x,3) +
-     		-7.360163258*pow(10,0)*pow(x,4) +
-     		+9.887137664*pow(10,-1)*pow(x,5) +
-     		-6.942530952*pow(10,-2)*pow(x,6) +
-		+1.98298821*pow(10,-3)*pow(x,7) +
-    		+2.84277784*pow(10,-8)*pow(x,8));
-}
-
-
 std::vector<Position> get_all_moves(Position pn, std::array<PieceType, 64> board){
 	PieceType pt = board[pn];
 	std::vector<Position> pns;
 	int x = pos_to_pair(pn).first;
 	int y = pos_to_pair(pn).second;
-	std::vector<int> knt_dx = {-1,1,-2,2,0,-2,2,-1,1};
-	std::vector<int> knt_dy = {2,2,1,1,0,-1,-1,-2,-2};
 	std::vector<int> kg_dx  = {-1,0,1,-1,0,1,-1,0,1};
 	std::vector<int> kg_dy  = {1,1,1,0,0,0,-1,-1,-1};
 	std::vector<int> Bpa_dx = {0,-1,0,1,0,0};
@@ -112,14 +101,21 @@ std::vector<Position> get_all_moves(Position pn, std::array<PieceType, 64> board
 		break;
 		case PieceType::B_KNIGHT:
 		case PieceType::W_KNIGHT:
-			for (int j = 7; j >= 0; j--){
-			for (int i = 0; i < 8; i++){
-			for (int k = 1; k < 10; k++){
-			if (std::make_pair(x+poly_knight_offset_x(k),y+poly_knight_offset_y(k)) == std::make_pair(i,j))
-				pns.push_back(pair_to_pos(std::make_pair(i,j)));
-			}	
+			for (int xo=1;xo<=2;xo++){
+				int yo=(xo==1)?2:1;
+				if (is_valid_position(x+xo, y+yo)){
+						pns.push_back(pair_to_pos(std::make_pair(x+xo, y+yo)));
+				}
+				if (is_valid_position(x-xo, y-yo)){
+						pns.push_back(pair_to_pos(std::make_pair(x-xo, y-yo)));
+				}
+				if (is_valid_position(x-xo, y+yo)){
+						pns.push_back(pair_to_pos(std::make_pair(x-xo, y+yo)));
+				}
+				if (is_valid_position(x+xo, y-yo)){
+						pns.push_back(pair_to_pos(std::make_pair(x+xo, y-yo)));
+				}
 			}
-		}
 		break;
 		case PieceType::B_KING:
 		case PieceType::W_KING:
