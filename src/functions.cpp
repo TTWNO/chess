@@ -64,8 +64,18 @@ std::vector<Position> get_all_moves(Position pn, std::array<PieceType, 64> board
 		break;
 		case PieceType::B_BISHOP:
 		case PieceType::W_BISHOP:
-			for (int j = 0; j < 8; j++){
-				for (int i = 0; i < 8; i++){
+			for (int r = 7; r >= 0; r--){
+				for (int f = 0; f < 8; f++){
+					for (int i=0; i<8; i++){
+						if ((f-i == x && r-i == y) ||
+						    (f+i == x && r+i == y) ||
+						    (f-i == x && r+i == y) ||
+						    (f+i == x && r-i == y)){
+							pns.push_back(pair_to_pos(std::make_pair(f, r)));
+							break;
+						}
+					}
+				/*
 				if (((i>x) && (i<8)) && ((j>y) && (j<8)))
 				{
 					dx = i-x;
@@ -93,8 +103,8 @@ std::vector<Position> get_all_moves(Position pn, std::array<PieceType, 64> board
 				if ((i==x) && (j==y))
 				{
 					pns.push_back(pair_to_pos(std::make_pair(x,y)));
-				}
-		}
+				}*/
+			}
 		}
 		break;
 		default:
