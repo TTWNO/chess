@@ -109,6 +109,14 @@ TEST_CASE("Test convert method to go from X and Y to board position", "[pair_to_
 	CHECK(pair_to_pos(std::make_pair(7, 7)) == Position::H8);
 	CHECK_THROWS(pair_to_pos(std::make_pair(8, 2)));
 	CHECK_THROWS(pair_to_pos(std::make_pair(-1, 1)));
+
+	CHECK(pair_to_pos(2, 3) == Position::C4);
+	CHECK(pair_to_pos(7, 0) == Position::H1);
+	CHECK(pair_to_pos(0, 0) == Position::A1);
+	CHECK(pair_to_pos(7, 7) == Position::H8);
+	CHECK_THROWS(pair_to_pos(8, 2));
+	CHECK_THROWS(pair_to_pos(-1, 1));
+
 }
 
 TEST_CASE("Test convert method to go from a board position to an x and y", "[pos_to_pair]"){
@@ -116,6 +124,23 @@ TEST_CASE("Test convert method to go from a board position to an x and y", "[pos
 	CHECK(pos_to_pair(Position::A4) == std::make_pair(0, 3));
 	CHECK(pos_to_pair(Position::B2) == std::make_pair(1, 1));
 	CHECK(pos_to_pair(Position::H8) == std::make_pair(7, 7));
+}
+
+TEST_CASE("Test that invalid position ints return false", "[is_valid_position]"){
+	CHECK(is_valid_position(0)); // 0=A8
+	CHECK(is_valid_position(63)); // 63=H1
+	CHECK_FALSE(is_valid_position(-1)); // -1 is out of bounds
+	CHECK_FALSE(is_valid_position(64)); // 64 is out of bounds
+
+	CHECK(is_valid_position(std::make_pair(0, 0))); // 0-7,0-7 should be valid
+	CHECK(is_valid_position(std::make_pair(7, 7)));
+	CHECK_FALSE(is_valid_position(std::make_pair(-1, 5))); // should fail
+	CHECK_FALSE(is_valid_position(std::make_pair(5, 8))); // should fail
+
+	CHECK(is_valid_position(0, 0)); // 0-7,0-7 should be valid
+	CHECK(is_valid_position(7, 7));
+	CHECK_FALSE(is_valid_position(-1, 5)); // should fail
+	CHECK_FALSE(is_valid_position(5, 8)); // should fail
 }
 
 TEST_CASE("Test what pieces may move where functon", "[get_possible_movers]"){

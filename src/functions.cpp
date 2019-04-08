@@ -32,6 +32,22 @@ Position pair_to_pos(std::pair<int, int> pr){
 		throw std::invalid_argument(ss.str());
 	}
 }
+Position pair_to_pos(int x, int y){
+	return pair_to_pos(std::make_pair(x, y));
+}
+
+bool is_valid_position(int pos){
+	return (pos >= 0 && pos < 64);
+}
+bool is_valid_position(std::pair<int, int> pos){
+	return (pos.first < 8 && pos.second < 8 &&
+			pos.first >= 0 && pos.second >=0);
+}
+bool is_valid_position(int x, int y){
+	return (x < 8 && x >= 0 &&
+			y < 8 && y >= 0);
+}
+
 std::vector<Position> get_possible_movers(Position pn, std::array<PieceType, 64> board){
 	std::vector<Position> pns = {Position::A1};
 	return pns;
@@ -99,14 +115,21 @@ std::vector<Position> get_all_moves(Position pn, std::array<PieceType, 64> board
 		break;
 		case PieceType::B_KNIGHT:
 		case PieceType::W_KNIGHT:
-			for (int j = 7; j >= 0; j--){
-			for (int i = 0; i < 8; i++){
-			for (int k = 0; k < 9; k++){
-			if (std::make_pair(x+knt_dx[k],y+knt_dy[k]) == std::make_pair(i,j))
-				pns.push_back(pair_to_pos(std::make_pair(i,j)));
-			}	
+			for (int xo=1;xo<=2;xo++){
+				int yo=(xo==1)?2:1;
+				if (is_valid_position(x+xo, y+yo)){
+						pns.push_back(pair_to_pos(std::make_pair(x+xo, y+yo)));
+				}
+				if (is_valid_position(x-xo, y-yo)){
+						pns.push_back(pair_to_pos(std::make_pair(x-xo, y-yo)));
+				}
+				if (is_valid_position(x-xo, y+yo)){
+						pns.push_back(pair_to_pos(std::make_pair(x-xo, y+yo)));
+				}
+				if (is_valid_position(x+xo, y-yo)){
+						pns.push_back(pair_to_pos(std::make_pair(x+xo, y-yo)));
+				}
 			}
-		}
 		break;
 		case PieceType::B_KING:
 		case PieceType::W_KING:
