@@ -46,6 +46,10 @@ std::vector<Position> get_all_moves(Position pn, std::array<PieceType, 64> board
 	std::vector<Position> pns;
 	int x = pos_to_pair(pn).first;
 	int y = pos_to_pair(pn).second;
+	std::vector<int> knt_dx = {-1,1,-2,2,0,-2,2,-1,1};
+	std::vector<int> knt_dy = {2,2,1,1,0,-1,-1,-2,-2};
+	std::vector<int> kg_dx = {-1,0,1,-1,0,1,-1,0,1};
+	std::vector<int> kg_dy = {1,1,1,0,0,0,-1,-1,-1};
 	switch(pt){
 		case PieceType::B_ROOK:
 		case PieceType::W_ROOK:
@@ -79,26 +83,23 @@ std::vector<Position> get_all_moves(Position pn, std::array<PieceType, 64> board
 		case PieceType::B_KNIGHT:
 		case PieceType::W_KNIGHT:
 			for (int j = 7; j >= 0; j--){
-				for (int i = 0; i < 8; i++){
-					if (pair_to_pos(std::make_pair(x-1,y+2)) == pair_to_pos(std::make_pair(i,j)))
-						pns.push_back(pair_to_pos(std::make_pair(i,j)));
-					if (pair_to_pos(std::make_pair(x+1,y+2)) == pair_to_pos(std::make_pair(i,j)))
-						pns.push_back(pair_to_pos(std::make_pair(i,j)));
-					if (pair_to_pos(std::make_pair(x-2,y+1)) == pair_to_pos(std::make_pair(i,j)))
-						pns.push_back(pair_to_pos(std::make_pair(i,j)));
-					if (pair_to_pos(std::make_pair(x+2,y+1)) == pair_to_pos(std::make_pair(i,j)))
-						pns.push_back(pair_to_pos(std::make_pair(i,j)));
-					if (pair_to_pos(std::make_pair(x,y)) == pair_to_pos(std::make_pair(i,j)))
-						pns.push_back(pair_to_pos(std::make_pair(i,j)));
-					if (pair_to_pos(std::make_pair(x-2,y-1)) == pair_to_pos(std::make_pair(i,j)))
-						pns.push_back(pair_to_pos(std::make_pair(i,j)));
-					if (pair_to_pos(std::make_pair(x+2,y-1)) == pair_to_pos(std::make_pair(i,j)))
-						pns.push_back(pair_to_pos(std::make_pair(i,j)));
-					if (pair_to_pos(std::make_pair(x-1,y-2)) == pair_to_pos(std::make_pair(i,j)))
-						pns.push_back(pair_to_pos(std::make_pair(i,j)));
-					if (pair_to_pos(std::make_pair(x+1,y-2)) == pair_to_pos(std::make_pair(i,j)))
-						pns.push_back(pair_to_pos(std::make_pair(i,j)));	
+			for (int i = 0; i < 8; i++){
+			for (int k = 0; k < 9; k++){
+			if (pair_to_pos(std::make_pair(x+knt_dx[k],y+knt_dy[k])) == pair_to_pos(std::make_pair(i,j)))
+				pns.push_back(pair_to_pos(std::make_pair(i,j)));
+			}	
+			}
 		}
+		break;
+		case PieceType::B_KING:
+		case PieceType::W_KING:
+			for (int j = 7; j >= 0; j--){
+			for (int i = 0; i < 8; i++){
+			for (int k = 0; k < 9; k++){
+			if (pair_to_pos(std::make_pair(x+kg_dx[k],y+kg_dy[k])) == pair_to_pos(std::make_pair(i,j)))
+				pns.push_back(pair_to_pos(std::make_pair(i,j)));
+			}
+			}
 		}
 		break;
 		default:
