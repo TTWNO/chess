@@ -48,8 +48,12 @@ std::vector<Position> get_all_moves(Position pn, std::array<PieceType, 64> board
 	int y = pos_to_pair(pn).second;
 	std::vector<int> knt_dx = {-1,1,-2,2,0,-2,2,-1,1};
 	std::vector<int> knt_dy = {2,2,1,1,0,-1,-1,-2,-2};
-	std::vector<int> kg_dx = {-1,0,1,-1,0,1,-1,0,1};
-	std::vector<int> kg_dy = {1,1,1,0,0,0,-1,-1,-1};
+	std::vector<int> kg_dx  = {-1,0,1,-1,0,1,-1,0,1};
+	std::vector<int> kg_dy  = {1,1,1,0,0,0,-1,-1,-1};
+	std::vector<int> Bpa_dx = {0,-1,0,1,0,0};
+	std::vector<int> Bpa_dy = {-1,0,0,0,1,2};
+	std::vector<int> Wpa_dx = {0,0,-1,0,1,0};
+	std::vector<int> Wpa_dy = {2,1,0,0,0,-1};
 	switch(pt){
 		case PieceType::B_ROOK:
 		case PieceType::W_ROOK:
@@ -97,6 +101,26 @@ std::vector<Position> get_all_moves(Position pn, std::array<PieceType, 64> board
 			for (int i = 0; i < 8; i++){
 			for (int k = 0; k < 9; k++){
 			if (std::make_pair(x+kg_dx[k],y+kg_dy[k]) == std::make_pair(i,j))
+				pns.push_back(pair_to_pos(std::make_pair(i,j)));
+			}
+			}
+		}
+		break;
+		case PieceType::B_PAWN:
+			for (int j = 7; j >= 0; j--){
+			for (int i = 0; i < 8; i++){
+			for (int k = 0; k < 6; k++){
+			if (std::make_pair(x+Bpa_dx[k],y+Bpa_dy[k]) == std::make_pair(i,j))
+				pns.push_back(pair_to_pos(std::make_pair(i,j)));
+			}
+			}
+		}
+		break;
+		case PieceType::W_PAWN:
+			for (int j = 7; j >= 0; j--){
+			for (int i = 0; i < 8; i++){
+			for (int k = 0; k < 6; k++){
+			if (std::make_pair(x+Wpa_dx[k],y+Wpa_dy[k]) == std::make_pair(i,j))
 				pns.push_back(pair_to_pos(std::make_pair(i,j)));
 			}
 			}
