@@ -45,7 +45,9 @@ std::vector<Position> get_all_moves(Position pn, std::array<PieceType, 64> board
 	PieceType pt = board[pn];
 	std::vector<Position> pns;
 	int x = pos_to_pair(pn).first;
-	int y = pos_to_pair(pn).second;		
+	int y = pos_to_pair(pn).second;
+	int dx;
+	int dy;	
 	switch(pt){
 		case PieceType::B_ROOK:
 		case PieceType::W_ROOK:
@@ -59,6 +61,42 @@ std::vector<Position> get_all_moves(Position pn, std::array<PieceType, 64> board
 					}
 		}
 		}
+		break;
+		case PieceType::B_BISHOP:
+		case PieceType::W_BISHOP:
+			for (int j = 0; j < 8; j++){
+				for (int i = 0; i < 8; i++){
+				if (((i>x) && (i<8)) && ((j>y) && (j<8)))
+				{
+					dx = i-x;
+					dy = j-y;
+					if (dx == dy){pns.push_back(pair_to_pos(std::make_pair(x+dx,y+dy)));}
+				}
+				if (((i>=0) && (i<x)) && ((j>y) && (j<8)))
+				{
+					dx = i+1;
+					dy = j-y;
+					if (dx == dy){pns.push_back(pair_to_pos(std::make_pair(x-dx,y+dy)));}
+				}
+				if (((i>=0) && (i<x)) && ((j>=0) && (j<y)))
+				{
+					dx = i+1;
+					dy = j+1;
+					if (dx == dy){pns.push_back(pair_to_pos(std::make_pair(x-dx,y-dy)));}
+				}
+				if (((i>x) && (i<8)) && ((j>=0) && (j<y)))
+				{
+					dx = i-x;
+					dy = j+1;
+					if (dx == dy){pns.push_back(pair_to_pos(std::make_pair(x+dx,y-dy)));}
+				}
+				if ((i==x) && (j==y))
+				{
+					pns.push_back(pair_to_pos(std::make_pair(x,y)));
+				}
+		}
+		}
+		break;
 		default:
 			break;
 	}
