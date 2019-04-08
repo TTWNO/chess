@@ -85,7 +85,7 @@ std::vector<Position> get_all_moves(Position pn, std::array<PieceType, 64> board
 			for (int j = 7; j >= 0; j--){
 			for (int i = 0; i < 8; i++){
 			for (int k = 0; k < 9; k++){
-			if (pair_to_pos(std::make_pair(x+knt_dx[k],y+knt_dy[k])) == pair_to_pos(std::make_pair(i,j)))
+			if (std::make_pair(x+knt_dx[k],y+knt_dy[k]) == std::make_pair(i,j))
 				pns.push_back(pair_to_pos(std::make_pair(i,j)));
 			}	
 			}
@@ -96,7 +96,7 @@ std::vector<Position> get_all_moves(Position pn, std::array<PieceType, 64> board
 			for (int j = 7; j >= 0; j--){
 			for (int i = 0; i < 8; i++){
 			for (int k = 0; k < 9; k++){
-			if (pair_to_pos(std::make_pair(x+kg_dx[k],y+kg_dy[k])) == pair_to_pos(std::make_pair(i,j)))
+			if (std::make_pair(x+kg_dx[k],y+kg_dy[k]) == std::make_pair(i,j))
 				pns.push_back(pair_to_pos(std::make_pair(i,j)));
 			}
 			}
