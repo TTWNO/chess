@@ -122,17 +122,10 @@ void _get_all_moves_b_pawn(int x, int y, std::unordered_set<Position> *pns){
 }
 
 std::unordered_set<Position> get_all_moves(Position pn, std::array<PieceType, 64> board){
-
 	PieceType pt = board[pn];
 	std::unordered_set<Position> pns;
 	int x = pos_to_pair(pn).first;
 	int y = pos_to_pair(pn).second;
-	std::vector<int> kg_dx  = {-1,0,1,-1,0,1,-1,0,1};
-	std::vector<int> kg_dy  = {1,1,1,0,0,0,-1,-1,-1};
-	std::vector<int> Bpa_dx = {0,-1,0,1,0,0};
-	std::vector<int> Bpa_dy = {-1,0,0,0,1,2};
-	std::vector<int> Wpa_dx = {0,0,-1,0,1,0};
-	std::vector<int> Wpa_dy = {2,1,0,0,0,-1};
 	switch(pt){
 		case PieceType::B_QUEEN:
 		case PieceType::W_QUEEN:
@@ -154,38 +147,13 @@ std::unordered_set<Position> get_all_moves(Position pn, std::array<PieceType, 64
 		case PieceType::B_KING:
 		case PieceType::W_KING:
 			_get_all_moves_king(x, y, &pns);
-//			for (int j = 7; j >= 0; j--){
-//			for (int i = 0; i < 8; i++){
-//			for (int k = 0; k < 9; k++){
-//			if (std::make_pair(x+kg_dx[k],y+kg_dy[k]) == std::make_pair(i,j))
-//				pns.push_back(pair_to_pos(std::make_pair(i,j)));
-//			}
-//			}
-//		}
-		break;
+			break;
 		case PieceType::B_PAWN:
 			_get_all_moves_b_pawn(x, y, &pns);
-//			for (int j = 7; j >= 0; j--){
-//			for (int i = 0; i < 8; i++){
-//			for (int k = 0; k < 6; k++){
-//			if (std::make_pair(x+Bpa_dx[k],y+Bpa_dy[k]) == std::make_pair(i,j))
-//				pns.push_back(pair_to_pos(std::make_pair(i,j)));
-//			}
-//			}
-//		}
-		break;
+			break;
 		case PieceType::W_PAWN:
 			_get_all_moves_w_pawn(x, y, &pns);
-			/*
-			for (int j = 7; j >= 0; j--){
-			for (int i = 0; i < 8; i++){
-			for (int k = 0; k < 6; k++){
-			if (std::make_pair(x+Wpa_dx[k],y+Wpa_dy[k]) == std::make_pair(i,j))
-				pns.push_back(pair_to_pos(std::make_pair(i,j)));
-			}
-			}
-		}*/
-		break;
+			break;
 		default:
 			break;
 	}

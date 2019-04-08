@@ -109,7 +109,7 @@ const std::array<PieceType, 64> B_PAWN_BOARD = {
 	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, 	
 	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, 	
 	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, 	
-	NONE, NONE, NONE, B_PAWN, NONE, NONE, NONE, NONE, 	
+	NONE, NONE, NONE, NONE, NONE, B_PAWN, NONE, NONE, 	
 	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, 	
 	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, 	
 	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE
@@ -151,7 +151,7 @@ const std::unordered_set<Position> B_KING_SIDE1_ALL_MOVES = {
 	A7,B7
 };
 
-const Position B_PAWN_SIDE1_POS = A1;
+const Position B_PAWN_SIDE1_POS = A8;
 const std::array<PieceType, 64> B_PAWN_SIDE1_BOARD = {
 	B_PAWN, NONE, NONE, NONE, NONE, NONE, NONE, NONE, 	
 	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, 	
@@ -163,7 +163,6 @@ const std::array<PieceType, 64> B_PAWN_SIDE1_BOARD = {
 	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE
 };
 const std::unordered_set<Position> B_PAWN_SIDE1_ALL_MOVES = {
-	A8,
 	A7, B7,
 	A6
 };
