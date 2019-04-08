@@ -1,6 +1,7 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 #include "test_boards.h"
+#include "valid_moves.h"
 #include <sstream>
 #include <functions.h>
 
@@ -146,6 +147,7 @@ TEST_CASE("Test that invalid position ints return false", "[is_valid_position]")
 
 TEST_CASE("Test what pieces may move where functon", "[get_possible_movers]"){
 	std::unordered_set<Position> H1_possible_movers = {Position::H2, Position::G1};
+	CHECK(get_possible_movers(BISHOP_BLOCKED1_KING_POS, BISHOP_BLOCKED1_BOARD) == BISHOP_BLOCKED1_CAN_MOVE_TO_B_KING);
 	CHECK(get_possible_movers(Position::H3, DEFAULT_BOARD) == H1_possible_movers);
 }
 
@@ -154,6 +156,8 @@ TEST_CASE("Test where this piece may move to", "[get_possible_moves]"){
 	std::unordered_set<Position> black_A_pawn_possible_moves = {Position::A6,Position::A5};
 	CHECK(get_possible_moves(Position::G1, DEFAULT_BOARD) == white_right_knight_possible_moves);
 	CHECK(get_possible_moves(Position::A7, DEFAULT_BOARD) == black_A_pawn_possible_moves);
+	CHECK(get_possible_moves(KNIGHT_BLOCKED1_POS, KNIGHT_BLOCKED1_BOARD) == KNIGHT_BLOCKED1_MOVES);
+	CHECK(get_possible_moves(BISHOP_BLOCKED1_POS, BISHOP_BLOCKED1_BOARD) == BISHOP_BLOCKED1_MOVES);
 }
 
 TEST_CASE("Test all possible and impossible moves for black pieces", "[get_all_moves][black]"){
