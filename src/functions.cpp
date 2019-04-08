@@ -77,6 +77,31 @@ std::vector<Position> get_all_moves(Position pn, std::array<PieceType, 64> board
 			}
 		}
 		break;
+		case PieceType::B_KNIGHT:
+		case PieceType::W_KNIGHT:
+			for (int j = 7; j >= 0; j--){
+				for (int i = 0; i < 8; i++){
+					if (pair_to_pos(std::make_pair(x-1,y+2)) == pair_to_pos(std::make_pair(i,j)))
+						pns.push_back(pair_to_pos(std::make_pair(i,j)));
+					if (pair_to_pos(std::make_pair(x+1,y+2)) == pair_to_pos(std::make_pair(i,j)))
+						pns.push_back(pair_to_pos(std::make_pair(i,j)));
+					if (pair_to_pos(std::make_pair(x-2,y+1)) == pair_to_pos(std::make_pair(i,j)))
+						pns.push_back(pair_to_pos(std::make_pair(i,j)));
+					if (pair_to_pos(std::make_pair(x+2,y+1)) == pair_to_pos(std::make_pair(i,j)))
+						pns.push_back(pair_to_pos(std::make_pair(i,j)));
+					if (pair_to_pos(std::make_pair(x,y)) == pair_to_pos(std::make_pair(i,j)))
+						pns.push_back(pair_to_pos(std::make_pair(i,j)));
+					if (pair_to_pos(std::make_pair(x-2,y-1)) == pair_to_pos(std::make_pair(i,j)))
+						pns.push_back(pair_to_pos(std::make_pair(i,j)));
+					if (pair_to_pos(std::make_pair(x+2,y-1)) == pair_to_pos(std::make_pair(i,j)))
+						pns.push_back(pair_to_pos(std::make_pair(i,j)));
+					if (pair_to_pos(std::make_pair(x-1,y-2)) == pair_to_pos(std::make_pair(i,j)))
+						pns.push_back(pair_to_pos(std::make_pair(i,j)));
+					if (pair_to_pos(std::make_pair(x+1,y-2)) == pair_to_pos(std::make_pair(i,j)))
+						pns.push_back(pair_to_pos(std::make_pair(i,j)));	
+		}
+		}
+		break;
 		default:
 			break;
 	}
