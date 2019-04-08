@@ -42,17 +42,30 @@ std::vector<Position> get_possible_moves(Position pn, std::array<PieceType, 64> 
 	return pns;
 }
 
-int poly_knight_offset_x(int x) {
-       	return  -2.1500176772557799*pow(10,2)*pow(x,0) +
-	        +5.0175460279545990*pow(10,2)*pow(x,1) +
-	    	-4.3971301635198080*pow(10,2)*pow(x,2) +
-     		+1.9251081929895420*pow(10,2)*pow(x,3) +
-     		-4.6354931502296793*pow(10,1)*pow(x,4) +
-     		+6.2293079395174518*pow(10,0)*pow(x,5) +
-     		-4.3751543665888198*pow(10,1)*pow(x,6) +
-    		+1.2500918807028260*pow(10,2)*pow(x,7) +
-     		-2.2939912578846349*pow(10,8)*pow(x,8);
+int poly_knight_offset_x(int x) { 
+       	return round(-214.986133*pow(10,0)*pow(x,0) +
+	        +501.7139779*pow(10,0)*pow(x,1) +
+	       	-439.6717407*pow(10,0)*pow(x,2) +
+     		+192.48892*pow(10,0)*pow(x,3) +
+     		-46.34819552*pow(10,0)*pow(x,4) +
+     		+6.228063921*pow(10,0)*pow(x,5) +
+     		-4.373795219*pow(10,-1)*pow(x,6) +
+		+1.249282993*pow(10,-2)*pow(x,7) +
+    		+1.789952521*pow(10,-7)*pow(x,8));
 }
+
+int poly_knight_offset_y(int x) { 
+       	return round(-31.99806307*pow(10,0)*pow(x,0) +
+	        +79.90649854*pow(10,0)*pow(x,1) +
+	       	-70.06372154*pow(10,0)*pow(x,2) +
+     		+30.59414865*pow(10,0)*pow(x,3) +
+     		-7.360163258*pow(10,0)*pow(x,4) +
+     		+9.887137664*pow(10,-1)*pow(x,5) +
+     		-6.942530952*pow(10,-2)*pow(x,6) +
+		+1.98298821*pow(10,-3)*pow(x,7) +
+    		+2.84277784*pow(10,-8)*pow(x,8));
+}
+
 
 std::vector<Position> get_all_moves(Position pn, std::array<PieceType, 64> board){
 	PieceType pt = board[pn];
@@ -101,8 +114,8 @@ std::vector<Position> get_all_moves(Position pn, std::array<PieceType, 64> board
 		case PieceType::W_KNIGHT:
 			for (int j = 7; j >= 0; j--){
 			for (int i = 0; i < 8; i++){
-			for (int k = 0; k < 9; k++){
-			if (std::make_pair(x+knt_dx[k],y+knt_dy[k]) == std::make_pair(i,j))
+			for (int k = 1; k < 10; k++){
+			if (std::make_pair(x+poly_knight_offset_x(k),y+poly_knight_offset_y(k)) == std::make_pair(i,j))
 				pns.push_back(pair_to_pos(std::make_pair(i,j)));
 			}	
 			}
