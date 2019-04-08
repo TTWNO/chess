@@ -4,6 +4,7 @@
 #include <cmath>
 #include <iostream>
 #include <stdio.h>
+#include <math.h>
 
 // TODO implement functions.h functions.
 // NOTE tests will NOT run unless you implement these functions.
@@ -39,6 +40,18 @@ std::vector<Position> get_possible_movers(Position pn, std::array<PieceType, 64>
 std::vector<Position> get_possible_moves(Position pn, std::array<PieceType, 64> board){
 	std::vector<Position> pns = {Position::A1};
 	return pns;
+}
+
+int poly_knight_offset_x(int x) {
+       	return  -2.1500176772557799*pow(10,2)*pow(x,0) +
+	        +5.0175460279545990*pow(10,2)*pow(x,1) +
+	    	-4.3971301635198080*pow(10,2)*pow(x,2) +
+     		+1.9251081929895420*pow(10,2)*pow(x,3) +
+     		-4.6354931502296793*pow(10,1)*pow(x,4) +
+     		+6.2293079395174518*pow(10,0)*pow(x,5) +
+     		-4.3751543665888198*pow(10,1)*pow(x,6) +
+    		+1.2500918807028260*pow(10,2)*pow(x,7) +
+     		-2.2939912578846349*pow(10,8)*pow(x,8);
 }
 
 std::vector<Position> get_all_moves(Position pn, std::array<PieceType, 64> board){

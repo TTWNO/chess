@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string>
 #include "constants.h"
+#include "functions.h"
 
 // See constants.h for CHESS_CHARS, and DEFAULT_BOARD
 
@@ -15,4 +16,7 @@ int main(){
 		}
 		cout << endl;
 	}
+
+	cout << "poly test" << endl;
+	cout << "(1," << poly_knight_offset_x(1) << ")" << endl;
 }

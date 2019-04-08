@@ -1,6 +1,13 @@
 #include "constants.h"
 #include <utility>
 #include <vector>
+#include <math.h>
+
+// x offset for knight
+int poly_knight_offset_x(int x);
+
+// y offset for knight
+int poly_knight_offset_y(int y);
 
 // Convert pair of x y coordinates to Position enum member.
 // If pr contains values above 7, or below 0 it will fail with an InvalidArgument exception.
