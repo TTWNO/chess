@@ -24,6 +24,17 @@ namespace Catch {
 			return ss.str();
 		}
 	};
+	// This override makes sure that Color enum variables are printed properly
+	template<>
+	struct StringMaker<Color> {
+		static std::string convert(Color const& c){
+			std::stringstream ss;
+			if (c==Color::WHITE) ss << "white";
+			if (c==Color::BLACK) ss << "black";
+			if (c==Color::NO_COLOR) ss << "N/A";
+			return ss.str();
+		}
+	};
 	// This prints all board comparisons in a readable fashion. Using the string name of the pieces, and newlines to seperate them.
 	template<>
 	struct StringMaker<std::array<PieceType, 64>> {
@@ -99,6 +110,37 @@ const std::array<PieceType, 64> DUMB_MOVE_1 = {
 	W_ROOK, W_KNIGHT, W_BISHOP, W_QUEEN, W_KING, W_BISHOP, W_KNIGHT, W_ROOK 
 };
 
+TEST_CASE("Test that a color can be gotten from a given square on the board", "[get_color]"){
+	CHECK(get_color(2, 7, DUMB_MOVE_1) == Color::BLACK);
+	CHECK(get_color(3, 3, DUMB_MOVE_1) == Color::NO_COLOR);
+	CHECK(get_color(2, 1, DUMB_MOVE_1) == Color::WHITE);
+	CHECK(get_color(Position::C8, DUMB_MOVE_1) == Color::BLACK);
+	CHECK(get_color(Position::F4, DUMB_MOVE_1) == Color::NO_COLOR);
+	CHECK(get_color(Position::C2, DUMB_MOVE_1) == Color::WHITE);
+}
+TEST_CASE("Test that a color can be gotten from a PieceType", "[get_color]"){
+	CHECK(get_color(PieceType::NONE) == Color::NO_COLOR);
+	CHECK(get_color(PieceType::W_KING) == Color::WHITE);
+	CHECK(get_color(PieceType::B_KING) == Color::BLACK);
+}
+
+TEST_CASE("Test reversing color", "[rev_color]"){
+	CHECK(rev_color(Color::NO_COLOR) == Color::NO_COLOR);
+	CHECK(rev_color(Color::WHITE) == Color::BLACK);
+	CHECK(rev_color(Color::BLACK) == Color::WHITE);
+}
+
+TEST_CASE("Test that is_black, and is_white are working", "[is_black][is_white]"){
+	CHECK(is_white(DUMB_MOVE_1[Position::A2]));
+	CHECK(is_black(DUMB_MOVE_1[Position::F7]));
+	CHECK_FALSE(is_white(DUMB_MOVE_1[Position::B2]));
+	CHECK_FALSE(is_black(DUMB_MOVE_1[Position::B5]));
+
+	// Test that NONE squares return false
+	CHECK_FALSE(is_white(DUMB_MOVE_1[Position::F4]));
+	CHECK_FALSE(is_black(DUMB_MOVE_1[Position::F4]));
+}
+
 TEST_CASE("Test that dumb moves can be made.", "[dumb_move]"){
 	CHECK(dumb_move(Position::B2, Position::B5, DEFAULT_BOARD) == DUMB_MOVE_1);
 }
@@ -151,12 +193,12 @@ TEST_CASE("Test what pieces may move where functon", "[get_possible_movers]"){
 }
 
 TEST_CASE("Test where this piece may move to", "[get_possible_moves]"){
-	std::unordered_set<Position> white_right_knight_possible_moves = {Position::H3, Position::F3};
-	std::unordered_set<Position> black_A_pawn_possible_moves = {Position::A6,Position::A5};
-	CHECK(get_possible_moves(Position::G1, DEFAULT_BOARD) == white_right_knight_possible_moves);
-	CHECK(get_possible_moves(Position::A7, DEFAULT_BOARD) == black_A_pawn_possible_moves);
+	CHECK(get_possible_moves(Position::G1, DEFAULT_BOARD) == DEFAULT_W_R_KNIGHT_POSSIBLE_MOVES);
+	CHECK(get_possible_moves(Position::A7, DEFAULT_BOARD) == DEFAULT_B_A_PAWN_POSSIBLE_MOVES);
+	CHECK(get_possible_moves(Position::A2, DEFAULT_BOARD) == DEFAULT_W_A_PAWN_POSSIBLE_MOVES);
 	CHECK(get_possible_moves(KNIGHT_BLOCKED1_POS, KNIGHT_BLOCKED1_BOARD) == KNIGHT_BLOCKED1_MOVES);
 	CHECK(get_possible_moves(BISHOP_BLOCKED1_POS, BISHOP_BLOCKED1_BOARD) == BISHOP_BLOCKED1_MOVES);
+	CHECK(get_possible_moves(ROOK_BLOCKED1_POS, ROOK_BLOCKED1_BOARD) == ROOK_BLOCKED1_MOVES);
 }
 
 TEST_CASE("Test all possible and impossible moves for black pieces", "[get_all_moves][black]"){

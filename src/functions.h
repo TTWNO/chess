@@ -24,6 +24,18 @@ bool is_valid_position(int pos);
 bool is_valid_position(std::pair<int, int> pos);
 bool is_valid_position(int x, int y);
 
+// Checks if given piece matches a certain color.
+bool is_white(PieceType pt);
+bool is_black(PieceType pt);
+
+Color get_color(int x, int y, std::array<PieceType, 64> board);
+Color get_color(Position pn, std::array<PieceType, 64> board);
+Color get_color(PieceType pt);
+// NO_COLOR returns NO_COLOR
+// WHITE returns BLACK
+// BLACK returns WHITE
+Color rev_color(Color c);
+
 // Get all positions of pieces which can move to this square
 // This may require helper functions for each individual peice.
 // TODO rename to something less stupid.

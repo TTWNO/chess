@@ -22,6 +22,15 @@ enum PieceType {
 	B_KING
 };
 
+namespace Pieces {
+	const std::array<PieceType, 6> BLACK = {B_PAWN, B_KNIGHT, B_BISHOP, B_ROOK, B_QUEEN, B_KING};
+	const std::array<PieceType, 6> WHITE = {W_PAWN, W_KNIGHT, W_BISHOP, W_ROOK, W_QUEEN, W_KING};
+}
+
+enum Color {
+	NO_COLOR, BLACK, WHITE
+};
+
 // Access with CHESS_CHARS[PieceType] to get the character for the piece.
 const std::array<char, 13> CHESS_CHARS = {
 	' ',

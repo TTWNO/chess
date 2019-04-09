@@ -1,6 +1,21 @@
 #include <unordered_set>
 #include <constants.h>
 
+
+/// This is for possible moves on a default board
+const std::unordered_set<Position> DEFAULT_B_A_PAWN_POSSIBLE_MOVES = {
+	A6, A5
+};
+const std::unordered_set<Position> DEFAULT_W_A_PAWN_POSSIBLE_MOVES = {
+	A3, A4
+};
+const std::unordered_set<Position> DEFAULT_W_R_KNIGHT_POSSIBLE_MOVES = {
+	H3, F3
+};
+// EMPTY
+const std::unordered_set<Position> DEFAULT_W_R_ROOK_POSSIBLE_MOVES = {};
+// END of default selections
+
 const Position KNIGHT_BLOCKED1_POS = B8;
 const std::array<PieceType, 64> KNIGHT_BLOCKED1_BOARD = {
 	NONE, B_KNIGHT, NONE, NONE, NONE, NONE, NONE, NONE, 	
@@ -41,3 +56,23 @@ const std::unordered_set<Position> BISHOP_BLOCKED1_CAN_MOVE_TO_B_KING = {
 	D5
 };
 const Position BISHOP_BLOCKED1_KING_POS = F3;
+
+
+const Position ROOK_BLOCKED1_POS = B7;
+const std::array<PieceType, 64> ROOK_BLOCKED1_BOARD = {
+	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, 	
+	NONE, W_ROOK, NONE  , B_PAWN  , NONE, B_KING, NONE, NONE, 	
+	NONE, NONE   , NONE  , NONE    , NONE, NONE, NONE, NONE, 	
+	NONE, NONE   , B_BISHOP, NONE, NONE, NONE, NONE, NONE, 	
+	NONE, NONE   , NONE  , NONE    , NONE, NONE, NONE, NONE, 	
+	NONE, W_KING   , NONE  , NONE    , NONE, NONE, NONE, NONE, 	
+	NONE, NONE   , NONE  , NONE    , NONE, NONE, NONE, NONE, 	
+	NONE, NONE   , NONE  , NONE    , NONE, NONE, NONE, NONE
+};
+// Should NOT include E-H2 or B3-1
+const std::unordered_set<Position> ROOK_BLOCKED1_MOVES = {
+	B8,
+	A7, C7, D7,
+	B6,B5,B4
+};
+

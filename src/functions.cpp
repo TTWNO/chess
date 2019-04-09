@@ -49,6 +49,36 @@ bool is_valid_position(int x, int y){
 			y < 8 && y >= 0);
 }
 
+bool is_white(PieceType pt){
+	for (auto pn : Pieces::WHITE){
+		if (pn == pt) return true;
+	}
+	return false;
+}
+bool is_black(PieceType pt){
+	for (auto pn : Pieces::BLACK){
+		if (pn == pt) return true;
+	}
+	return false;	
+}
+
+Color get_color(PieceType pt){
+	if (is_white(pt)) return Color::WHITE;
+	if (is_black(pt)) return Color::BLACK;
+	return Color::NO_COLOR;
+}
+Color get_color(int x, int y, std::array<PieceType, 64> board){
+	return get_color(board[pair_to_pos(x, y)]);
+}
+Color get_color(Position pn, std::array<PieceType, 64> board){
+	return get_color(board[pn]);
+}
+
+Color rev_color(Color c){
+	if (c==Color::NO_COLOR) return Color::NO_COLOR;
+	return c==Color::WHITE?Color::BLACK:Color::WHITE;
+}
+
 std::unordered_set<Position> get_possible_movers(Position pn, std::array<PieceType, 64> board){
 	std::unordered_set<Position> pns = {Position::A1};
 	return pns;
@@ -56,7 +86,8 @@ std::unordered_set<Position> get_possible_movers(Position pn, std::array<PieceTy
 
 std::unordered_set<Position> get_possible_moves(Position pn, std::array<PieceType, 64> board){
 	std::unordered_set<Position> pns = {Position::A1};
-	return pns;
+
+	return get_all_moves(pn, board);
 }
 
 std::unordered_set<Position> get_all_moves(Position pn, std::array<PieceType, 64> board){
@@ -64,33 +95,33 @@ std::unordered_set<Position> get_all_moves(Position pn, std::array<PieceType, 64
 	std::unordered_set<Position> pns;
 	int x = pos_to_pair(pn).first;
 	int y = pos_to_pair(pn).second;
+	Color color_of_piece = get_color(pt);
+	Color color_of_opponent = rev_color(color_of_piece);
 	switch(pt){
 		case PieceType::B_QUEEN:
 		case PieceType::W_QUEEN:
-			_get_all_moves_rook(x, y, &pns);
-			_get_all_moves_bishop(x, y, &pns);
+			_get_all_moves_rook(x, y, &pns, board, color_of_piece, color_of_opponent);
+			_get_all_moves_bishop(x, y, &pns, board, color_of_piece, color_of_opponent);
 			break;
 		case PieceType::B_ROOK:
 		case PieceType::W_ROOK:
-			_get_all_moves_rook(x, y, &pns);
+			_get_all_moves_rook(x, y, &pns, board, color_of_piece, color_of_opponent);
 			break;
 		case PieceType::B_BISHOP:
 		case PieceType::W_BISHOP:
-			_get_all_moves_bishop(x, y, &pns);
+			_get_all_moves_bishop(x, y, &pns, board, color_of_piece, color_of_opponent);
 			break;
 		case PieceType::B_KNIGHT:
 		case PieceType::W_KNIGHT:
-			_get_all_moves_knight(x, y, &pns);
+			_get_all_moves_knight(x, y, &pns, board, color_of_piece, color_of_opponent);
 			break;
 		case PieceType::B_KING:
 		case PieceType::W_KING:
-			_get_all_moves_king(x, y, &pns);
+			_get_all_moves_king(x, y, &pns, board, color_of_piece, color_of_opponent);
 			break;
 		case PieceType::B_PAWN:
-			_get_all_moves_b_pawn(x, y, &pns);
-			break;
 		case PieceType::W_PAWN:
-			_get_all_moves_w_pawn(x, y, &pns);
+			_get_all_moves_pawn(x, y, &pns, board, color_of_piece, color_of_opponent);
 			break;
 		default:
 			break;

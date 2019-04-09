@@ -160,8 +160,7 @@ const std::array<PieceType, 64> W_PAWN_BOARD = {
 };
 
 const std::unordered_set<Position> W_PAWN_ALL_MOVES = {
-	F6,
-	E5, F5, G5
+	F5
 };
 
 const Position W_PAWN_SIDE1_POS = A8;
