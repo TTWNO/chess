@@ -4,11 +4,22 @@
 #include <stdexcept>
 #include <cmath>
 #include <iostream>
+#include <vector>
 #include <stdio.h>
 #include <math.h>
 
 // TODO implement functions.h functions.
 // NOTE tests will NOT run unless you implement these functions.
+
+std::vector<Position> get_pos_of(PieceType pt, std::array<PieceType, 64> board){
+	std::vector<Position> pns;
+	for (int pn = Position::A8; pn!=Position::H1; pn++){
+		if (board[pn] == pt){
+			pns.push_back(static_cast<Position>(pn));
+		}
+	}
+	return pns;
+}
 
 std::pair<int, int> pos_to_pair(Position pn){
 	int x,y = 0;
@@ -90,7 +101,7 @@ std::unordered_set<Position> get_possible_moves(Position pn, std::array<PieceTyp
 	return get_all_moves(pn, board);
 }
 
-std::unordered_set<Position> get_all_moves(Position pn, std::array<PieceType, 64> board){
+std::unordered_set<Position> get_all_moves(Position pn, std::array<PieceType, 64> board, bool recursive){
 	PieceType pt = board[pn];
 	std::unordered_set<Position> pns;
 	int x = pos_to_pair(pn).first;
@@ -126,7 +137,58 @@ std::unordered_set<Position> get_all_moves(Position pn, std::array<PieceType, 64
 		default:
 			break;
 	}
+	// This code removes spots that are illegal due to putting your own king in check.
+	// TODO: rewrite this in a function.
+	// TODO: make it less like vomit. and more like english.
+	if (recursive){
+		PieceType my_king = is_white(pt)?PieceType::W_KING:PieceType::B_KING;
+		std::vector<Position> king_poss = get_pos_of(my_king, board);
+		Position my_king_pos;
+		if (king_poss.empty()){
+			return pns;
+		} else {
+			my_king_pos = king_poss[0];
+		}
+		int attackers = 0;
+		for (auto p_pn= pns.begin(); p_pn!=pns.end();){
+			std::array<PieceType, 64> moved_board = dumb_move(pn, *p_pn, board);
+			std::array<PieceType, 6> other_team = is_white(pt)?Pieces::BLACK:Pieces::WHITE;
+			bool checks_king = false;
+			for (PieceType other_p : other_team) {
+				checks_king = false;
+				for (Position psn : get_pos_of(other_p, moved_board)){
+					std::unordered_set<Position> other_moves = get_all_moves(psn, moved_board, false);
+					for (Position cp : other_moves){
+						if (cp == my_king_pos){
+							checks_king = true;
+							attackers++;
+							break;
+						}
+					}
+					if (checks_king){
+						break;
+					}
+				}
+				if (checks_king){
+					break;
+				}
+			}
+			if (checks_king){
+				p_pn = pns.erase(p_pn);
+			} else {
+				++p_pn;
+			}
+		}
+	}
 	return pns;
+}
+
+std::vector<std::unordered_set<Position>> get_all_moves_vec(std::vector<Position> v_pns, std::array<PieceType, 64> board){
+	std::vector<std::unordered_set<Position>> list_of_positions_for_pieces;
+	for (Position pn : v_pns){
+		list_of_positions_for_pieces.push_back(get_all_moves(pn, board));
+	}
+	return list_of_positions_for_pieces;
 }
 
 std::array<PieceType, 64> dumb_move(Position from, Position to, std::array<PieceType, 64> board){

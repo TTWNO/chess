@@ -110,6 +110,10 @@ const std::array<PieceType, 64> DUMB_MOVE_1 = {
 	W_ROOK, W_KNIGHT, W_BISHOP, W_QUEEN, W_KING, W_BISHOP, W_KNIGHT, W_ROOK 
 };
 
+TEST_CASE("Test that an unordered set of positions are returned when looking for a piece type through a board", "[get_pos_of]"){
+	CHECK(get_pos_of(PieceType::B_PAWN, DEFAULT_BOARD) == B_PAWNS_SQUARES);
+}
+
 TEST_CASE("Test that a color can be gotten from a given square on the board", "[get_color]"){
 	CHECK(get_color(2, 7, DUMB_MOVE_1) == Color::BLACK);
 	CHECK(get_color(3, 3, DUMB_MOVE_1) == Color::NO_COLOR);
@@ -229,4 +233,9 @@ TEST_CASE("Test all moves for black in edge cases.", "[get_all_moves][black]"){
 	CHECK(get_all_moves(B_PAWN_SIDE1_POS, B_PAWN_SIDE1_BOARD) == B_PAWN_SIDE1_ALL_MOVES);
 }
 
+TEST_CASE("Test that moves that put king in check are not returned", "[get_all_moves]"){
+	CHECK(get_all_moves(ROOK_CHECK_TEST_POS, ROOK_CHECK_TEST_BOARD) == ROOK_CHECK_TEST_MOVES);
+	CHECK(get_all_moves(PAWN_CHECK_TEST_POS, PAWN_CHECK_TEST_BOARD) == PAWN_CHECK_TEST_MOVES);
+	CHECK(get_all_moves(PAWN_DIAG_TEST1_POS, PAWN_DIAG_TEST1_BOARD) == PAWN_DIAG_TEST1_MOVES);
 
+}

@@ -14,6 +14,11 @@ const std::unordered_set<Position> DEFAULT_W_R_KNIGHT_POSSIBLE_MOVES = {
 };
 // EMPTY
 const std::unordered_set<Position> DEFAULT_W_R_ROOK_POSSIBLE_MOVES = {};
+
+const std::vector<Position> B_PAWNS_SQUARES = {
+	A7, B7, C7, D7, E7, F7, G7, H7
+};
+
 // END of default selections
 
 const Position KNIGHT_BLOCKED1_POS = B8;
@@ -76,3 +81,46 @@ const std::unordered_set<Position> ROOK_BLOCKED1_MOVES = {
 	B6,B5,B4
 };
 
+const Position PAWN_DIAG_TEST1_POS = E7;
+const std::array<PieceType, 64> PAWN_DIAG_TEST1_BOARD = {
+	B_ROOK, B_KNIGHT, B_BISHOP, B_QUEEN, B_KING, B_BISHOP, B_KNIGHT, B_ROOK,	
+	B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, 
+	NONE, NONE, NONE, W_QUEEN, NONE, NONE, NONE, NONE, 
+	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, 
+	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, 
+	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, 
+	W_PAWN, W_PAWN, W_PAWN, W_PAWN, W_PAWN, W_PAWN, W_PAWN, W_PAWN, 
+	W_ROOK, W_KNIGHT, W_BISHOP, NONE, W_KING, W_BISHOP, W_KNIGHT, W_ROOK 
+};
+const std::unordered_set<Position> PAWN_DIAG_TEST1_MOVES = {
+	D6, E6, E5
+};
+
+// For testing the invalidating of moves because of putting own king in check
+const Position ROOK_CHECK_TEST_POS = D5;
+const std::array<PieceType, 64> ROOK_CHECK_TEST_BOARD = {
+	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, 	
+	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, 	
+	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, 	
+	NONE, NONE, W_QUEEN, B_ROOK, NONE, B_KING, NONE, NONE, 	
+	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, 	
+	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, 	
+	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, 	
+	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE
+};
+const std::unordered_set<Position> ROOK_CHECK_TEST_MOVES = {
+	C5, E5
+};
+
+const Position PAWN_CHECK_TEST_POS = E7;
+const std::array<PieceType, 64> PAWN_CHECK_TEST_BOARD = {
+	B_ROOK, B_KNIGHT, B_BISHOP, B_QUEEN, B_KING, B_BISHOP, B_KNIGHT, B_ROOK,	
+	B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, 
+	NONE, NONE, NONE, W_PAWN, NONE, NONE, NONE, NONE, 
+	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, 
+	NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, 
+	NONE, NONE, NONE, NONE, W_QUEEN, NONE, NONE, NONE, 
+	W_PAWN, W_PAWN, W_PAWN, NONE, W_PAWN, W_PAWN, W_PAWN, W_PAWN, 
+	W_ROOK, W_KNIGHT, W_BISHOP, NONE, W_KING, W_BISHOP, W_KNIGHT, W_ROOK 
+};
+const std::unordered_set<Position> PAWN_CHECK_TEST_MOVES = {E6, E5};
