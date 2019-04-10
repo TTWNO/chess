@@ -42,8 +42,9 @@ void _add_if_not_blocked(int x, int y, std::unordered_set<Position> *pns, std::a
 
 // This is a specialized function for the pawn's diagonal takes.
 // It will only to pns if there is a piece of opposite color on it.
-void _pawn_diag_add_if_not_blocked(int x, int y, std::unordered_set<Position> *pns, std::array<PieceType, 64> board, Color color_of_piece, Color color_of_opposite){
-	if (is_valid_position(x, y) && _xy_is_color(x, y, board, color_of_opposite)){
+void _pawn_diag_add_if_not_blocked(int x, int y, std::unordered_set<Position> *pns, std::array<PieceType, 64> board, Color color_of_piece, Color color_of_opposite, Position en_passant){
+	if (is_valid_position(x, y) && (_xy_is_color(x, y, board, color_of_opposite) ||
+			pair_to_pos(x, y) == en_passant)){
 		pns->insert(pair_to_pos(x, y));
 	}
 }
@@ -113,18 +114,19 @@ void _get_all_moves_king(int x, int y, std::unordered_set<Position> *pns, std::a
 	_add_if_not_blocked(x+1, y, pns, board, pc, rc);
 	_add_if_not_blocked(x-1, y, pns, board, pc, rc);
 }
-void _get_all_moves_pawn(int x, int y, std::unordered_set<Position> *pns, std::array<PieceType, 64> board, Color pc, Color rc){
+
+void _get_all_moves_pawn(int x, int y, std::unordered_set<Position> *pns, std::array<PieceType, 64> board, Color pc, Color rc, Position en_passant){
 	
 	// if it's white use different offsets, and pawn starting rank
 	int offset2 = pc==Color::WHITE?2:-2;
 	int offset1 = pc==Color::WHITE?1:-1;
-	int pawn_rank = pc==Color::WHITE?1:6;
+	int default_pawn_rank = pc==Color::WHITE?1:6;
 
 	bool *free_to_double_move = new bool(true);
 	_pawn_add_if_not_blocked(x, y+offset1, pns, board, pc, rc, free_to_double_move);
-	if (y == pawn_rank){ // If on second rank
+	if (y == default_pawn_rank){ // If on second/seventh rank
 		_pawn_add_if_not_blocked(x, y+offset2, pns, board, pc, rc, free_to_double_move);
 	}
-	_pawn_diag_add_if_not_blocked(x+1, y+offset1, pns, board, pc, rc);
-	_pawn_diag_add_if_not_blocked(x-1, y+offset1, pns, board, pc, rc);
+	_pawn_diag_add_if_not_blocked(x+1, y+offset1, pns, board, pc, rc, en_passant);
+	_pawn_diag_add_if_not_blocked(x-1, y+offset1, pns, board, pc, rc, en_passant);
 }

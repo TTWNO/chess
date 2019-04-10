@@ -101,7 +101,7 @@ std::unordered_set<Position> get_possible_moves(Position pn, std::array<PieceTyp
 	return get_all_moves(pn, board);
 }
 
-std::unordered_set<Position> get_all_moves(Position pn, std::array<PieceType, 64> board, bool recursive){
+std::unordered_set<Position> get_all_moves(Position pn, std::array<PieceType, 64> board, bool recursive, Position en_passant){
 	PieceType pt = board[pn];
 	std::unordered_set<Position> pns;
 	int x = pos_to_pair(pn).first;
@@ -132,7 +132,7 @@ std::unordered_set<Position> get_all_moves(Position pn, std::array<PieceType, 64
 			break;
 		case PieceType::B_PAWN:
 		case PieceType::W_PAWN:
-			_get_all_moves_pawn(x, y, &pns, board, color_of_piece, color_of_opponent);
+			_get_all_moves_pawn(x, y, &pns, board, color_of_piece, color_of_opponent, en_passant);
 			break;
 		default:
 			break;

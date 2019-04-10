@@ -43,7 +43,7 @@ std::unordered_set<Position> get_possible_movers(Position pn, std::array<PieceTy
 std::unordered_set<Position> get_possible_moves(Position pn, std::array<PieceType, 64> pt);
 
 // Get all moves for piece in Position pn. 
-std::unordered_set<Position> get_all_moves(Position pn, std::array<PieceType, 64> pt, bool recursive=true);
+std::unordered_set<Position> get_all_moves(Position pn, std::array<PieceType, 64> pt, bool recursive=true, Position en_pessant=Position::NA);
 // Get all moves for a list of Pieces given as std::vector<Position>
 // I'm not testing this because it's literally just a for loop and the above function.
 std::vector<std::unordered_set<Position>> get_all_moves_vec(std::vector<Position> v_pns, std::array<PieceType, 64> board);
