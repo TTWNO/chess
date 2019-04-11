@@ -10,13 +10,14 @@
  * pawn starting move flag: 1 bit
  * castle move flag: 1 bit
  *
- *	0000 0000 0000 0000 0011 1111 -> From square position (0x3F)
- *	0000 0000 0000 1111 1100 0000 -> To square position (>> 6 0xFB)
- *	0000 0000 1111 0000 0000 0000 -> captured piece, if any (>> 12 0xF)
- *	0000 1111 0000 0000 0000 0000 -> if prmoted, what to? (>> 16 0xF)
- *	0001 0000 0000 0000 0000 0000 -> en passant (0x100000)
- *	0010 0000 0000 0000 0000 0000 -> pawn starting move (0x200000)
- *	0100 0000 0000 0000 0000 0000 -> castle move (0x400000)
+ * (32-bit int, room to exapnd if neccessary)
+ *	0000 0000 0000 0000 0000 0000 0011 1111 -> From square position (& 0x3F)
+ *	0000 0000 0000 0000 0000 1111 1100 0000 -> To square position (>> 6 & 0xFB)
+ *	0000 0000 0000 0000 1111 0000 0000 0000 -> captured piece, if any (>> 12 & 0xF)
+ *	0000 0000 0000 1111 0000 0000 0000 0000 -> if prmoted, what to? (>> 16 & 0xF)
+ *	0000 0000 0001 0000 0000 0000 0000 0000 -> en passant (& 0x100000)
+ *	0000 0000 0010 0000 0000 0000 0000 0000 -> pawn starting move (& 0x200000)
+ *	0000 0000 0100 0000 0000 0000 0000 0000 -> castle move (& 0x400000)
  * */
 
 const unsigned int GET_FROM_PIECE_INT = 0x3f;
