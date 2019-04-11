@@ -31,6 +31,18 @@ const unsigned int GET_TO_FROM_PIECE_INT = 0xffe;
 // FBF
 const unsigned int GET_TO_FROM_PIECE_INT2 = 0xfbf;
 
+// Want:
+// From:		E3	(21)	[0x15]	[0x15]		<0x15>
+// To:			D2	(12)	[0xB]	[0xB]		<0x3DF>
+// (these 2 combine together)	(33)	[0x20]	[0x3DF]		<>
+// Captures:		B_PAWM	(7)	[0x7]	[0x7000]	<0x73DF>
+// Promoted:		NONE	(0)	[0x0]	[0x0]		<>
+// en passant:		true	(1)	[0x1]	[0x100000]	<0x1003DF>
+// pawn starting move:	false	(0)	[0x0]	[0x0]		<>
+// castle move:		false	(0)	[0x0]	[0x0]		<>
+// total value:			(?)	[?]	[?}		<0x1003DF>
+const unsigned int GET_ALL_INT = 0x1003DF;
+
 TEST_CASE("Test that bitwise operators return appropriate values. Move.from", "[bitwise_from_pos]"){
 	CHECK(FROMSQ(GET_FROM_PIECE_INT) == Position::H1);
 	CHECK(FROMSQ(GET_FROM_PIECE_INT2) == Position::G1);
