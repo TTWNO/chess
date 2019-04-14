@@ -12,16 +12,21 @@
  * pawn starting move flag: 1 bit
  * castle move flag: 1 bit
  *
- *	0000 0000 0000 0000 0011 1111 -> From square position (0x3F)
- *	0000 0000 0000 1111 1100 0000 -> To square position (>> 6 0xFB)
- *	0000 0000 1111 0000 0000 0000 -> captured piece, if any (>> 12 0xF)
- *	0000 1111 0000 0000 0000 0000 -> if prmoted, what to? (>> 16 0xF)
- *	0001 0000 0000 0000 0000 0000 -> en passant (0x100000)
- *	0010 0000 0000 0000 0000 0000 -> pawn starting move (0x200000)
- *	0100 0000 0000 0000 0000 0000 -> castle move (0x400000)
+ *	0000 0000 0000 0000 0011 1111 -> From square position (& 0x3F)
+ *	0000 0000 0000 1111 1100 0000 -> To square position (>> 6 & 0x3F)
+ *	0000 0000 1111 0000 0000 0000 -> captured piece, if any (>> 12 & 0xF)
+ *	0000 1111 0000 0000 0000 0000 -> if prmoted, what to? (>> 16 & 0xF)
+ *	0001 0000 0000 0000 0000 0000 -> en passant (& 0x100000)
+ *	0010 0000 0000 0000 0000 0000 -> pawn starting move (& 0x200000)
+ *	0100 0000 0000 0000 0000 0000 -> castle move (& 0x400000)
  * */
 
-#define FROMSQ(m) ((m) & 0x3f)
-#define TOSQ(m) ((m>>6) & 0x3f)
+#define FROMSQ(m) ((m)     & 0x3f)
+#define TOSQ(m)   ((m>>6)  & 0x3f)
+#define CAPT(m)   ((m>>12) & 0xf )
+#define PROM(m)   ((m>>16) & 0xf )
+#define ENPASS(m) ((m>>20) & 0x1 )
+#define PAWNST(m) ((m>>21) & 0x1 )
+#define CAST(m)   ((m>>22) & 0x1 )
 
 #endif

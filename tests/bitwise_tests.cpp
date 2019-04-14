@@ -20,16 +20,38 @@
  *	0000 0000 0100 0000 0000 0000 0000 0000 -> castle move (& 0x400000)
  * */
 
-const unsigned int GET_FROM_PIECE_INT = 0x3f;
-const unsigned int GET_FROM_PIECE_INT2 = 0x3e;
-// Want:
+// This is testing position H1
+const unsigned int MOVE_G1 = 0x3f;
+
+// This is testing position G1
+const unsigned int MOVE_H1 = 0x3e;
+
+// This is testing a move with no flags from G1 to H1
+// // Want:
 // 1111 1111 1110
 // FFE
-const unsigned int GET_TO_FROM_PIECE_INT = 0xffe;
+const unsigned int MOVE_G1_TO_H1 = 0xffe;
+
+// This is testing a move with no flags from H1 to G1
 // Want:
 // 1111 1011 1111
 // FBF
-const unsigned int GET_TO_FROM_PIECE_INT2 = 0xfbf;
+const unsigned int MOVE_H1_TO_G1 = 0b111110111111;
+
+// Move from H1 to G1 and capture
+const unsigned int MOVE_H1_TO_G1_CAPTURE_B_KNIGHT = 0x8fbf;
+
+// Move from H1 to G1 and promote
+const unsigned int MOVE_H1_TO_G1_PROMOTE_TO_QUEEN = 0xb0fbf;
+
+// Move from H1 to G1 and en passant
+const unsigned int MOVE_H1_TO_G1_EN_PASSANT = 0x100fbf;
+
+// Move from H1 to G1 and its the starting move for a pawn
+const unsigned int MOVE_H1_TO_G1_PAWN_START = 0x200fbf;
+
+// Move from H1 to G1 and castle
+const unsigned int MOVE_H1_TO_G1_AND_CASTLE = 0x400fbf;
 
 // Want:
 // From:		E3	(21)	[0x15]	[0x15]		<0x15>
@@ -44,12 +66,19 @@ const unsigned int GET_TO_FROM_PIECE_INT2 = 0xfbf;
 const unsigned int GET_ALL_INT = 0x1003DF;
 
 TEST_CASE("Test that bitwise operators return appropriate values. Move.from", "[bitwise_from_pos]"){
-	CHECK(FROMSQ(GET_FROM_PIECE_INT) == Position::H1);
-	CHECK(FROMSQ(GET_FROM_PIECE_INT2) == Position::G1);
-	CHECK(TOSQ(GET_TO_FROM_PIECE_INT) == Position::H1);
-	CHECK(FROMSQ(GET_TO_FROM_PIECE_INT) == Position::G1);
+	CHECK(FROMSQ(MOVE_G1) == Position::H1);
+	CHECK(FROMSQ(MOVE_H1) == Position::G1);
+	CHECK(TOSQ(MOVE_G1_TO_H1) == Position::H1);
+	CHECK(FROMSQ(MOVE_G1_TO_H1) == Position::G1);
 	
-	CHECK(TOSQ(GET_TO_FROM_PIECE_INT2) == Position::G1);
-	CHECK(FROMSQ(GET_TO_FROM_PIECE_INT2) == Position::H1);
+	CHECK(TOSQ(MOVE_H1_TO_G1) == Position::G1);
+	CHECK(FROMSQ(MOVE_H1_TO_G1) == Position::H1);
+
+	CHECK(CAPT(MOVE_H1_TO_G1_CAPTURE_B_KNIGHT) == PieceType::B_KNIGHT);
+	CHECK(PROM(MOVE_H1_TO_G1_PROMOTE_TO_QUEEN) == PieceType::B_QUEEN);
+
+	CHECK(ENPASS(MOVE_H1_TO_G1_EN_PASSANT) == 1);
+	CHECK(PAWNST(MOVE_H1_TO_G1_PAWN_START) == 1);
+	CHECK(CAST(MOVE_H1_TO_G1_AND_CASTLE) == 1);
 }
 
