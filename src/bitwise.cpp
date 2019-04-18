@@ -50,5 +50,5 @@ int get_file(int position){
 // it indicates that is it off the board.
 // ASSUMING position <= 128 but if it was that big that'd be weird.
 bool is_valid_position(int position){
-	return (position & 0x40);
+	return !(position & 0x40);
 }

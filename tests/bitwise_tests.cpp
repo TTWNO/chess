@@ -83,3 +83,9 @@ TEST_CASE("Test that bitwise operators return appropriate values. Move.from", "[
 	CHECK(get_castle_flag(MOVE_H1_TO_G1_AND_get_castle_flagLE) == 1);
 }
 
+TEST_CASE("Test that is_valid_position works properly", "[is_valid_position]"){
+	CHECK(is_valid_position(0));
+	CHECK(is_valid_position(63));
+	CHECK_FALSE(is_valid_position(-1));
+	CHECK_FALSE(is_valid_position(64));
+}
