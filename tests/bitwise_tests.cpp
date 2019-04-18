@@ -1,6 +1,7 @@
 #include <constants.h>
 #include <bitwise.h>
 #include "catch.hpp"
+
 /*
  * From (Position): 6 bits (2^6 == 64) possibilities
  * To (Position): same as above
@@ -39,10 +40,10 @@ const unsigned int MOVE_G1_TO_H1 = 0xffe;
 const unsigned int MOVE_H1_TO_G1 = 0b111110111111;
 
 // Move from H1 to G1 and capture
-const unsigned int MOVE_H1_TO_G1_CAPTURE_B_KNIGHT = 0x8fbf;
+const unsigned int MOVE_H1_TO_G1_get_captured_pcURE_B_KNIGHT = 0x8fbf;
 
 // Move from H1 to G1 and promote
-const unsigned int MOVE_H1_TO_G1_PROMOTE_TO_QUEEN = 0xb0fbf;
+const unsigned int MOVE_H1_TO_G1_get_promoted_to_pcOTE_TO_QUEEN = 0xb0fbf;
 
 // Move from H1 to G1 and en passant
 const unsigned int MOVE_H1_TO_G1_EN_PASSANT = 0x100fbf;
@@ -51,7 +52,7 @@ const unsigned int MOVE_H1_TO_G1_EN_PASSANT = 0x100fbf;
 const unsigned int MOVE_H1_TO_G1_PAWN_START = 0x200fbf;
 
 // Move from H1 to G1 and castle
-const unsigned int MOVE_H1_TO_G1_AND_CASTLE = 0x400fbf;
+const unsigned int MOVE_H1_TO_G1_AND_get_castle_flagLE = 0x400fbf;
 
 // Want:
 // From:		E3	(21)	[0x15]	[0x15]		<0x15>
@@ -66,19 +67,19 @@ const unsigned int MOVE_H1_TO_G1_AND_CASTLE = 0x400fbf;
 const unsigned int GET_ALL_INT = 0x1003DF;
 
 TEST_CASE("Test that bitwise operators return appropriate values. Move.from", "[bitwise_from_pos]"){
-	CHECK(FROMSQ(MOVE_G1) == Position::H1);
-	CHECK(FROMSQ(MOVE_H1) == Position::G1);
-	CHECK(TOSQ(MOVE_G1_TO_H1) == Position::H1);
-	CHECK(FROMSQ(MOVE_G1_TO_H1) == Position::G1);
+	CHECK(get_from_sq(MOVE_G1) == Position::H1);
+	CHECK(get_from_sq(MOVE_H1) == Position::G1);
+	CHECK(get_to_sq(MOVE_G1_TO_H1) == Position::H1);
+	CHECK(get_from_sq(MOVE_G1_TO_H1) == Position::G1);
 	
-	CHECK(TOSQ(MOVE_H1_TO_G1) == Position::G1);
-	CHECK(FROMSQ(MOVE_H1_TO_G1) == Position::H1);
+	CHECK(get_to_sq(MOVE_H1_TO_G1) == Position::G1);
+	CHECK(get_from_sq(MOVE_H1_TO_G1) == Position::H1);
 
-	CHECK(CAPT(MOVE_H1_TO_G1_CAPTURE_B_KNIGHT) == PieceType::B_KNIGHT);
-	CHECK(PROM(MOVE_H1_TO_G1_PROMOTE_TO_QUEEN) == PieceType::B_QUEEN);
+	CHECK(get_captured_pc(MOVE_H1_TO_G1_get_captured_pcURE_B_KNIGHT) == PieceType::B_KNIGHT);
+	CHECK(get_promoted_to_pc(MOVE_H1_TO_G1_get_promoted_to_pcOTE_TO_QUEEN) == PieceType::B_QUEEN);
 
-	CHECK(ENPASS(MOVE_H1_TO_G1_EN_PASSANT) == 1);
-	CHECK(PAWNST(MOVE_H1_TO_G1_PAWN_START) == 1);
-	CHECK(CAST(MOVE_H1_TO_G1_AND_CASTLE) == 1);
+	CHECK(get_en_pass_flag(MOVE_H1_TO_G1_EN_PASSANT) == 1);
+	CHECK(get_pawn_st_flag(MOVE_H1_TO_G1_PAWN_START) == 1);
+	CHECK(get_castle_flag(MOVE_H1_TO_G1_AND_get_castle_flagLE) == 1);
 }
 
