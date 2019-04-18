@@ -78,6 +78,7 @@ Color get_color(PieceType pt){
 	if (is_black(pt)) return Color::BLACK;
 	return Color::NO_COLOR;
 }
+
 Color get_color(int x, int y, std::array<PieceType, 64> board){
 	return get_color(board[pair_to_pos(x, y)]);
 }
@@ -99,6 +100,62 @@ std::unordered_set<Position> get_possible_moves(Position pn, std::array<PieceTyp
 	std::unordered_set<Position> pns = {Position::A1};
 
 	return get_all_moves(pn, board);
+}
+
+std::unordered_set<int> get_all_moves_bitwise(Position pn, std::array<PieceType, 64> board, bool recursive, Position en_passant){
+	
+}
+
+//TODO: Make faster by running from king squar eonly, instead of running on every piece of opposite team.
+void filter_checked_moves(Position pn, PieceType pt, std::array<PieceType, 64> board, std::unordered_set<Position> *pns){
+	PieceType my_king = is_white(pt)?PieceType::W_KING:PieceType::B_KING;
+	std::vector<Position> king_poss = get_pos_of(my_king, board);
+	Position my_king_pos;
+	if (king_poss.empty()){
+		return;
+	} else {
+		my_king_pos = king_poss[0];
+	}
+	int attackers = 0;
+	for (auto p_pn= pns->begin(); p_pn!=pns->end();){
+		// Make move
+		std::array<PieceType, 64> moved_board = dumb_move(pn, *p_pn, board);
+		// Get all piecetypes of other team
+		std::array<PieceType, 6> other_team = is_white(pt)?Pieces::BLACK:Pieces::WHITE;
+		bool checks_king = false;
+		// go through each piece of other team
+		for (PieceType other_p : other_team) {
+			checks_king = false;
+			// For every place the piecetype is
+			// NEW CODE
+//			for (Position psn : get_all_moves(my_king_pos, moved_board, false)){
+//					
+//					}
+			// \NEW CODE
+			for (Position psn : get_pos_of(other_p, moved_board)){
+				std::unordered_set<Position> other_moves = get_all_moves(psn, moved_board, false);
+				// for every position the piece can mvoe to
+				for (Position cp : other_moves){
+					if (cp == my_king_pos){
+						checks_king = true;
+						attackers++;
+						break;
+					}
+				}
+				if (checks_king){
+					break;
+				}
+			}
+			if (checks_king){
+				break;
+			}
+		}
+		if (checks_king){
+			p_pn = pns->erase(p_pn);
+		} else {
+			++p_pn;
+		}
+	}
 }
 
 std::unordered_set<Position> get_all_moves(Position pn, std::array<PieceType, 64> board, bool recursive, Position en_passant){
@@ -137,48 +194,8 @@ std::unordered_set<Position> get_all_moves(Position pn, std::array<PieceType, 64
 		default:
 			break;
 	}
-	// This code removes spots that are illegal due to putting your own king in check.
-	// TODO: rewrite this in a function.
-	// TODO: make it less like vomit. and more like english.
 	if (recursive){
-		PieceType my_king = is_white(pt)?PieceType::W_KING:PieceType::B_KING;
-		std::vector<Position> king_poss = get_pos_of(my_king, board);
-		Position my_king_pos;
-		if (king_poss.empty()){
-			return pns;
-		} else {
-			my_king_pos = king_poss[0];
-		}
-		int attackers = 0;
-		for (auto p_pn= pns.begin(); p_pn!=pns.end();){
-			std::array<PieceType, 64> moved_board = dumb_move(pn, *p_pn, board);
-			std::array<PieceType, 6> other_team = is_white(pt)?Pieces::BLACK:Pieces::WHITE;
-			bool checks_king = false;
-			for (PieceType other_p : other_team) {
-				checks_king = false;
-				for (Position psn : get_pos_of(other_p, moved_board)){
-					std::unordered_set<Position> other_moves = get_all_moves(psn, moved_board, false);
-					for (Position cp : other_moves){
-						if (cp == my_king_pos){
-							checks_king = true;
-							attackers++;
-							break;
-						}
-					}
-					if (checks_king){
-						break;
-					}
-				}
-				if (checks_king){
-					break;
-				}
-			}
-			if (checks_king){
-				p_pn = pns.erase(p_pn);
-			} else {
-				++p_pn;
-			}
-		}
+		filter_checked_moves(pn, pt, board, &pns);
 	}
 	return pns;
 }

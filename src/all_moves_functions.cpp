@@ -2,14 +2,20 @@
 #include <unordered_set>
 #include <iostream>
 
+inline Position _pair_to_pos_unsafe(int x, int y){
+	return static_cast<Position>(std::abs(y-7)*8 + x);
+}
+
 void _push_if_valid_pos(int x, int y, std::unordered_set<Position> *pns){
 	if (is_valid_position(x, y)){
-		pns->insert(pair_to_pos(x, y));
+		pns->insert(_pair_to_pos_unsafe(x, y));
 	}
 }
+
+
 // This function returns true if the color of the piece on tile (x,y) is the Color c 
 bool _xy_is_color(int x, int y, std::array<PieceType, 64> board, Color c){
-	return c==Color::WHITE ? is_white(board[pair_to_pos(x, y)]) : is_black(board[pair_to_pos(x, y)]);
+	return c==Color::WHITE ? is_white(board[_pair_to_pos_unsafe(x, y)]) : is_black(board[_pair_to_pos_unsafe(x, y)]);
 }
 
 Color _rev_color(Color c){
@@ -22,10 +28,10 @@ void _add_if_not_blocked(int x, int y, std::unordered_set<Position> *pns, std::a
 		if (_xy_is_color(x, y, board, color_of_piece)){
 			*is_not_blocked = false;
 		} else if (_xy_is_color(x, y, board, color_of_opposite)){
-			pns->insert(pair_to_pos(x, y));
+			pns->insert(_pair_to_pos_unsafe(x, y));
 			*is_not_blocked = false;
 		} else {
-			pns->insert(pair_to_pos(x, y));
+			pns->insert(_pair_to_pos_unsafe(x, y));
 		}
 	}
 }
@@ -35,7 +41,7 @@ void _add_if_not_blocked(int x, int y, std::unordered_set<Position> *pns, std::a
 		if (_xy_is_color(x, y, board, color_of_piece)){
 			return;
 		} else {
-			pns->insert(pair_to_pos(x, y));
+			pns->insert(_pair_to_pos_unsafe(x, y));
 		}
 	}	
 }
@@ -44,8 +50,8 @@ void _add_if_not_blocked(int x, int y, std::unordered_set<Position> *pns, std::a
 // It will only to pns if there is a piece of opposite color on it.
 void _pawn_diag_add_if_not_blocked(int x, int y, std::unordered_set<Position> *pns, std::array<PieceType, 64> board, Color color_of_piece, Color color_of_opposite, Position en_passant){
 	if (is_valid_position(x, y) && (_xy_is_color(x, y, board, color_of_opposite) ||
-			pair_to_pos(x, y) == en_passant)){
-		pns->insert(pair_to_pos(x, y));
+			_pair_to_pos_unsafe(x, y) == en_passant)){
+		pns->insert(_pair_to_pos_unsafe(x, y));
 	}
 }
 // This is a specialized functions for the pawn's inability to take going forward.
@@ -57,7 +63,7 @@ void _pawn_add_if_not_blocked(int x, int y, std::unordered_set<Position> *pns, s
 		} else if (_xy_is_color(x, y, board, color_of_opposite)){
 			*is_not_blocked = false;
 		} else {
-			pns->insert(pair_to_pos(x, y));
+			pns->insert(_pair_to_pos_unsafe(x, y));
 		}
 	}
 }
