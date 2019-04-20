@@ -48,12 +48,10 @@ void _add_if_not_blocked(int pos, std::unordered_set<int> *pns, std::array<Piece
 }
 // This function is for non-ray types only, as it ignores the 'ray rules', and just jumps over stuff (e.g. knight), or only moves one space generally (e.g. king)
 void _add_if_not_blocked(int pos, std::unordered_set<int> *pns, std::array<PieceType, 120> *board, Color color_of_piece, Color color_of_opposite){
-	if (is_valid_position(pos)){
-		if (_xy_is_color(pos, board, color_of_piece)){
-			return;
-		} else {
-			pns->insert(pos);
-		}
+	if (_xy_is_color(pos, board, color_of_piece)){
+		return;
+	} else {
+		pns->insert(pos);
 	}
 }
 
@@ -134,7 +132,7 @@ void _get_all_moves_bishop(int pos, std::unordered_set<int> *pns, std::array<Pie
 void _get_all_moves_knight(int pos, std::unordered_set<int> *pns, std::array<PieceType, 120>* board, Color pc, Color rc){
 	for (int kn_off : KNIGHT_PIECE_OFFSETS){
 		bool* not_blocked = new bool(true);
-		_add_if_not_blocked(pos+kn_off, pns, board, pc, rc, not_blocked);
+		_add_if_not_blocked(pos+kn_off, pns, board, pc, rc);
 	}
 	/*
 	for (int xo=1;xo<=2;xo++){
@@ -150,7 +148,7 @@ void _get_all_moves_knight(int pos, std::unordered_set<int> *pns, std::array<Pie
 void _get_all_moves_king(int pos, std::unordered_set<int> *pns, std::array<PieceType, 120>* board, Color pc, Color rc){
 	for (int kn_off : KING_PIECE_OFFSETS){
 		bool* not_blocked = new bool(true);
-		_add_if_not_blocked(pos+kn_off, pns, board, pc, rc, not_blocked);
+		_add_if_not_blocked(pos+kn_off, pns, board, pc, rc);
 	}
 
 

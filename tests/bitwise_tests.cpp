@@ -1,4 +1,4 @@
-#include <constants.h>
+#include <bitwise_constants.h>
 #include <bitwise.h>
 #include "catch.hpp"
 

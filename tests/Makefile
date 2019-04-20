@@ -8,11 +8,14 @@ catch_main.o:
 custom_printing.o:
 	g++ -w -I../src/ -c -o custom_printing.o custom_printing.cpp
 
+custom_bitwise_printing.o:
+	g++ -w -I../src/ -c -o custom_bitwise_printing.o custom_bitwise_printing.cpp
+
 bitwise.out: catch_main.o
 	g++ -I../src/ -o bitwise.out ../src/bitwise.cpp catch_main.o bitwise_tests.cpp
 
-bitwise_main.out: catch_main.o
-	g++ -I../src/ -o bitwise_functions.out ../src/bitwise.cpp catch_main.o ../src/bitwise_functions.cpp bitwise_main.cpp
+bitwise_main.out: catch_main.o custom_bitwise_printing.o
+	g++ -I../src/ -o bitwise_functions.out catch_main.o custom_bitwise_printing.o ../src/bitwise_functions.cpp bitwise_main.cpp
 
 # TODO: Allw all.out to contain bitwise tests
 all.out: catch_main.o custom_printing.o

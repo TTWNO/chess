@@ -68,11 +68,11 @@ Color get_color(PieceType pt){
 	return Color::NO_COLOR;
 }
 
-Color get_color(int x, int y, std::array<PieceType, 120> board){
-	return get_color(board[pair_to_pos(x, y)]);
+Color get_color(int x, int y, std::array<PieceType, 120> const *board){
+	return get_color((*board)[pair_to_pos(x, y)]);
 }
-Color get_color(Position pn, std::array<PieceType, 120> board){
-	return get_color(board[pn]);
+Color get_color(Position pn, std::array<PieceType, 120> const *board){
+	return get_color((*board)[pn]);
 }
 
 Color rev_color(Color c){
@@ -91,13 +91,23 @@ std::unordered_set<int> get_possible_moves(Position pn, std::array<PieceType, 12
 	return pns;
 }
 
-int get_pos_of(PieceType pt, std::array<PieceType, 120> *board){
+int get_pos_of(PieceType pt, std::array<PieceType, 120> const *board){
 	for (int pn = Position::A8; pn!=Position::H1; pn++){
 		if ((*board)[pn] == pt){
 			return pn;
 		}
 	}
 	return Position::NA;
+}
+
+std::unordered_set<int> get_poss_of(PieceType pt, std::array<PieceType, 120> const *board){
+	std::unordered_set<int> results;
+	for (int pn = Position::A8; pn!=Position::H1; pn++){
+		if ((*board)[pn] == pt){
+			results.insert(pn);
+		}
+	}
+	return results;
 }
 
 void get_poss_of(PieceType pt, std::array<PieceType, 120>* board, std::vector<Position>* pns){
@@ -109,14 +119,14 @@ void get_poss_of(PieceType pt, std::array<PieceType, 120>* board, std::vector<Po
 }
 
 //TODO: Make faster by running from king squar eonly, instead of running on every piece of opposite team.
-void filter_checked_moves(Position pn, PieceType pt, std::array<PieceType, 120> *board, std::unordered_set<int> *pns){
+void filter_checked_moves(int pos, PieceType pt, std::array<PieceType, 120> *board, std::unordered_set<int> *pns){
 	PieceType my_king = is_white(pt)?PieceType::W_KING:PieceType::B_KING;
 	int my_king_pos = get_pos_of(my_king, board);
 	int attackers = 0;
 	for (auto p_pn= pns->begin(); p_pn!=pns->end();){
 		// Make move
-		int move_int = pn + (*p_pn >> 6);
-		std::array<PieceType, 120> moved_board = dumb_move(move_int, board);
+		int move_int = pos + (*p_pn >> 7);
+		std::array<PieceType, 120> moved_board = dumb_move(move_int, *board);
 		// Get all piecetypes of other team
 		std::array<PieceType, 6> other_team = is_white(pt)?Pieces::BLACK:Pieces::WHITE;
 		bool checks_king = false;
@@ -158,11 +168,8 @@ void filter_checked_moves(Position pn, PieceType pt, std::array<PieceType, 120> 
 	}
 }
 
-void get_all_moves(Position pn, std::array<PieceType, 120>* board, std::unordered_set<int>* moves, bool recursive, int en_passant){
-	PieceType pt = (*board)[pn];
-	int pos = pn;
-	int x = pos_to_pair(pn).first;
-	int y = pos_to_pair(pn).second;
+void get_all_moves(int pos, std::array<PieceType, 120>* board, std::unordered_set<int>* moves, bool recursive, int en_passant){
+	PieceType pt = (*board)[pos];
 	Color color_of_piece = get_color(pt);
 	Color color_of_opponent = rev_color(color_of_piece);
 	switch(pt){
@@ -195,13 +202,33 @@ void get_all_moves(Position pn, std::array<PieceType, 120>* board, std::unordere
 			break;
 	}
 	if (recursive){
-		filter_checked_moves(pn, pt, board, moves);
+		filter_checked_moves(pos, pt, board, moves);
 	}
 }
 
-std::array<PieceType, 120> dumb_move(Position from, Position to, std::array<PieceType, 120> board){
+std::unordered_set<int> get_all_moves(int pos, std::array<PieceType, 120> board, bool recursive, int en_passant){
+	std::unordered_set<int> moves;
+	get_all_moves(pos, &board, &moves, recursive, en_passant);
+	return moves;
+}
+
+std::array<PieceType, 120> dumb_move(int move, std::array<PieceType, 120> board){
+	int from = get_from_sq(move);
+	int to = get_to_sq(move);
 	PieceType piece = board[from];
 	board[to] = piece;
 	board[from] = PieceType::NONE;
 	return board;
+}
+
+std::unordered_set<int> get_to_squares(std::unordered_set<int> moves){
+	std::unordered_set<int> to_squares;
+	for (int move : moves){
+		to_squares.insert(get_to_sq(move));
+	}
+	return to_squares;
+}
+std::unordered_set<int> get_from_squared(std::unordered_set<int> moves){
+	std::unordered_set<int> from_squares;
+	return from_squares;
 }

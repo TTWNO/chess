@@ -1,8 +1,9 @@
-#ifndef BITWISE_CONSTANTS_H
-#define BITWISE_CONSTANTS_H
+#ifndef BT_CONST_H
+#define BT_CONST_H
 
 #include <array>
 #include <iostream>
+#include <vector>
 
 enum Color {
 	NO_COLOR,
@@ -11,6 +12,7 @@ enum Color {
 };
 
 enum PieceType {
+	INV=-1,
 	NONE,
 	B_PAWN, B_KNIGHT, B_BISHOP, B_ROOK, B_QUEEN, B_KING,
 	W_PAWN, W_KNIGHT, W_BISHOP, W_ROOK, W_QUEEN, W_KING
@@ -29,6 +31,22 @@ enum Position {
 	A3=71, B3, C3, D3, E3, F3, G3, H3,
 	A2=81, B2, C2, D2, E2, F2, G2, H2,
 	A1=91, B1, C1, D1, E1, F1, G1, H1
+};
+
+// Access with POSITION_STRING[Position]
+const std::vector<std::string> POSITION_STRING = {
+	"INV", "INV", "INV", "INV", "INV", "INV", "INV", "INV", "INV", "INV", 	
+	"INV", "INV", "INV", "INV", "INV", "INV", "INV", "INV", "INV", "INV", 	
+	"INV", "A8", "B8", "C8", "D8", "E8", "F8", "G8", "H8", "INV",
+	"INV", "A7", "B7", "C7", "D7", "E7", "F7", "G7", "H7", "INV",
+	"INV", "A6", "B6", "C6", "D6", "E6", "F6", "G6", "H6", "INV",
+	"INV", "A5", "B5", "C5", "D5", "E5", "F5", "G5", "H5", "INV",
+	"INV", "A4", "B4", "C4", "D4", "E4", "F4", "G4", "H4", "INV",
+	"INV", "A3", "B3", "C3", "D3", "E3", "F3", "G3", "H3", "INV",
+	"INV", "A2", "B2", "C2", "D2", "E2", "F2", "G2", "H2", "INV",
+	"INV", "A1", "B1", "C1", "D1", "E1", "F1", "G1", "H1", "INV",
+	"INV", "INV", "INV", "INV", "INV", "INV", "INV", "INV", "INV", "INV", 	
+	"INV", "INV", "INV", "INV", "INV", "INV", "INV", "INV", "INV", "INV"	
 };
 
 enum Rank{
@@ -53,24 +71,25 @@ enum File {
 	FILE8
 };
 
-std::array<int, 120> DEFAULT_BOARD = {
-	NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,	
-	NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,	
-	NA, B_ROOK, B_KNIGHT, B_BISHOP, B_QUEEN, B_KING, B_BISHOP, B_KNIGHT, B_ROOK, NA,
-	NA, B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, NA, 
-	NA, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NA, 
-	NA, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NA,
-	NA, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NA,
-	NA, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NA,
-	NA, W_PAWN, W_PAWN, W_PAWN, W_PAWN, W_PAWN, W_PAWN, W_PAWN, W_PAWN, NA,
-	NA, W_ROOK, W_KNIGHT, W_BISHOP, W_QUEEN, W_KING, W_BISHOP, W_KNIGHT, W_ROOK, NA,
-	NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,
-	NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+const std::array<PieceType, 120> DEFAULT_BOARD = {
+	INV,INV,INV,INV,INV,INV,INV,INV,INV,INV,	
+	INV,INV,INV,INV,INV,INV,INV,INV,INV,INV,	
+	INV, B_ROOK, B_KNIGHT, B_BISHOP, B_QUEEN, B_KING, B_BISHOP, B_KNIGHT, B_ROOK, INV,
+	INV, B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, INV, 
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, INV, 
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, INV,
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, INV,
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, INV,
+	INV, W_PAWN, W_PAWN, W_PAWN, W_PAWN, W_PAWN, W_PAWN, W_PAWN, W_PAWN, INV,
+	INV, W_ROOK, W_KNIGHT, W_BISHOP, W_QUEEN, W_KING, W_BISHOP, W_KNIGHT, W_ROOK, INV,
+	INV,INV,INV,INV,INV,INV,INV,INV,INV,INV,
+	INV,INV,INV,INV,INV,INV,INV,INV,INV,INV
 };
 
-char CHESS_CHARS[13] = {
+const std::array<char, 13> CHESS_CHARS = {
 	' ',
 	'P', 'N', 'B', 'R', 'Q', 'K',
 	'p', 'n', 'b', 'r', 'q', 'k'
 };
 #endif
+
