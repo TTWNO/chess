@@ -2,7 +2,7 @@
 #define BITWISE_H
 
 #include <unordered_set>
-#include "bitwise_constants.h"
+#include "constants.h"
 
 // Using macros for ease of use, can also use functons, but I don't see the point.
 

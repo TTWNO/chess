@@ -1,5 +1,5 @@
 #include <unordered_set>
-#include <bitwise_constants.h>
+#include <constants.h>
 
 const int B_QUEEN_POS = E4;
 const std::array<PieceType, 120> B_QUEEN_BOARD = {

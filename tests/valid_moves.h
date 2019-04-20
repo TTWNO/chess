@@ -1,5 +1,5 @@
 #include <unordered_set>
-#include <bitwise_constants.h>
+#include <constants.h>
 
 
 /// This is for possible moves on a default board

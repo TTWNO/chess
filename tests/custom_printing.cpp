@@ -36,13 +36,13 @@ namespace Catch {
 	};
 	// This prints all board comparisons in a readable fashion. Using the string name of the pieces, and newlines to seperate them.
 	template<>
-	struct StringMaker<std::array<PieceType, 64>> {
-		static std::string convert(std::array<PieceType, 64> const& board){
+	struct StringMaker<std::array<PieceType, 120>> {
+		static std::string convert(std::array<PieceType, 120> const& board){
 			std::stringstream ss;
 			ss << "{" << std::endl;
-			for (int i = 0; i < 8; ++i){
-				for (int j = 0; j < 8; ++j){
-					int index = (i*8)+j;
+			for (int i = 2; i < 10; ++i){
+				for (int j = 1; j < 9; ++j){
+					int index = (i*10)+j;
 					ss << CHESS_CHARS[board[index]] << ", ";
 				}
 				ss << std::endl;

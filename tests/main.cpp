@@ -1,9 +1,8 @@
 #include "catch.hpp"
 #include "test_boards.h"
 #include "valid_moves.h"
-#include "custom_bitwise_printing.cpp"
 #include <sstream>
-#include <bitwise_functions.h>
+#include <functions.h>
 
 
 const std::array<PieceType, 120> DUMB_MOVE_1 = {
