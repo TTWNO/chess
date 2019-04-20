@@ -1,9 +1,9 @@
 #include "catch.hpp"
 #include "test_boards.h"
 #include "valid_moves.h"
+#include "custom_printing.cpp"
 #include <sstream>
 #include <functions.h>
-
 
 const std::array<PieceType, 120> DUMB_MOVE_1 = {
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
