@@ -34,17 +34,39 @@
 */
 
 // Redefine as functions for fun :shrug:
-int get_from_sq(int mv);
-int get_to_sq(int mv);
-int get_captured_pc(int mv);
-int get_promoted_to_pc(int mv);
-int get_en_pass_flag(int mv);
-int get_pawn_st_flag(int mv);
-int get_castle_flag(int mv);
+inline int get_from_sq(int mv){
+	return (mv & 0x3f);
+}
+inline int get_to_sq(int mv){
+	return ((mv >> 6) & 0x3f);
+}
+inline int get_captured_pc(int mv){
+	return ((mv >> 12) & 0xf);
+}
+inline int get_promoted_to_pc(int mv){
+	return ((mv >> 16) & 0xf);
+}
+inline int get_en_pass_flag(int mv){
+	return ((mv >> 20) & 0x1);
+}
+inline int get_pawn_st_flag(int mv){
+	return ((mv >> 21) & 0x1);
+}
+inline int get_castle_flag(int mv){
+	return ((mv >> 22) & 0x1);
+}
 
-int get_rank(int position);
-int get_file(int position);
+inline int get_rank(int position){
+	return (position >> 3);
+}
+inline int get_file(int position){
+	return (position & 7);
+}
 
-bool is_valid_position(int position);
-
+inline bool is_valid_position(int position){
+	return !(position & 0x40);
+}
+inline bool is_invalid_position(int position){
+	return (position & 0x40);
+}
 #endif
