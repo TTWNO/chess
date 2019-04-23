@@ -56,17 +56,39 @@ inline int get_pawn_st_flag(int mv){
 inline int get_castle_flag(int mv){
 	return ((mv >> 24) & 0x1);
 }
-// Just trying to get working for now.
-Rank get_rank(int pos){
-	if (pos >30 && pos < 39){
-		return Rank::RANK7;
-	} else if (pos > 80 && pos < 89){
-		return Rank::RANK2;
-	}
-	return Rank::RANK1;
-}
 
 inline bool is_valid_position(int position){
 	return DEFAULT_BOARD[position] != PieceType::INV;
 }
+
+inline int set_to_sq(int sq, int base){
+	return base + (sq << 7);
+}
+inline int set_to_sq(int sq){
+	return (sq << 7);
+}
+
+inline int make_move(int from){
+	return from;
+}
+inline int make_move(int from, int to){
+	return from + (to << 7);
+}
+inline int make_move(int from, int to, PieceType captured){
+	return from + (to << 7) + ((int) captured << 14);
+}
+inline int make_move(int from, int to, PieceType captured, PieceType promotion){
+	return from + (to << 7) + ((int) captured << 14) + ((int) promotion << 18);
+}
+inline int make_move(int from, int to, PieceType captured, PieceType promotion, int en_passant){
+	return from + (to << 7) + ((int) captured << 14) + ((int) promotion << 18) + (en_passant << 22);
+}
+inline int make_move(int from, int to, PieceType captured, PieceType promotion, int en_passant, int pawn_start){
+	return from + (to << 7) + ((int) captured << 14) + ((int) promotion << 18) + (en_passant << 22) + (pawn_start << 23);
+}
+inline int make_move(int from, int to, PieceType captured, PieceType promotion, int en_passant, int pawn_start, int castle_move){
+	return from + (to << 7) + ((int) captured << 14) + ((int) promotion << 18) + (en_passant << 22) + (pawn_start << 23) + (castle_move << 24);
+}
+
+
 #endif

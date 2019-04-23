@@ -12,41 +12,13 @@
 // TODO implement functions.h functions.
 // NOTE tests will NOT run unless you implement these functions.
 
-
-std::pair<int, int> pos_to_pair(Position pn){
-	int x,y = 0;
-	for (x = pn; x >= 8; x = x-8){
-		++y;
+Rank get_rank(int pos){
+	int rank = 0;
+	while (pos >= 0){
+		pos -= 10;
+		rank++;
 	}
-	return std::make_pair(x, std::abs(y-7));
-}
-
-// TODO find way to make function arbitary to board size as to allow wide game chess variants. Do much later. Not important now.
-Position pair_to_pos(std::pair<int, int> pr){
-	if (pr.first > 7 || pr.first < 0
-	||  pr.second > 7 || pr.second < 0) {
-		throw std::invalid_argument("Cannot use any pairs with values > 7 or < 0.");
-	}
-	int int_val = std::abs(pr.second - 7)*8 + pr.first;
-	if (int_val >= 0 && int_val < 64) {
-		return static_cast<Position>(int_val);
-	} else {
-		std::stringstream ss;
-		ss << "Something went terribly wrong. x and y < 8 && x and y >= 0 but abs(y-7)*8 + x < 0 or >= 64. It equalled: " << int_val; 
-		throw std::invalid_argument(ss.str());
-	}
-}
-Position pair_to_pos(int x, int y){
-	return pair_to_pos(std::make_pair(x, y));
-}
-
-bool is_valid_position(std::pair<int, int> pos){
-	return (pos.first < 8 && pos.second < 8 &&
-			pos.first >= 0 && pos.second >=0);
-}
-bool is_valid_position(int x, int y){
-	return (x < 8 && x >= 0 &&
-			y < 8 && y >= 0);
+	return static_cast<Rank>(rank - 3);
 }
 
 bool is_white(PieceType pt){
@@ -68,9 +40,6 @@ Color get_color(PieceType pt){
 	return Color::NO_COLOR;
 }
 
-Color get_color(int x, int y, std::array<PieceType, 120> const *board){
-	return get_color((*board)[pair_to_pos(x, y)]);
-}
 Color get_color(Position pn, std::array<PieceType, 120> const *board){
 	return get_color((*board)[pn]);
 }
@@ -110,23 +79,22 @@ std::unordered_set<int> get_poss_of(PieceType pt, std::array<PieceType, 120> con
 	return results;
 }
 
-void get_poss_of(PieceType pt, std::array<PieceType, 120>* board, std::vector<Position>* pns){
+void get_poss_of(PieceType pt, std::array<PieceType, 120>* board, std::vector<int>* pns){
 	for (int pn = Position::A8; pn!=Position::H1; pn++){
 		if ((*board)[pn] == pt){
-			pns->push_back(static_cast<Position>(pn));
+			pns->push_back(pn);
 		}
 	}
 }
 
 //TODO: Make faster by running from king squar eonly, instead of running on every piece of opposite team.
-void filter_checked_moves(int pos, PieceType pt, std::array<PieceType, 120> *board, std::unordered_set<int> *pns){
+void filter_checked_moves(PieceType pt, std::array<PieceType, 120> *board, std::unordered_set<int> *pns){
 	PieceType my_king = is_white(pt)?PieceType::W_KING:PieceType::B_KING;
 	int my_king_pos = get_pos_of(my_king, board);
 	int attackers = 0;
 	for (auto p_pn= pns->begin(); p_pn!=pns->end();){
 		// Make move
-		int move_int = pos + (*p_pn >> 7);
-		std::array<PieceType, 120> moved_board = dumb_move(move_int, *board);
+		std::array<PieceType, 120> moved_board = dumb_move(*p_pn, *board);
 		// Get all piecetypes of other team
 		std::array<PieceType, 6> other_team = is_white(pt)?Pieces::BLACK:Pieces::WHITE;
 		bool checks_king = false;
@@ -139,7 +107,7 @@ void filter_checked_moves(int pos, PieceType pt, std::array<PieceType, 120> *boa
 //					
 //					}
 			// \NEW CODE
-			std::vector<Position> psns;
+			std::vector<int> psns;
 			get_poss_of(other_p, &moved_board, &psns);
 			for (auto psn : psns){
 				std::unordered_set<int> other_moves;
@@ -202,7 +170,7 @@ void get_all_moves(int pos, std::array<PieceType, 120>* board, std::unordered_se
 			break;
 	}
 	if (recursive){
-		filter_checked_moves(pos, pt, board, moves);
+		filter_checked_moves(pt, board, moves);
 	}
 }
 
@@ -224,7 +192,6 @@ std::array<PieceType, 120> dumb_move(int move, std::array<PieceType, 120> board)
 std::unordered_set<int> get_to_squares(std::unordered_set<int> moves){
 	std::unordered_set<int> to_squares;
 	for (int move : moves){
-		std::cout << "SQ: " << get_to_sq(move) << "\n";
 		to_squares.insert(get_to_sq(move));
 	}
 	return to_squares;

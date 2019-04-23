@@ -52,14 +52,14 @@ const std::array<std::string, 120> POSITION_STRING = {
 };
 
 enum Rank{
-	RANK1,
-	RANK2,
-	RANK3,
-	RANK4,
-	RANK5,
-	RANK6,
+	RANK8,
 	RANK7,
-	RANK8
+	RANK6,
+	RANK5,
+	RANK4,
+	RANK3,
+	RANK2,
+	RANK1
 };
 
 enum File {

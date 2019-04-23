@@ -4,11 +4,6 @@
 #include <vector>
 #include <math.h>
 
-// Convert pair of x y coordinates to Position enum member.
-// If pr contains values above 7, or below 0 it will fail with an InvalidArgument exception.
-Position pair_to_pos(std::pair<int, int> pr);
-Position pair_to_pos(int x, int y);
-
 // Returns a list of positions with PieceType pt
 int get_pos_of(PieceType pt, std::array<PieceType, 120> const *board);
 std::unordered_set<int> get_poss_of(PieceType pt, std::array<PieceType, 120> const *board);
@@ -19,14 +14,14 @@ std::pair<int, int> pos_to_pair(Position pn);
 // Check if int is a valid position in enum of Position
 // Allow ints, and pairs to be checked.
 bool is_valid_position(int pos);
-bool is_valid_position(std::pair<int, int> pos);
-bool is_valid_position(int x, int y);
+
+// Returns rank enum value for given pos
+Rank get_rank(int pos);
 
 // Checks if given piece matches a certain color.
 bool is_white(PieceType pt);
 bool is_black(PieceType pt);
 
-Color get_color(int x, int y, std::array<PieceType, 120> const *board);
 Color get_color(Position pn, std::array<PieceType, 120> const *board);
 Color get_color(PieceType pt);
 // NO_COLOR returns NO_COLOR
