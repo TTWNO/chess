@@ -20,6 +20,12 @@ const std::array<PieceType, 120> DUMB_MOVE_1 = {
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV	
 };
 
+TEST_CASE("Test that the get_to_squares works, this is required!", "[get_to_squares]"){
+	std::unordered_set<int> to_squares = {Position::H1};
+	std::unordered_set<int> moves = {0b11000100000000};
+	REQUIRE(get_to_squares(moves) == to_squares);
+}
+
 TEST_CASE("Test that an unordered set of positions are returned when looking for a piece type through a board", "[get_pos_of]"){
 	CHECK(get_poss_of(PieceType::B_PAWN, &DEFAULT_BOARD) == B_PAWNS_SQUARES);
 }
