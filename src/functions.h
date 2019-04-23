@@ -49,8 +49,3 @@ std::unordered_set<int> get_all_moves(int pos, std::array<PieceType, 120> board,
 // Does not check if move is valid, just does it.
 std::array<PieceType, 120> dumb_move(int move, std::array<PieceType, 120> board);
 
-// Allow the developer to get only certain pieces of the part of a move in a list.
-// This will return a vector (or unordered_set) of elements with only a certain part of the move revealed bit bit-switching.
-std::unordered_set<int> get_from_squares(std::unordered_set<int> moves);
-std::unordered_set<int> get_to_squares(std::unordered_set<int> moves);
-

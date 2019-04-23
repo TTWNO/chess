@@ -188,15 +188,3 @@ std::array<PieceType, 120> dumb_move(int move, std::array<PieceType, 120> board)
 	board[from] = PieceType::NONE;
 	return board;
 }
-
-std::unordered_set<int> get_to_squares(std::unordered_set<int> moves){
-	std::unordered_set<int> to_squares;
-	for (int move : moves){
-		to_squares.insert(get_to_sq(move));
-	}
-	return to_squares;
-}
-std::unordered_set<int> get_from_squared(std::unordered_set<int> moves){
-	std::unordered_set<int> from_squares;
-	return from_squares;
-}

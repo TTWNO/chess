@@ -12,4 +12,4 @@ bitwise.out: catch_main.o
 
 # TODO: Allw all.out to contain bitwise tests
 all.out: catch_main.o custom_printing.o
-	g++ -std=c++11 -ggdb -w -I../src/ -o all.out ../src/functions.cpp catch_main.o custom_printing.o main.cpp
+	g++ -std=c++11 -ggdb -w -I../src/ -o all.out ../src/functions.cpp catch_main.o custom_printing.o test_functions.cpp main.cpp

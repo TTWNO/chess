@@ -2,6 +2,7 @@
 #include "test_boards.h"
 #include "valid_moves.h"
 #include "custom_printing.cpp"
+#include "test_functions.h"
 #include <sstream>
 #include <functions.h>
 
@@ -105,7 +106,10 @@ TEST_CASE("Test all moves for black in edge cases.", "[get_all_moves][black]"){
 TEST_CASE("Test that moves that put king in check are not returned", "[get_all_moves]"){
 	CHECK(get_to_squares(get_all_moves(ROOK_CHECK_TEST_POS, ROOK_CHECK_TEST_BOARD)) == ROOK_CHECK_TEST_MOVES);
 	CHECK(get_to_squares(get_all_moves(PAWN_CHECK_TEST_POS, PAWN_CHECK_TEST_BOARD)) == PAWN_CHECK_TEST_MOVES);
-	CHECK(get_to_squares(get_all_moves(PAWN_DIAG_TEST1_POS, PAWN_DIAG_TEST1_BOARD)) == PAWN_DIAG_TEST1_MOVES);
+	auto pawn_diag_moves = get_all_moves(PAWN_DIAG_TEST1_POS, PAWN_DIAG_TEST1_BOARD);
+	std::unordered_set<int> pawn_start_flags = {0, 1, 0};
+	CHECK(get_to_squares(pawn_diag_moves) == PAWN_DIAG_TEST1_MOVES);
+	CHECK(get_pawn_start_flags(pawn_diag_moves) == pawn_start_flags);
 }
 
 TEST_CASE("Tests for en pessant squares.", "[get_all_moves]"){
