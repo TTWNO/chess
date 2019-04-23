@@ -17,10 +17,12 @@ enum PieceType {
 	B_PAWN, B_KNIGHT, B_BISHOP, B_ROOK, B_QUEEN, B_KING,
 	W_PAWN, W_KNIGHT, W_BISHOP, W_ROOK, W_QUEEN, W_KING
 };
+
 namespace Pieces{
 	const std::array<PieceType, 6> WHITE = {W_PAWN, W_KNIGHT, W_BISHOP, W_ROOK, W_QUEEN, W_KING};
 	const std::array<PieceType, 6> BLACK = {B_PAWN, B_KNIGHT, B_BISHOP, B_ROOK, B_QUEEN, B_KING};
 }
+
 enum Position {
 	NA=-1,
 	A8=21, B8, C8, D8, E8, F8, G8, H8,
@@ -34,7 +36,7 @@ enum Position {
 };
 
 // Access with POSITION_STRING[Position]
-const std::vector<std::string> POSITION_STRING = {
+const std::array<std::string, 120> POSITION_STRING = {
 	"INV", "INV", "INV", "INV", "INV", "INV", "INV", "INV", "INV", "INV", 	
 	"INV", "INV", "INV", "INV", "INV", "INV", "INV", "INV", "INV", "INV", 	
 	"INV", "A8", "B8", "C8", "D8", "E8", "F8", "G8", "H8", "INV",

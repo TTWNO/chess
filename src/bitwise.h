@@ -1,8 +1,8 @@
 #ifndef BITWISE_H
 #define BITWISE_H
 
-#include <unordered_set>
 #include "constants.h"
+#include <unordered_set>
 
 // Using macros for ease of use, can also use functons, but I don't see the point.
 
@@ -67,6 +67,6 @@ Rank get_rank(int pos){
 }
 
 inline bool is_valid_position(int position){
-	return DEFAULT_BOARD[position] == PieceType::INV;
+	return DEFAULT_BOARD[position] != PieceType::INV;
 }
 #endif
