@@ -102,40 +102,40 @@ TEST_CASE("Test that invalid position ints return false", "[is_valid_position]")
 }
 
 TEST_CASE("Test all possible and impossible moves for black pieces", "[get_all_moves][black]"){
-	CHECK(get_to_squares(get_all_moves(B_KING_POS, B_KING_BOARD)) == get_to_squares(B_KING_ALL_MOVES));
-	CHECK(get_to_squares(get_all_moves(B_QUEEN_POS, B_QUEEN_BOARD)) == get_to_squares(B_QUEEN_ALL_MOVES));
-	CHECK(get_to_squares(get_all_moves(B_ROOK_POS, B_ROOK_BOARD)) == get_to_squares(B_ROOK_ALL_MOVES));
-	CHECK(get_to_squares(get_all_moves(B_BISHOP_POS, B_BISHOP_BOARD)) == get_to_squares(B_BISHOP_ALL_MOVES));
-	CHECK(get_to_squares(get_all_moves(B_KNIGHT_POS, B_KNIGHT_BOARD)) == get_to_squares(B_KNIGHT_ALL_MOVES));
-	CHECK(get_to_squares(get_all_moves(B_PAWN_POS, B_PAWN_BOARD)) == get_to_squares(B_PAWN_ALL_MOVES));
+	CHECK(get_to_squares(get_all_moves(B_KING_POS, B_KING_BOARD)) == B_KING_ALL_MOVES);
+	CHECK(get_to_squares(get_all_moves(B_QUEEN_POS, B_QUEEN_BOARD)) == B_QUEEN_ALL_MOVES);
+	CHECK(get_to_squares(get_all_moves(B_ROOK_POS, B_ROOK_BOARD)) == B_ROOK_ALL_MOVES);
+	CHECK(get_to_squares(get_all_moves(B_BISHOP_POS, B_BISHOP_BOARD)) == B_BISHOP_ALL_MOVES);
+	CHECK(get_to_squares(get_all_moves(B_KNIGHT_POS, B_KNIGHT_BOARD)) == B_KNIGHT_ALL_MOVES);
+	CHECK(get_to_squares(get_all_moves(B_PAWN_POS, B_PAWN_BOARD)) == B_PAWN_ALL_MOVES);
 }
 TEST_CASE("Test all possible and impossible moves for whtie pieces", "[get_all_moves][white]"){
-	CHECK(get_to_squares(get_all_moves(W_KING_POS, W_KING_BOARD)) == get_to_squares(W_KING_ALL_MOVES));
-	CHECK(get_to_squares(get_all_moves(W_QUEEN_POS, W_QUEEN_BOARD)) == get_to_squares(W_QUEEN_ALL_MOVES));
-	CHECK(get_to_squares(get_all_moves(W_ROOK_POS, W_ROOK_BOARD)) == get_to_squares(W_ROOK_ALL_MOVES));
-	CHECK(get_to_squares(get_all_moves(W_BISHOP_POS, W_BISHOP_BOARD)) == get_to_squares(W_BISHOP_ALL_MOVES));
-	CHECK(get_to_squares(get_all_moves(W_KNIGHT_POS, W_KNIGHT_BOARD)) == get_to_squares(W_KNIGHT_ALL_MOVES));
-	CHECK(get_to_squares(get_all_moves(W_PAWN_POS, W_PAWN_BOARD)) == get_to_squares(W_PAWN_ALL_MOVES));
+	CHECK(get_to_squares(get_all_moves(W_KING_POS, W_KING_BOARD)) == W_KING_ALL_MOVES);
+	CHECK(get_to_squares(get_all_moves(W_QUEEN_POS, W_QUEEN_BOARD)) == W_QUEEN_ALL_MOVES);
+	CHECK(get_to_squares(get_all_moves(W_ROOK_POS, W_ROOK_BOARD)) == W_ROOK_ALL_MOVES);
+	CHECK(get_to_squares(get_all_moves(W_BISHOP_POS, W_BISHOP_BOARD)) == W_BISHOP_ALL_MOVES);
+	CHECK(get_to_squares(get_all_moves(W_KNIGHT_POS, W_KNIGHT_BOARD)) == W_KNIGHT_ALL_MOVES);
+	CHECK(get_to_squares(get_all_moves(W_PAWN_POS, W_PAWN_BOARD)) == W_PAWN_ALL_MOVES);
 }
 
 TEST_CASE("Test all moves for white in edge cases.", "[get_all_moves][white]"){
-	CHECK(get_to_squares(get_all_moves(W_KNIGHT_SIDE1_POS, W_KNIGHT_SIDE1_BOARD)) == get_to_squares(W_KNIGHT_SIDE1_ALL_MOVES));
-	CHECK(get_to_squares(get_all_moves(W_KING_SIDE1_POS, W_KING_SIDE1_BOARD)) == get_to_squares(W_KING_SIDE1_ALL_MOVES));
-	CHECK(get_to_squares(get_all_moves(W_PAWN_SIDE1_POS, W_PAWN_SIDE1_BOARD)) == get_to_squares(W_PAWN_SIDE1_ALL_MOVES));
+	CHECK(get_to_squares(get_all_moves(W_KNIGHT_SIDE1_POS, W_KNIGHT_SIDE1_BOARD)) == W_KNIGHT_SIDE1_ALL_MOVES);
+	CHECK(get_to_squares(get_all_moves(W_KING_SIDE1_POS, W_KING_SIDE1_BOARD)) == W_KING_SIDE1_ALL_MOVES);
+	CHECK(get_to_squares(get_all_moves(W_PAWN_SIDE1_POS, W_PAWN_SIDE1_BOARD)) == W_PAWN_SIDE1_ALL_MOVES);
 }
 TEST_CASE("Test all moves for black in edge cases.", "[get_all_moves][black]"){
-	CHECK(get_to_squares(get_all_moves(B_KNIGHT_SIDE1_POS, B_KNIGHT_SIDE1_BOARD)) == get_to_squares(B_KNIGHT_SIDE1_ALL_MOVES));
-	CHECK(get_to_squares(get_all_moves(B_KING_SIDE1_POS, B_KING_SIDE1_BOARD)) == get_to_squares(B_KING_SIDE1_ALL_MOVES));
-	CHECK(get_to_squares(get_all_moves(B_PAWN_SIDE1_POS, B_PAWN_SIDE1_BOARD)) == get_to_squares(B_PAWN_SIDE1_ALL_MOVES));
+	CHECK(get_to_squares(get_all_moves(B_KNIGHT_SIDE1_POS, B_KNIGHT_SIDE1_BOARD)) == B_KNIGHT_SIDE1_ALL_MOVES);
+	CHECK(get_to_squares(get_all_moves(B_KING_SIDE1_POS, B_KING_SIDE1_BOARD)) == B_KING_SIDE1_ALL_MOVES);
+	CHECK(get_to_squares(get_all_moves(B_PAWN_SIDE1_POS, B_PAWN_SIDE1_BOARD)) == B_PAWN_SIDE1_ALL_MOVES);
 }
 
 TEST_CASE("Test that moves that put king in check are not returned", "[get_all_moves]"){
-	CHECK(get_to_squares(get_all_moves(ROOK_CHECK_TEST_POS, ROOK_CHECK_TEST_BOARD)) == get_to_squares(ROOK_CHECK_TEST_MOVES));
-	CHECK(get_to_squares(get_all_moves(PAWN_CHECK_TEST_POS, PAWN_CHECK_TEST_BOARD)) == get_to_squares(PAWN_CHECK_TEST_MOVES));
-	CHECK(get_to_squares(get_all_moves(PAWN_DIAG_TEST1_POS, PAWN_DIAG_TEST1_BOARD)) == get_to_squares(PAWN_DIAG_TEST1_MOVES));
+	CHECK(get_to_squares(get_all_moves(ROOK_CHECK_TEST_POS, ROOK_CHECK_TEST_BOARD)) == ROOK_CHECK_TEST_MOVES);
+	CHECK(get_to_squares(get_all_moves(PAWN_CHECK_TEST_POS, PAWN_CHECK_TEST_BOARD)) == PAWN_CHECK_TEST_MOVES);
+	CHECK(get_to_squares(get_all_moves(PAWN_DIAG_TEST1_POS, PAWN_DIAG_TEST1_BOARD)) == PAWN_DIAG_TEST1_MOVES);
 }
 
 TEST_CASE("Tests for en pessant squares.", "[get_all_moves]"){
-	CHECK(get_to_squares(get_all_moves(EN_PASSANT_TEST_POS, EN_PASSANT_TEST_BOARD, false, EN_PASSANT_SQUARE)) == get_to_squares(EN_PASSANT_TEST_MOVES));
-	CHECK(get_to_squares(get_all_moves(NO_EN_PASSANT_TEST_POS, NO_EN_PASSANT_TEST_BOARD)) == get_to_squares(NO_EN_PASSANT_TEST_MOVES));
+	CHECK(get_to_squares(get_all_moves(EN_PASSANT_TEST_POS, EN_PASSANT_TEST_BOARD, false, EN_PASSANT_SQUARE)) == EN_PASSANT_TEST_MOVES);
+	CHECK(get_to_squares(get_all_moves(NO_EN_PASSANT_TEST_POS, NO_EN_PASSANT_TEST_BOARD)) == NO_EN_PASSANT_TEST_MOVES);
 }
