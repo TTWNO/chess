@@ -1,5 +1,5 @@
 #include "constants.h"
-#include <unordered_set>
+#include <vector>
 #include <array>
 #include <iostream>
 
@@ -23,7 +23,7 @@ Color _rev_color(Color c){
 }
 
 // This function will set the boolean guarding it to false if it is blocked, thus stopping it from running.
-void _add_if_not_blocked(int pos, int from, std::unordered_set<int> *pns, std::array<PieceType, 120> *board, Color color_of_piece, Color color_of_opposite, bool *is_not_blocked){
+void _add_if_not_blocked(int pos, int from, std::vector<int> *pns, std::array<PieceType, 120> *board, Color color_of_piece, Color color_of_opposite, bool *is_not_blocked){
 	if (*is_not_blocked){
 		if (!is_valid_position(pos)){
 			*is_not_blocked = false;
@@ -31,47 +31,47 @@ void _add_if_not_blocked(int pos, int from, std::unordered_set<int> *pns, std::a
 			if (_xy_is_color(pos, board, color_of_piece)){
 				*is_not_blocked = false;
 			} else if (_xy_is_color(pos, board, color_of_opposite)){
-				pns->insert(make_move(from, pos));
+				pns->push_back(make_move(from, pos));
 				*is_not_blocked = false;
 			} else {
-				pns->insert(make_move(from, pos));
+				pns->push_back(make_move(from, pos));
 			}
 		}
 	}
 }
 // This function is for non-ray types only, as it ignores the 'ray rules', and just jumps over stuff (e.g. knight), or only moves one space generally (e.g. king)
-void _add_if_not_blocked(int pos, int from, std::unordered_set<int> *pns, std::array<PieceType, 120> *board, Color color_of_piece, Color color_of_opposite){
+void _add_if_not_blocked(int pos, int from, std::vector<int> *pns, std::array<PieceType, 120> *board, Color color_of_piece, Color color_of_opposite){
 	if (!is_valid_position(pos) ||
 		_xy_is_color(pos, board, color_of_piece)){
 		return;
 	} else {
-		pns->insert(make_move(from, pos));
+		pns->push_back(make_move(from, pos));
 	}
 }
 
 // This is a specialized function for the pawn's diagonal takes.
 // It will only to pns if there is a piece of opposite color on it.
-void _pawn_diag_add_if_not_blocked(int pos, int from, std::unordered_set<int> *pns, std::array<PieceType, 120> *board, Color color_of_piece, Color color_of_opposite, int en_passant){
+void _pawn_diag_add_if_not_blocked(int pos, int from, std::vector<int> *pns, std::array<PieceType, 120> *board, Color color_of_piece, Color color_of_opposite, int en_passant){
 	if (is_valid_position(pos) && (_xy_is_color(pos, board, color_of_opposite) ||
 			pos == en_passant)){
-		pns->insert(make_move(from, pos));
+		pns->push_back(make_move(from, pos));
 	}
 }
 // This is a specialized functions for the pawn's inability to take going forward.
-// Notice the lack of insertion where there usually is when (x,y) is a different color.
-void _pawn_add_if_not_blocked(int pos, int from, std::unordered_set<int> *pns, std::array<PieceType, 120> *board, Color color_of_piece, Color color_of_opposite, bool *is_not_blocked){
+// Notice the lack of push_backion where there usually is when (x,y) is a different color.
+void _pawn_add_if_not_blocked(int pos, int from, std::vector<int> *pns, std::array<PieceType, 120> *board, Color color_of_piece, Color color_of_opposite, bool *is_not_blocked){
 	if (*is_not_blocked){
 		if ((*board)[pos] != PieceType::NONE ||
 			(*board)[pos] == PieceType::INV){
 			*is_not_blocked = false;
 		} else {
-			pns->insert(make_move(from, pos));
+			pns->push_back(make_move(from, pos));
 		}
 	}
 }
 
 
-void _get_all_moves_rook(int pos, std::unordered_set<int> *pns, std::array<PieceType, 120>* board, Color pc, Color rc){
+void _get_all_moves_rook(int pos, std::vector<int> *pns, std::array<PieceType, 120>* board, Color pc, Color rc){
 	for (int rk_off : ROOK_PIECE_OFFSETS){
 		bool* not_blocked = new bool(true);
 		for (int offset=1; offset<8; offset++){
@@ -93,7 +93,7 @@ void _get_all_moves_rook(int pos, std::unordered_set<int> *pns, std::array<Piece
 	*/
 }
 
-void _get_all_moves_bishop(int pos, std::unordered_set<int> *pns, std::array<PieceType, 120>* board, Color pc, Color rc){
+void _get_all_moves_bishop(int pos, std::vector<int> *pns, std::array<PieceType, 120>* board, Color pc, Color rc){
 	for (int bs_off : BISHOP_PIECE_OFFSETS){
 		bool* not_blocked = new bool(true);
 		for (int offset=1; offset<8; offset++){
@@ -118,7 +118,7 @@ void _get_all_moves_bishop(int pos, std::unordered_set<int> *pns, std::array<Pie
 	}
 	*/
 }
-void _get_all_moves_knight(int pos, std::unordered_set<int> *pns, std::array<PieceType, 120>* board, Color pc, Color rc){
+void _get_all_moves_knight(int pos, std::vector<int> *pns, std::array<PieceType, 120>* board, Color pc, Color rc){
 	for (int kn_off : KNIGHT_PIECE_OFFSETS){
 		bool* not_blocked = new bool(true);
 		_add_if_not_blocked(pos+kn_off, pos, pns, board, pc, rc);
@@ -134,7 +134,7 @@ void _get_all_moves_knight(int pos, std::unordered_set<int> *pns, std::array<Pie
 	*/
 }
 
-void _get_all_moves_king(int pos, std::unordered_set<int> *pns, std::array<PieceType, 120>* board, Color pc, Color rc){
+void _get_all_moves_king(int pos, std::vector<int> *pns, std::array<PieceType, 120>* board, Color pc, Color rc){
 	for (int kn_off : KING_PIECE_OFFSETS){
 		bool* not_blocked = new bool(true);
 		_add_if_not_blocked(pos+kn_off, pos, pns, board, pc, rc);
@@ -153,7 +153,7 @@ void _get_all_moves_king(int pos, std::unordered_set<int> *pns, std::array<Piece
 	*/
 }
 
-void _get_all_moves_pawn(int pos, std::unordered_set<int> *pns, std::array<PieceType, 120>* board, Color pc, Color rc, int en_passant){
+void _get_all_moves_pawn(int pos, std::vector<int> *pns, std::array<PieceType, 120>* board, Color pc, Color rc, int en_passant){
 	
 	// if it's white use different offsets, and pawn starting rank
 	int offset2 = pc==Color::WHITE?-20:20;

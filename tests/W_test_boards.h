@@ -1,4 +1,4 @@
-#include <unordered_set>
+#include <vector>
 #include <constants.h>
 
 const int W_QUEEN_POS = E4;
@@ -32,7 +32,7 @@ const std::array<PieceType, 120> W_QUEEN_BOARD_BLOCKED = {
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV
 };
 
-const std::unordered_set<int> W_QUEEN_ALL_MOVES = {
+const std::vector<int> W_QUEEN_ALL_MOVES = {
 	A8, E8,
 	B7, E7, H7,
 	C6, E6, G6,
@@ -59,7 +59,7 @@ const std::array<PieceType, 120> W_BISHOP_BOARD = {
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV	
 };
 
-const std::unordered_set<int> W_BISHOP_ALL_MOVES = {
+const std::vector<int> W_BISHOP_ALL_MOVES = {
 	H8,
 	A7, G7,
 	B6, F6,
@@ -100,13 +100,13 @@ const std::array<PieceType, 120> W_KNIGHT_SIDE1_BOARD = {
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV,	
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV	
 };
-const std::unordered_set<int> W_KNIGHT_SIDE1_ALL_MOVES = {
+const std::vector<int> W_KNIGHT_SIDE1_ALL_MOVES = {
 	D8,
 	D6,
 	A5, C5
 };
 
-const std::unordered_set<int> W_KNIGHT_ALL_MOVES = {
+const std::vector<int> W_KNIGHT_ALL_MOVES = {
 	C7, E7,
 	B6, F6,
 	B4, F4,
@@ -129,7 +129,7 @@ const std::array<PieceType, 120> W_ROOK_BOARD = {
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV	
 };
 
-const std::unordered_set<int> W_ROOK_ALL_MOVES = {
+const std::vector<int> W_ROOK_ALL_MOVES = {
 	E8, E7, E6,
 	A5, B5, C5, D5, F5, G5, H5,
 	E4, E3, E2, E1
@@ -168,12 +168,12 @@ const std::array<PieceType, 120> W_KING_SIDE1_BOARD = {
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV	
 };
 
-const std::unordered_set<int> W_KING_SIDE1_ALL_MOVES = {
+const std::vector<int> W_KING_SIDE1_ALL_MOVES = {
 	B8,
 	A7,B7
 };
 
-const std::unordered_set<int> W_KING_ALL_MOVES = {
+const std::vector<int> W_KING_ALL_MOVES = {
 	B5, C5, D5,
 	B4, D4,
 	B3, C3, D3
@@ -196,7 +196,7 @@ const std::array<PieceType, 120> W_PAWN_BOARD = {
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV	
 };
 
-const std::unordered_set<int> W_PAWN_ALL_MOVES = {
+const std::vector<int> W_PAWN_ALL_MOVES = {
 	F5
 };
 
@@ -215,4 +215,4 @@ const std::array<PieceType, 120> W_PAWN_SIDE1_BOARD = {
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV	
 };
-const std::unordered_set<int> W_PAWN_SIDE1_ALL_MOVES;
+const std::vector<int> W_PAWN_SIDE1_ALL_MOVES;

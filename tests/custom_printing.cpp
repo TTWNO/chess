@@ -1,7 +1,7 @@
 #include "catch.hpp"
 #include <constants.h>
 #include <sstream>
-#include <unordered_set>
+#include <vector>
 
 // override default printing for Positions so it prints the value (e.g. 32), then, in parenthasies, the location (e.g. A4).
 // Example: A4(32)
@@ -44,8 +44,8 @@ namespace Catch {
 	};
 	// This overrides vectors of positions. I want it to print a board with the positions that are selected so we can see a representation of what positions are selected.
 	template<>
-	struct StringMaker<std::unordered_set<int>> {
-		static std::string convert(std::unordered_set<int> const& uo_poss){
+	struct StringMaker<std::vector<int>> {
+		static std::string convert(std::vector<int> const& uo_poss){
 			std::vector<int> poss(uo_poss.begin(), uo_poss.end());
 			std::stringstream ss;
 			std::string files = "  A B C D E F G H";

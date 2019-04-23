@@ -1,21 +1,21 @@
-#include <unordered_set>
+#include <vector>
 #include <constants.h>
 
 
 /// This is for possible moves on a default board
-const std::unordered_set<int> DEFAULT_B_A_PAWN_POSSIBLE_MOVES = {
+const std::vector<int> DEFAULT_B_A_PAWN_POSSIBLE_MOVES = {
 	A6, A5
 };
-const std::unordered_set<int> DEFAULT_W_A_PAWN_POSSIBLE_MOVES = {
+const std::vector<int> DEFAULT_W_A_PAWN_POSSIBLE_MOVES = {
 	A3, A4
 };
-const std::unordered_set<int> DEFAULT_W_R_KNIGHT_POSSIBLE_MOVES = {
+const std::vector<int> DEFAULT_W_R_KNIGHT_POSSIBLE_MOVES = {
 	H3, F3
 };
 // EMPTY
-const std::unordered_set<int> DEFAULT_W_R_ROOK_POSSIBLE_MOVES = {};
+const std::vector<int> DEFAULT_W_R_ROOK_POSSIBLE_MOVES = {};
 
-const std::unordered_set<int> B_PAWNS_SQUARES = {
+const std::vector<int> B_PAWNS_SQUARES = {
 	A7, B7, C7, D7, E7, F7, G7, H7
 };
 
@@ -37,7 +37,7 @@ const std::array<PieceType, 120> KNIGHT_BLOCKED1_BOARD = {
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV	
 };
 // Should NOT inclde D7
-const std::unordered_set<int> KNIGHT_BLOCKED1_MOVES = {
+const std::vector<int> KNIGHT_BLOCKED1_MOVES = {
 	A6, C6
 };
 
@@ -57,7 +57,7 @@ const std::array<PieceType, 120> BISHOP_BLOCKED1_BOARD = {
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV	
 };
 // Should NOT include A8, H8, G2, or H1
-const std::unordered_set<int> BISHOP_BLOCKED1_MOVES = {
+const std::vector<int> BISHOP_BLOCKED1_MOVES = {
 	B7,
 	C6,E6,
 	C4,E4,
@@ -65,7 +65,7 @@ const std::unordered_set<int> BISHOP_BLOCKED1_MOVES = {
 	A2
 };
 // Should NOT include B2 (black queen) as it is obstructed by the bishop on D5
-const std::unordered_set<int> BISHOP_BLOCKED1_CAN_MOVE_TO_B_KING = {
+const std::vector<int> BISHOP_BLOCKED1_CAN_MOVE_TO_B_KING = {
 	D5
 };
 const int BISHOP_BLOCKED1_KING_POS = F3;
@@ -87,7 +87,7 @@ const std::array<PieceType, 120> ROOK_BLOCKED1_BOARD = {
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV
 };
 // Should NOT include E-H2 or B3-1
-const std::unordered_set<int> ROOK_BLOCKED1_MOVES = {
+const std::vector<int> ROOK_BLOCKED1_MOVES = {
 	B8,
 	A7, C7, D7,
 	B6,B5,B4
@@ -108,7 +108,7 @@ const std::array<PieceType, 120> PAWN_DIAG_TEST1_BOARD = {
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV	
 };
-const std::unordered_set<int> PAWN_DIAG_TEST1_MOVES = {
+const std::vector<int> PAWN_DIAG_TEST1_MOVES = {
 	D6, E6, E5
 };
 
@@ -128,7 +128,7 @@ const std::array<PieceType, 120> ROOK_CHECK_TEST_BOARD = {
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV
 };
-const std::unordered_set<int> ROOK_CHECK_TEST_MOVES = {
+const std::vector<int> ROOK_CHECK_TEST_MOVES = {
 	C5, E5
 };
 
@@ -147,7 +147,7 @@ const std::array<PieceType, 120> PAWN_CHECK_TEST_BOARD = {
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV	
 };
-const std::unordered_set<int> PAWN_CHECK_TEST_MOVES = {E6, E5};
+const std::vector<int> PAWN_CHECK_TEST_MOVES = {E6, E5};
 
 // These boards tests for en pessent squares.
 
@@ -167,7 +167,7 @@ const std::array<PieceType, 120> EN_PASSANT_TEST_BOARD = {
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV	
 };
-const std::unordered_set<int> EN_PASSANT_TEST_MOVES = {
+const std::vector<int> EN_PASSANT_TEST_MOVES = {
 	E6, D6
 };
 
@@ -186,4 +186,4 @@ const std::array<PieceType, 120> NO_EN_PASSANT_TEST_BOARD = {
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV	
 };
-const std::unordered_set<int> NO_EN_PASSANT_TEST_MOVES = {D6};
+const std::vector<int> NO_EN_PASSANT_TEST_MOVES = {D6};

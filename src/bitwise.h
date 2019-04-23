@@ -2,7 +2,7 @@
 #define BITWISE_H
 
 #include "constants.h"
-#include <unordered_set>
+#include <vector>
 
 // Using macros for ease of use, can also use functons, but I don't see the point.
 

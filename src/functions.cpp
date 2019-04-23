@@ -49,13 +49,13 @@ Color rev_color(Color c){
 	return c==Color::WHITE?Color::BLACK:Color::WHITE;
 }
 
-std::unordered_set<int> get_possible_movers(Position pn, std::array<PieceType, 120> board){
-	std::unordered_set<int> pns = {Position::A1};
+std::vector<int> get_possible_movers(Position pn, std::array<PieceType, 120> board){
+	std::vector<int> pns = {Position::A1};
 	return pns;
 }
 
-std::unordered_set<int> get_possible_moves(Position pn, std::array<PieceType, 120> board){
-	std::unordered_set<int> pns = {Position::A1};
+std::vector<int> get_possible_moves(Position pn, std::array<PieceType, 120> board){
+	std::vector<int> pns = {Position::A1};
 	get_all_moves(pn, &board, &pns);
 	return pns;
 }
@@ -69,11 +69,11 @@ int get_pos_of(PieceType pt, std::array<PieceType, 120> const *board){
 	return Position::NA;
 }
 
-std::unordered_set<int> get_poss_of(PieceType pt, std::array<PieceType, 120> const *board){
-	std::unordered_set<int> results;
+std::vector<int> get_poss_of(PieceType pt, std::array<PieceType, 120> const *board){
+	std::vector<int> results;
 	for (int pn = Position::A8; pn!=Position::H1; pn++){
 		if ((*board)[pn] == pt){
-			results.insert(pn);
+			results.push_back(pn);
 		}
 	}
 	return results;
@@ -88,7 +88,7 @@ void get_poss_of(PieceType pt, std::array<PieceType, 120>* board, std::vector<in
 }
 
 //TODO: Make faster by running from king squar eonly, instead of running on every piece of opposite team.
-void filter_checked_moves(PieceType pt, std::array<PieceType, 120> *board, std::unordered_set<int> *pns){
+void filter_checked_moves(PieceType pt, std::array<PieceType, 120> *board, std::vector<int> *pns){
 	PieceType my_king = is_white(pt)?PieceType::W_KING:PieceType::B_KING;
 	int my_king_pos = get_pos_of(my_king, board);
 	int attackers = 0;
@@ -110,7 +110,7 @@ void filter_checked_moves(PieceType pt, std::array<PieceType, 120> *board, std::
 			std::vector<int> psns;
 			get_poss_of(other_p, &moved_board, &psns);
 			for (auto psn : psns){
-				std::unordered_set<int> other_moves;
+				std::vector<int> other_moves;
 				get_all_moves(psn, &moved_board, &other_moves, false);
 				// for every position the piece can mvoe to
 				for (int cp : other_moves){
@@ -136,7 +136,7 @@ void filter_checked_moves(PieceType pt, std::array<PieceType, 120> *board, std::
 	}
 }
 
-void get_all_moves(int pos, std::array<PieceType, 120>* board, std::unordered_set<int>* moves, bool recursive, int en_passant){
+void get_all_moves(int pos, std::array<PieceType, 120>* board, std::vector<int>* moves, bool recursive, int en_passant){
 	PieceType pt = (*board)[pos];
 	Color color_of_piece = get_color(pt);
 	Color color_of_opponent = rev_color(color_of_piece);
@@ -174,8 +174,8 @@ void get_all_moves(int pos, std::array<PieceType, 120>* board, std::unordered_se
 	}
 }
 
-std::unordered_set<int> get_all_moves(int pos, std::array<PieceType, 120> board, bool recursive, int en_passant){
-	std::unordered_set<int> moves;
+std::vector<int> get_all_moves(int pos, std::array<PieceType, 120> board, bool recursive, int en_passant){
+	std::vector<int> moves;
 	get_all_moves(pos, &board, &moves, recursive, en_passant);
 	return moves;
 }
