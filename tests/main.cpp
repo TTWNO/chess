@@ -113,6 +113,18 @@ TEST_CASE("Test that moves that put king in check are not returned", "[get_all_m
 }
 
 TEST_CASE("Tests for en pessant squares.", "[get_all_moves]"){
-	CHECK(get_to_squares(get_all_moves(EN_PASSANT_TEST_POS, EN_PASSANT_TEST_BOARD, false, EN_PASSANT_SQUARE)) == EN_PASSANT_TEST_MOVES);
+	auto en_pass_moves = get_all_moves(EN_PASSANT_TEST_POS, EN_PASSANT_TEST_BOARD, true, EN_PASSANT_SQUARE);
+	std::vector<int> en_passant_flags = {0, 1};
+	CHECK(get_to_squares(en_pass_moves) == EN_PASSANT_TEST_MOVES);
+	CHECK(get_en_passant_flags(en_pass_moves) == en_passant_flags);
 	CHECK(get_to_squares(get_all_moves(NO_EN_PASSANT_TEST_POS, NO_EN_PASSANT_TEST_BOARD)) == NO_EN_PASSANT_TEST_MOVES);
+}
+
+TEST_CASE("Test for pawn promotions.", "[get_all_moves]"){
+	auto prom_moves = get_all_moves(PROM_PAWN_POS, PROM_PAWN_BOARD);
+	CHECK(get_to_squares(prom_moves) == PROM_PAWN_MOVES);
+	CHECK(get_promoted_pieces(prom_moves) == PROM_PAWN_PROMS);
+	auto bprom_moves = get_all_moves(PROM_BPAWN_POS, PROM_BPAWN_BOARD);
+	CHECK(get_to_squares(bprom_moves) == PROM_BPAWN_MOVES);
+	CHECK(get_promoted_pieces(bprom_moves) == PROM_BPAWN_PROMS);
 }

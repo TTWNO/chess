@@ -1,6 +1,12 @@
 defualt: all.out
 bitwise: bitwise.out
 
+clean:
+	rm all.out
+distclean:
+	rm *.o
+	rm *.out
+
 catch_main.o:
 	g++ -w -c -o catch_main.o catch_main.cpp
 

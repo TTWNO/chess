@@ -51,21 +51,39 @@ void _add_if_not_blocked(int pos, int from, std::vector<int> *pns, std::array<Pi
 
 // This is a specialized function for the pawn's diagonal takes.
 // It will only to pns if there is a piece of opposite color on it.
-void _pawn_diag_add_if_not_blocked(int pos, int from, std::vector<int> *pns, std::array<PieceType, 120> *board, Color color_of_piece, Color color_of_opposite, int en_passant){
-	if (is_valid_position(pos) && (_xy_is_color(pos, board, color_of_opposite) ||
-			pos == en_passant)){
-		pns->push_back(make_move(from, pos));
+void _pawn_diag_add_if_not_blocked(int pos, int from, std::vector<int> *pns, std::array<PieceType, 120> *board, Color color_of_piece, Color color_of_opposite, int en_passant, int promoting){
+	if (is_valid_position(pos)){
+		if (_xy_is_color(pos, board, color_of_opposite)){
+			if (promoting){
+				if (color_of_piece == Color::WHITE){
+					pns->push_back(make_move(from, pos, PieceType::NONE, PieceType::W_KNIGHT));
+					pns->push_back(make_move(from, pos, PieceType::NONE, PieceType::W_BISHOP));
+					pns->push_back(make_move(from, pos, PieceType::NONE, PieceType::W_ROOK));
+					pns->push_back(make_move(from, pos, PieceType::NONE, PieceType::W_QUEEN));
+				} else {
+					pns->push_back(make_move(from, pos, PieceType::NONE, PieceType::B_KNIGHT));
+					pns->push_back(make_move(from, pos, PieceType::NONE, PieceType::B_BISHOP));
+					pns->push_back(make_move(from, pos, PieceType::NONE, PieceType::B_ROOK));
+					pns->push_back(make_move(from, pos, PieceType::NONE, PieceType::B_QUEEN));	
+				}
+			} else {
+				pns->push_back(make_move(from, pos));
+			}
+		} else if (pos == en_passant){
+			pns->push_back(make_move(from, pos, PieceType::NONE, PieceType::NONE, 1));	
+		}
 	}
 }
+
 // This is a specialized functions for the pawn's inability to take going forward.
 // Notice the lack of push_backion where there usually is when (x,y) is a different color.
-void _pawn_add_if_not_blocked(int pos, int from, std::vector<int> *pns, std::array<PieceType, 120> *board, Color color_of_piece, Color color_of_opposite, bool *is_not_blocked){
+void _pawn_add_if_not_blocked(int pos, int from, std::vector<int> *pns, std::array<PieceType, 120> *board, Color color_of_piece, Color color_of_opposite, bool *is_not_blocked, bool double_move){
 	if (*is_not_blocked){
 		if ((*board)[pos] != PieceType::NONE ||
 			(*board)[pos] == PieceType::INV){
 			*is_not_blocked = false;
 		} else {
-			pns->push_back(make_move(from, pos));
+			double_move?pns->push_back(make_move(from, pos, PieceType::NONE, PieceType::NONE, PieceType::NONE, 1)):pns->push_back(make_move(from, pos));
 		}
 	}
 }
@@ -159,14 +177,16 @@ void _get_all_moves_pawn(int pos, std::vector<int> *pns, std::array<PieceType, 1
 	int offset2 = pc==Color::WHITE?-20:20;
 	int offset1 = pc==Color::WHITE?-10:10;
 	int default_pawn_rank = pc==Color::WHITE?Rank::RANK2:Rank::RANK7;
+	int promotion_rank = pc==Color::WHITE?Rank::RANK7:Rank::RANK2;
+	int is_promoting_if_forward = get_rank(pos) == promotion_rank?1:0;
 
 	bool *free_to_double_move = new bool(true);
-	_pawn_add_if_not_blocked(pos+offset1, pos, pns, board, pc, rc, free_to_double_move);
+	_pawn_add_if_not_blocked(pos+offset1, pos, pns, board, pc, rc, free_to_double_move, false);
 	if (get_rank(pos) == default_pawn_rank){ // If on second/seventh rank
-		_pawn_add_if_not_blocked(pos+offset2, pos, pns, board, pc, rc, free_to_double_move);
+		_pawn_add_if_not_blocked(pos+offset2, pos, pns, board, pc, rc, free_to_double_move, true);
 	}
 	// pos+offset1 is 1 rank up (or down) depending on color.
 	// Adding, or removing one will shift it over by one square, hence diagnoals.
-	_pawn_diag_add_if_not_blocked(pos+offset1+1, pos, pns, board, pc, rc, en_passant);
-	_pawn_diag_add_if_not_blocked(pos+offset1-1, pos, pns, board, pc, rc, en_passant);
+	_pawn_diag_add_if_not_blocked(pos+offset1+1, pos, pns, board, pc, rc, en_passant, is_promoting_if_forward);
+	_pawn_diag_add_if_not_blocked(pos+offset1-1, pos, pns, board, pc, rc, en_passant, is_promoting_if_forward);
 }

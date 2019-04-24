@@ -72,22 +72,22 @@ inline int make_move(int from){
 	return from;
 }
 inline int make_move(int from, int to){
-	return from + (to << 7);
+	return from | (to << 7);
 }
 inline int make_move(int from, int to, PieceType captured){
-	return from + (to << 7) + ((int) captured << 14);
+	return from | (to << 7) | ((int) captured << 14);
 }
 inline int make_move(int from, int to, PieceType captured, PieceType promotion){
-	return from + (to << 7) + ((int) captured << 14) + ((int) promotion << 18);
+	return from | (to << 7) | ((int) captured << 14) | ((int) promotion << 18);
 }
 inline int make_move(int from, int to, PieceType captured, PieceType promotion, int en_passant){
-	return from + (to << 7) + ((int) captured << 14) + ((int) promotion << 18) + (en_passant << 22);
+	return from | (to << 7) | ((int) captured << 14) | ((int) promotion << 18) | (en_passant << 22);
 }
 inline int make_move(int from, int to, PieceType captured, PieceType promotion, int en_passant, int pawn_start){
-	return from + (to << 7) + ((int) captured << 14) + ((int) promotion << 18) + (en_passant << 22) + (pawn_start << 23);
+	return from | (to << 7) | ((int) captured << 14) | ((int) promotion << 18) | (en_passant << 22) | (pawn_start << 23);
 }
 inline int make_move(int from, int to, PieceType captured, PieceType promotion, int en_passant, int pawn_start, int castle_move){
-	return from + (to << 7) + ((int) captured << 14) + ((int) promotion << 18) + (en_passant << 22) + (pawn_start << 23) + (castle_move << 24);
+	return from | (to << 7) | ((int) captured << 14) | ((int) promotion << 18) | (en_passant << 22) | (pawn_start << 23) | (castle_move << 24);
 }
 
 
