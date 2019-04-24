@@ -52,7 +52,7 @@ namespace Catch {
 			ss << "{ {" << std::endl;
 			ss << files << std::endl;
 			for (int i = 2; i < 10; ++i){
-				ss << 9-(i-2) << "|";
+				ss << 8-(i-2) << "|";
 				for (int j = 1; j < 9; ++j){
 					int index = (i*10)+j;
 					// This part loops through all positions in the list and checks if it contains the current index.
