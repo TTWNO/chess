@@ -41,7 +41,6 @@ std::vector<int> get_en_passant_flags(std::vector<int> moves){
 std::vector<int> get_pawn_start_flags(std::vector<int> moves){
 	std::vector<int> transformed;
 	for (int mv : moves){
-		std::cout << "MOVE: \n"; 
 		transformed.push_back(get_pawn_st_flag(mv));
 	}
 	return transformed;
