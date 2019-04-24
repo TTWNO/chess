@@ -33,14 +33,13 @@ const std::array<PieceType, 120> W_QUEEN_BOARD_BLOCKED = {
 };
 
 const std::vector<int> W_QUEEN_ALL_MOVES = {
-	A8, E8,
-	B7, E7, H7,
-	C6, E6, G6,
-	D5, E5, F5,
-	A4, B4, C4, D4, F4, G4, H4,
-	D3, E3, F3,
-	C2, E2, G2,
-	B1, E1, H1
+	D4, C4, B4, A4,
+	E5, E6, E7, E8,
+	F4, G4, H4,
+	E3, E2, E1,
+	D5, C6, B7, A8,
+	F5,
+	G6, H7, D3, C2, B1, F3, G2, H1
 };
 
 const int W_BISHOP_POS = D4;
@@ -60,13 +59,7 @@ const std::array<PieceType, 120> W_BISHOP_BOARD = {
 };
 
 const std::vector<int> W_BISHOP_ALL_MOVES = {
-	H8,
-	A7, G7,
-	B6, F6,
-	C5, E5,
-	C3, E3,
-	B2, F2,
-	A1, G1
+	C5, B6, A7, E5, F6, G7, H8, C3, B2, A1, E3, F2, G1
 };
 
 const int W_KNIGHT_POS = D5;
@@ -107,10 +100,7 @@ const std::vector<int> W_KNIGHT_SIDE1_ALL_MOVES = {
 };
 
 const std::vector<int> W_KNIGHT_ALL_MOVES = {
-	C7, E7,
-	B6, F6,
-	B4, F4,
-	C3, E3
+	B6, C7, E7, F6, B4, F4, C3, E3
 };
 
 const int W_ROOK_POS = E5;
@@ -130,8 +120,9 @@ const std::array<PieceType, 120> W_ROOK_BOARD = {
 };
 
 const std::vector<int> W_ROOK_ALL_MOVES = {
-	E8, E7, E6,
-	A5, B5, C5, D5, F5, G5, H5,
+	D5, C5, B5, A5,
+	E6, E7, E8,
+	F5, G5, H5,
 	E4, E3, E2, E1
 };
 

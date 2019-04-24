@@ -109,7 +109,7 @@ const std::array<PieceType, 120> PAWN_DIAG_TEST1_BOARD = {
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV	
 };
 const std::vector<int> PAWN_DIAG_TEST1_MOVES = {
-	D6, E6, E5
+	E6, E5, D6
 };
 
 // For testing the invalidating of moves because of putting own king in check
@@ -168,7 +168,7 @@ const std::array<PieceType, 120> EN_PASSANT_TEST_BOARD = {
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV	
 };
 const std::vector<int> EN_PASSANT_TEST_MOVES = {
-	E6, D6
+	D6, E6
 };
 
 const int NO_EN_PASSANT_TEST_POS = D5;
