@@ -1,6 +1,7 @@
 #include "bitwise.h"
 #include "functions.h"
 #include "all_moves_functions.cpp"
+#include <string>
 #include <sstream>
 #include <stdexcept>
 #include <cmath>
@@ -234,4 +235,53 @@ std::array<PieceType, 120> dumb_move(int move, std::array<PieceType, 120> board)
 		new_board[from] = PieceType::NONE;
 	}
 	return new_board;
+}
+
+std::string to_notation(int move, std::array<PieceType, 120> *board){
+	std::stringstream ss;
+	
+	int from = get_from_sq(move);
+	std::string from_string = POSITION_STRING[from];
+	int to = get_to_sq(move);
+	int captured_piece = get_captured_pc(move);
+	std::string piece_character = "";
+	std::string capture_character = "";
+	int piecetype = (*board)[from];
+	switch(piecetype){
+		case PieceType::W_KNIGHT:
+		case PieceType::B_KNIGHT:
+			piece_character = "N";
+			break;
+		case PieceType::W_BISHOP:
+		case PieceType::B_BISHOP:
+			piece_character = "B";
+			break;
+		case PieceType::W_ROOK:
+		case PieceType::B_ROOK:
+			piece_character = "R";
+			break;
+		case PieceType::W_QUEEN:
+		case PieceType::B_QUEEN:
+			piece_character = "Q";
+			break;
+		case PieceType::W_KING:
+		case PieceType::B_KING:
+			piece_character = "K";
+			break;
+	}
+	if (captured_piece > 0){
+		capture_character = "x";
+		// If is a pawn
+	}
+	if (get_en_pass_flag(move) == 1){
+		if (piece_character == ""){
+			ss << from_string[0];
+		}
+	}
+	if (get_castle_flag(move) == 1){
+		return to-from<0 ? "O-O-O" : "O-O";
+	} else {
+		ss << piece_character << capture_character << POSITION_STRING[to];
+	}
+	return ss.str();
 }

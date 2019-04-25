@@ -84,13 +84,16 @@ void _pawn_diag_add_if_not_blocked(int pos, int from, std::vector<int> *pns, std
 					pns->push_back(make_move(from, pos, (*board)[pos], PieceType::B_KNIGHT));
 					pns->push_back(make_move(from, pos, (*board)[pos], PieceType::B_BISHOP));
 					pns->push_back(make_move(from, pos, (*board)[pos], PieceType::B_ROOK));
-					pns->push_back(make_move(from, pos, (*board)[pos], PieceType::B_QUEEN));	
+					pns->push_back(make_move(from, pos, (*board)[pos], PieceType::B_QUEEN));
 				}
 			} else {
 				pns->push_back(make_move(from, pos, (*board)[pos]));
 			}
 		} else if (pos == en_passant){
-			pns->push_back(make_move(from, pos, (*board)[en_passant], PieceType::NONE, 1));	
+			// If capturing from the left to the right, set the captured piece to directly right of current from pos (+1)
+			// ...otherwise get to the right (-1)
+			int captured_pos = from-pos>0?from+1:from-1;
+			pns->push_back(make_move(from, pos, (*board)[captured_pos], PieceType::NONE, 1));
 		}
 	}
 }

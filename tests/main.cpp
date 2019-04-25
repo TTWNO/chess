@@ -195,3 +195,23 @@ TEST_CASE("Test that castle moves are poperly handled by dumb_mobe", "[dumb_move
 	CHECK(dumb_move(make_move(BCASTLE_FROM_POS, BCASTLE_TO_POS, PieceType::NONE, PieceType::NONE, 0, 0, 1), CASTLE_BOARD) == CASTLE_BOARD_BK);
 	CHECK(dumb_move(make_move(BCASTLE_FROM_QPOS, BCASTLE_TO_QPOS, PieceType::NONE, PieceType::NONE, 0, 0, 1), CASTLE_BOARD) == CASTLE_BOARD_BQ);
 }
+
+TEST_CASE("Test that algebraic notation conversion is working.", "[to_notation]"){
+	auto knight_moves = get_all_moves(KNIGHT_BLOCKED1_POS, KNIGHT_BLOCKED1_BOARD);
+	auto bishop_moves = get_all_moves(BISHOP_BLOCKED1_POS, BISHOP_BLOCKED1_BOARD);
+	auto rook_moves = get_all_moves(ROOK_BLOCKED1_POS, ROOK_BLOCKED1_BOARD);
+	auto pawn_moves = get_all_moves(PAWN_DIAG_TEST1_POS, PAWN_DIAG_TEST1_BOARD);
+	auto king_moves = get_all_moves(KING_CHECK_TEST_POS, KING_CHECK_TEST_BOARD);
+	auto king_castle_moves = get_all_moves(CASTLING_POS, CASTLE_BOARD, true, 0, 0xF);
+	auto king_bcastle_moves = get_all_moves(BCASTLING_POS, CASTLE_BOARD, true, 0, 0xF);
+	auto en_passant_moves = get_all_moves(EN_PASSANT_TEST_POS, EN_PASSANT_TEST_BOARD, true, EN_PASSANT_SQUARE, 0);
+
+	CHECK(get_notations(knight_moves, KNIGHT_BLOCKED1_BOARD) == KNIGHT_BLOCKED1_NOTATION);
+	CHECK(get_notations(bishop_moves, BISHOP_BLOCKED1_BOARD) == BISHOP_BLOCKED1_NOTATION);
+	CHECK(get_notations(rook_moves, ROOK_BLOCKED1_BOARD) == ROOK_BLOCKED1_NOTATION);
+	CHECK(get_notations(pawn_moves, PAWN_DIAG_TEST1_BOARD) == PAWN_DIAG_TEST1_NOTATION);
+	CHECK(get_notations(king_moves, KING_CHECK_TEST_BOARD) == KING_CHECK_TEST_NOTATION);
+	CHECK(get_notations(king_castle_moves, CASTLE_BOARD) == CASTLING_MOVES_NOTATION);
+	CHECK(get_notations(king_bcastle_moves, CASTLE_BOARD) == BCASTLING_MOVES_NOTATION);
+	CHECK(get_notations(en_passant_moves, EN_PASSANT_TEST_BOARD) == EN_PASSANT_TEST_NOTATION);
+}

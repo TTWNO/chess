@@ -1,4 +1,5 @@
 #include <vector>
+#include <string>
 #include <constants.h>
 
 
@@ -43,6 +44,9 @@ const std::vector<int> KNIGHT_BLOCKED1_MOVES = {
 const std::vector<int> KNIGHT_BLOCKED1_CAPTS = {
 	NONE, W_PAWN
 };
+const std::vector<std::string> KNIGHT_BLOCKED1_NOTATION = {
+	"Na6", "Nxc6"
+};
 
 const int BISHOP_BLOCKED1_POS = D5;
 const std::array<PieceType, 120> BISHOP_BLOCKED1_BOARD = {
@@ -72,6 +76,13 @@ const std::vector<int> BISHOP_BLOCKED1_CAPTS = {
 	NONE, NONE, NONE,
 	NONE, B_KING,
 };
+const std::vector<std::string> BISHOP_BLOCKED1_NOTATION = {
+	"Bc6", "Bxb7",
+	"Be6",
+	"Bc4", "Bb3", "Ba2",
+	"Be4", "Bxf3"
+};
+
 // Should NOT include B2 (black queen) as it is obstructed by the bishop on D5
 const std::vector<int> BISHOP_BLOCKED1_CAN_MOVE_TO_B_KING = {
 	D5
@@ -106,6 +117,12 @@ const std::vector<int> ROOK_BLOCKED1_CAPTS = {
 	NONE, B_PAWN,
 	NONE, NONE, NONE
 };
+const std::vector<std::string> ROOK_BLOCKED1_NOTATION = {
+	"Ra7",
+	"Rb8",
+	"Rc7", "Rxd7",
+	"Rb6", "Rb5", "Rb4"
+};
 
 const int PAWN_DIAG_TEST1_POS = E7;
 const std::array<PieceType, 120> PAWN_DIAG_TEST1_BOARD = {
@@ -127,6 +144,9 @@ const std::vector<int> PAWN_DIAG_TEST1_MOVES = {
 };
 const std::vector<int> PAWN_DIAG_TEST1_CAPTS = {
 	NONE, NONE, W_QUEEN
+};
+const std::vector<std::string> PAWN_DIAG_TEST1_NOTATION = {
+	"e6", "e5", "xd6"
 };
 
 // For testing the invalidating of moves because of putting own king in check
@@ -186,6 +206,9 @@ const std::array<PieceType, 120> EN_PASSANT_TEST_BOARD = {
 };
 const std::vector<int> EN_PASSANT_TEST_MOVES = {
 	D6, E6
+};
+const std::vector<std::string> EN_PASSANT_TEST_NOTATION = {
+	"d6", "dxe6"
 };
 // Test pawn promotion
 const int PROM_PAWN_POS = G7;
@@ -279,6 +302,14 @@ const std::vector<int> CASTLING_MOVES = {
 };
 const std::vector<int> BCASTLING_MOVES = {
 	D7, E7, F7, F8, D8, G8, C8
+};
+const std::vector<std::string> CASTLING_MOVES_NOTATION = {
+	"Kd2", "Ke2", "Kf2", "Kf1",
+	"Kd1", "O-O", "O-O-O"
+};
+const std::vector<std::string> BCASTLING_MOVES_NOTATION = {
+	"Kd7", "Ke7", "Kf7",
+	"Kf8", "Kd8", "O-O", "O-O-O"
 };
 
 const std::array<PieceType, 120> CASTLING_CHECK_BOARD = {
@@ -479,6 +510,11 @@ const std::vector<int> KING_CHECK_TEST_CAPTS = {
 	B_ROOK,
 	NONE, NONE
 };
+const std::vector<std::string> KING_CHECK_TEST_NOTATION = {
+	"Kc7", "Ke7",
+	"Kxd5",
+	"Ke6", "Kc6"
+};
 const std::vector<int> KING_CHECK_ROOK_MOVES = {
 	C5, B5, A5,
 	D6, E5, F5,
@@ -613,6 +649,3 @@ const std::array<PieceType, 120> EN_PASSANT_CHECK_MOVED_BOARD3 = {
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV	
 };
-
-
-
