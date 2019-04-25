@@ -22,7 +22,7 @@ Rank get_rank(int pos);
 bool is_white(PieceType pt);
 bool is_black(PieceType pt);
 
-Color get_color(Position pn, std::array<PieceType, 120> const *board);
+Color get_color(int pn, std::array<PieceType, 120> const *board);
 Color get_color(PieceType pt);
 // NO_COLOR returns NO_COLOR
 // WHITE returns BLACK
@@ -42,10 +42,12 @@ void get_possible_moves(Position pn, std::array<PieceType, 120> *pt,std::vector<
 void filter_checked_moves(int pos, std::array<PieceType, 120> *board, std::vector<int> *moves);
 
 // Get all moves for piece in Position pn.
-void get_all_moves(int pos, std::array<PieceType, 120> *pt,std::vector<int> *moves, bool recursive=true, int en_passant=Position::NA);
-std::vector<int> get_all_moves(int pos, std::array<PieceType, 120> board, bool recursive=true, int en_passant=Position::NA);
+void get_all_moves(int pos, std::array<PieceType, 120> *pt, std::vector<int> *moves, bool recursive=true, int en_passant=Position::NA, int castle_perms=0);
+std::vector<int> get_all_moves(int pos, std::array<PieceType, 120> board, bool recursive=true, int en_passant=Position::NA, int castle_perms=0);
 
 // Dumb function to do board moves.
 // Does not check if move is valid, just does it.
 std::array<PieceType, 120> dumb_move(int move, std::array<PieceType, 120> board);
 
+// Decides if there this piece in position is in check
+bool is_checked(int pos, std::array<PieceType, 120> board);

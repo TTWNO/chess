@@ -11,6 +11,13 @@ enum Color {
 	BLACK
 };
 
+enum CastlePerms {
+	BQS=0b1,
+	BKS=0b10,
+	WQS=0b100,
+	WKS=0b1000
+};
+
 enum PieceType {
 	INV=-1,
 	NONE,

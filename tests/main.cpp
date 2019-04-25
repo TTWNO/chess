@@ -103,6 +103,16 @@ TEST_CASE("Test all moves for black in edge cases.", "[get_all_moves][black]"){
 	CHECK(get_to_squares(get_all_moves(B_PAWN_SIDE1_POS, B_PAWN_SIDE1_BOARD)) == B_PAWN_SIDE1_ALL_MOVES);
 }
 
+TEST_CASE("Tests is_king_checked works", "[is_checked]"){
+	auto king_checked_moves = get_all_moves(KING_CHECK_TEST_POS, KING_CHECK_TEST_BOARD); 
+	auto rook_checked_moves = get_all_moves(ROOK_CHECK_TEST_POS, KING_CHECK_TEST_BOARD);
+	CHECK(get_to_squares(king_checked_moves) == KING_CHECK_TEST_MOVES);
+	CHECK(get_to_squares(rook_checked_moves) == KING_CHECK_ROOK_MOVES);
+	CHECK(is_checked(KING_CHECK_TEST_POS, KING_CHECK_TEST_BOARD));
+	CHECK(is_checked(BLACK_CHECK_POS1, BLACK_CHECK_BOARD1));
+	CHECK(is_checked(BLACK_CHECK_POS2, BLACK_CHECK_BOARD2));
+}
+
 TEST_CASE("Test that moves that put king in check are not returned", "[get_all_moves]"){
 	CHECK(get_to_squares(get_all_moves(ROOK_CHECK_TEST_POS, ROOK_CHECK_TEST_BOARD)) == ROOK_CHECK_TEST_MOVES);
 	CHECK(get_to_squares(get_all_moves(PAWN_CHECK_TEST_POS, PAWN_CHECK_TEST_BOARD)) == PAWN_CHECK_TEST_MOVES);
@@ -127,4 +137,19 @@ TEST_CASE("Test for pawn promotions.", "[get_all_moves]"){
 	auto bprom_moves = get_all_moves(PROM_BPAWN_POS, PROM_BPAWN_BOARD);
 	CHECK(get_to_squares(bprom_moves) == PROM_BPAWN_MOVES);
 	CHECK(get_promoted_pieces(bprom_moves) == PROM_BPAWN_PROMS);
+}
+
+TEST_CASE("Test for castling moves.", "[get_all_moves]"){
+	std::vector<int> cast_flags = {0, 0, 0, 0, 0, 1, 1};
+	auto cast_moves = get_all_moves(CASTLING_POS, CASTLING_BOARD, true, 0, 0xF);
+	CHECK(get_to_squares(cast_moves) == CASTLING_MOVES);
+	CHECK(get_castle_flags(cast_moves) == cast_flags);
+	auto bcast_moves = get_all_moves(BCASTLING_POS, CASTLING_BOARD, true, 0, 0xF);
+	CHECK(get_to_squares(bcast_moves) == BCASTLING_MOVES);
+	CHECK(get_castle_flags(bcast_moves) == cast_flags);
+	// Check refuses castle
+	std::vector<int> checked_cast_flags = {0, 0, 0};
+	auto bcast_checked_moves = get_all_moves(BCASTLING_POS, CASTLING_CHECK_BOARD, true, 0, 0xF);
+	CHECK(get_to_squares(bcast_checked_moves) == BCASTLING_CHECK_MOVES);
+	CHECK(get_castle_flags(bcast_checked_moves) == checked_cast_flags);
 }

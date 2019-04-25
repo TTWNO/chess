@@ -61,11 +61,27 @@ inline bool is_valid_position(int position){
 	return DEFAULT_BOARD[position] != PieceType::INV;
 }
 
-inline int set_to_sq(int sq, int base){
-	return base + (sq << 7);
+// bitwise OR (|) with any int to "add" them together
+inline int set_from_sq(int sq){
+	return sq;
 }
 inline int set_to_sq(int sq){
 	return (sq << 7);
+}
+inline int set_captured_pc(int pc){
+	return (pc << 14);
+}
+inline int set_promoted_pc(int pc){
+	return (pc << 16);
+}
+inline int set_en_passant_flag(){
+	return (1 << 20);
+}
+inline int set_pawn_start_flag(){
+	return (1 << 21);
+}
+inline int set_castle_flag(){
+	return (1 << 22);
 }
 
 inline int make_move(int from){

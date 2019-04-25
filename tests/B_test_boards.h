@@ -110,8 +110,8 @@ const std::array<PieceType, 120> B_KING_BOARD = {
 
 const std::vector<int> B_KING_ALL_MOVES = {
 	B5, C5, D5,
-	B4, D4,
-	B3, C3, D3
+	B3, C3, D3,
+	D4, B4
 };
 
 
@@ -170,8 +170,7 @@ const std::array<PieceType, 120> B_KING_SIDE1_BOARD = {
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV	
 };
 const std::vector<int> B_KING_SIDE1_ALL_MOVES = {
-	B8,
-	A7,B7
+	A7,B7,B8
 };
 
 const int B_PAWN_SIDE1_POS = A7;
