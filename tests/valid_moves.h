@@ -40,6 +40,9 @@ const std::array<PieceType, 120> KNIGHT_BLOCKED1_BOARD = {
 const std::vector<int> KNIGHT_BLOCKED1_MOVES = {
 	A6, C6
 };
+const std::vector<int> KNIGHT_BLOCKED1_CAPTS = {
+	NONE, W_PAWN
+};
 
 const int BISHOP_BLOCKED1_POS = D5;
 const std::array<PieceType, 120> BISHOP_BLOCKED1_BOARD = {
@@ -58,18 +61,22 @@ const std::array<PieceType, 120> BISHOP_BLOCKED1_BOARD = {
 };
 // Should NOT include A8, H8, G2, or H1
 const std::vector<int> BISHOP_BLOCKED1_MOVES = {
-	B7,
-	C6,E6,
-	C4,E4,
-	B3,F3,
-	A2
+	C6, B7,
+	E6,
+	C4, B3, A2,
+	E4, F3
+};
+const std::vector<int> BISHOP_BLOCKED1_CAPTS = {
+	NONE, B_QUEEN,
+	NONE,
+	NONE, NONE, NONE,
+	NONE, B_KING,
 };
 // Should NOT include B2 (black queen) as it is obstructed by the bishop on D5
 const std::vector<int> BISHOP_BLOCKED1_CAN_MOVE_TO_B_KING = {
 	D5
 };
 const int BISHOP_BLOCKED1_KING_POS = F3;
-
 
 const int ROOK_BLOCKED1_POS = B7;
 const std::array<PieceType, 120> ROOK_BLOCKED1_BOARD = {
@@ -88,9 +95,16 @@ const std::array<PieceType, 120> ROOK_BLOCKED1_BOARD = {
 };
 // Should NOT include E-H2 or B3-1
 const std::vector<int> ROOK_BLOCKED1_MOVES = {
+	A7,
 	B8,
-	A7, C7, D7,
-	B6,B5,B4
+	C7, D7,
+	B6, B5, B4
+};
+const std::vector<int> ROOK_BLOCKED1_CAPTS = {
+	NONE,
+	NONE,
+	NONE, B_PAWN,
+	NONE, NONE, NONE
 };
 
 const int PAWN_DIAG_TEST1_POS = E7;
@@ -110,6 +124,9 @@ const std::array<PieceType, 120> PAWN_DIAG_TEST1_BOARD = {
 };
 const std::vector<int> PAWN_DIAG_TEST1_MOVES = {
 	E6, E5, D6
+};
+const std::vector<int> PAWN_DIAG_TEST1_CAPTS = {
+	NONE, NONE, W_QUEEN
 };
 
 // For testing the invalidating of moves because of putting own king in check
@@ -456,6 +473,11 @@ const std::vector<int> KING_CHECK_TEST_MOVES = {
 	C7, E7,
 	D5,
 	E6, C6
+};
+const std::vector<int> KING_CHECK_TEST_CAPTS = {
+	NONE, NONE,
+	B_ROOK,
+	NONE, NONE
 };
 const std::vector<int> KING_CHECK_ROOK_MOVES = {
 	C5, B5, A5,

@@ -31,10 +31,10 @@ void _add_if_not_blocked(int pos, int from, std::vector<int> *pns, std::array<Pi
 			if (_xy_is_color(pos, board, color_of_piece)){
 				*is_not_blocked = false;
 			} else if (_xy_is_color(pos, board, color_of_opposite)){
-				pns->push_back(make_move(from, pos));
+				pns->push_back(make_move(from, pos, (*board)[pos]));
 				*is_not_blocked = false;
 			} else {
-				pns->push_back(make_move(from, pos));
+				pns->push_back(make_move(from, pos, (*board)[pos]));
 			}
 		}
 	}
@@ -49,10 +49,10 @@ void _king_add_if_not_blocked(int pos, int from, std::vector<int> *pns, std::arr
 			if (_xy_is_color(pos, board, color_of_piece)){
 				*is_not_blocked = false;
 			} else if (_xy_is_color(pos, board, color_of_opposite)){
-				pns->push_back(make_move(from, pos, PieceType::NONE, PieceType::NONE, 0, 0, castle_flag));
+				pns->push_back(make_move(from, pos, (*board)[pos], PieceType::NONE, 0, 0, castle_flag));
 				*is_not_blocked = false;
 			} else {
-				pns->push_back(make_move(from, pos, PieceType::NONE, PieceType::NONE, 0, 0, castle_flag));
+				pns->push_back(make_move(from, pos, (*board)[pos], PieceType::NONE, 0, 0, castle_flag));
 			}
 		}
 	}
@@ -65,7 +65,7 @@ void _add_if_not_blocked(int pos, int from, std::vector<int> *pns, std::array<Pi
 		_xy_is_color(pos, board, color_of_piece)){
 		return;
 	} else {
-		pns->push_back(make_move(from, pos));
+		pns->push_back(make_move(from, pos, (*board)[pos]));
 	}
 }
 
@@ -76,21 +76,21 @@ void _pawn_diag_add_if_not_blocked(int pos, int from, std::vector<int> *pns, std
 		if (_xy_is_color(pos, board, color_of_opposite)){
 			if (promoting){
 				if (color_of_piece == Color::WHITE){
-					pns->push_back(make_move(from, pos, PieceType::NONE, PieceType::W_KNIGHT));
-					pns->push_back(make_move(from, pos, PieceType::NONE, PieceType::W_BISHOP));
-					pns->push_back(make_move(from, pos, PieceType::NONE, PieceType::W_ROOK));
-					pns->push_back(make_move(from, pos, PieceType::NONE, PieceType::W_QUEEN));
+					pns->push_back(make_move(from, pos, (*board)[pos], PieceType::W_KNIGHT));
+					pns->push_back(make_move(from, pos, (*board)[pos], PieceType::W_BISHOP));
+					pns->push_back(make_move(from, pos, (*board)[pos], PieceType::W_ROOK));
+					pns->push_back(make_move(from, pos, (*board)[pos], PieceType::W_QUEEN));
 				} else {
-					pns->push_back(make_move(from, pos, PieceType::NONE, PieceType::B_KNIGHT));
-					pns->push_back(make_move(from, pos, PieceType::NONE, PieceType::B_BISHOP));
-					pns->push_back(make_move(from, pos, PieceType::NONE, PieceType::B_ROOK));
-					pns->push_back(make_move(from, pos, PieceType::NONE, PieceType::B_QUEEN));	
+					pns->push_back(make_move(from, pos, (*board)[pos], PieceType::B_KNIGHT));
+					pns->push_back(make_move(from, pos, (*board)[pos], PieceType::B_BISHOP));
+					pns->push_back(make_move(from, pos, (*board)[pos], PieceType::B_ROOK));
+					pns->push_back(make_move(from, pos, (*board)[pos], PieceType::B_QUEEN));	
 				}
 			} else {
-				pns->push_back(make_move(from, pos));
+				pns->push_back(make_move(from, pos, (*board)[pos]));
 			}
 		} else if (pos == en_passant){
-			pns->push_back(make_move(from, pos, PieceType::NONE, PieceType::NONE, 1));	
+			pns->push_back(make_move(from, pos, (*board)[en_passant], PieceType::NONE, 1));	
 		}
 	}
 }
@@ -103,7 +103,7 @@ void _pawn_add_if_not_blocked(int pos, int from, std::vector<int> *pns, std::arr
 			(*board)[pos] == PieceType::INV){
 			*is_not_blocked = false;
 		} else {
-			double_move?pns->push_back(make_move(from, pos, PieceType::NONE, PieceType::NONE, PieceType::NONE, 1)):pns->push_back(make_move(from, pos));
+			double_move?pns->push_back(make_move(from, pos, (*board)[pos], PieceType::NONE, 0, 1)):pns->push_back(make_move(from, pos, (*board)[pos]));
 		}
 	}
 }

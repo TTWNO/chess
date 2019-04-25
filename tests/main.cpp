@@ -140,6 +140,28 @@ TEST_CASE("Test for pawn promotions.", "[get_all_moves]"){
 	CHECK(get_promoted_pieces(bprom_moves) == PROM_BPAWN_PROMS);
 }
 
+TEST_CASE("Test that the captures moves are returned", "[get_all_moves]"){
+	auto knight_moves = get_all_moves(KNIGHT_BLOCKED1_POS, KNIGHT_BLOCKED1_BOARD);
+	auto bishop_moves = get_all_moves(BISHOP_BLOCKED1_POS, BISHOP_BLOCKED1_BOARD);
+	auto rook_moves = get_all_moves(ROOK_BLOCKED1_POS, ROOK_BLOCKED1_BOARD);
+	auto pawn_moves = get_all_moves(PAWN_DIAG_TEST1_POS, PAWN_DIAG_TEST1_BOARD);
+	auto king_moves = get_all_moves(KING_CHECK_TEST_POS, KING_CHECK_TEST_BOARD);
+	CHECK(get_captured_pieces(knight_moves) == KNIGHT_BLOCKED1_CAPTS);
+	CHECK(get_captured_pieces(bishop_moves) == BISHOP_BLOCKED1_CAPTS);
+	CHECK(get_captured_pieces(rook_moves) == ROOK_BLOCKED1_CAPTS);
+	CHECK(get_captured_pieces(pawn_moves) == PAWN_DIAG_TEST1_CAPTS);
+	CHECK(get_captured_pieces(king_moves) == KING_CHECK_TEST_CAPTS);
+}
+
+TEST_CASE("Test that being blocked, stops moves from generating", "[get_all_moves]"){
+	auto knight_moves = get_all_moves(KNIGHT_BLOCKED1_POS, KNIGHT_BLOCKED1_BOARD);
+	auto bishop_moves = get_all_moves(BISHOP_BLOCKED1_POS, BISHOP_BLOCKED1_BOARD);
+	auto rook_moves = get_all_moves(ROOK_BLOCKED1_POS, ROOK_BLOCKED1_BOARD);
+	CHECK(get_to_squares(knight_moves) == KNIGHT_BLOCKED1_MOVES);
+	CHECK(get_to_squares(bishop_moves) == BISHOP_BLOCKED1_MOVES);
+	CHECK(get_to_squares(rook_moves) == ROOK_BLOCKED1_MOVES);
+}
+
 TEST_CASE("Test for castling moves.", "[get_all_moves]"){
 	std::vector<int> cast_flags = {0, 0, 0, 0, 0, 1, 1};
 	auto cast_moves = get_all_moves(CASTLING_POS, CASTLING_BOARD, true, 0, 0xF);
