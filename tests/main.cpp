@@ -3,6 +3,7 @@
 #include "valid_moves.h"
 #include "custom_printing.cpp"
 #include "test_functions.h"
+#include <bitwise.h>
 #include <sstream>
 #include <functions.h>
 
@@ -152,4 +153,11 @@ TEST_CASE("Test for castling moves.", "[get_all_moves]"){
 	auto bcast_checked_moves = get_all_moves(BCASTLING_POS, CASTLING_CHECK_BOARD, true, 0, 0xF);
 	CHECK(get_to_squares(bcast_checked_moves) == BCASTLING_CHECK_MOVES);
 	CHECK(get_castle_flags(bcast_checked_moves) == checked_cast_flags);
+}
+
+TEST_CASE("Test that en passant moves are properly handled by dumb_move", "dumb_move"){
+	CHECK(dumb_move(make_move(EN_PASSANT_CHECK_POS, EN_PASSANT_EN_PASSANT_SQUARE, PieceType::B_PAWN, PieceType::NONE, 1), EN_PASSANT_CHECK_BOARD) == EN_PASSANT_CHECK_MOVED_BOARD);
+	CHECK(dumb_move(make_move(EN_PASSANT_CHECK_POS1, EN_PASSANT_EN_PASSANT_SQUARE1, PieceType::B_PAWN, PieceType::NONE, 1), EN_PASSANT_CHECK_BOARD1) == EN_PASSANT_CHECK_MOVED_BOARD1);
+	CHECK(dumb_move(make_move(EN_PASSANT_CHECK_POS2, EN_PASSANT_EN_PASSANT_SQUARE2, PieceType::B_PAWN, PieceType::NONE, 1), EN_PASSANT_CHECK_BOARD2) == EN_PASSANT_CHECK_MOVED_BOARD2);
+	CHECK(dumb_move(make_move(EN_PASSANT_CHECK_POS3, EN_PASSANT_EN_PASSANT_SQUARE3, PieceType::B_PAWN, PieceType::NONE, 1), EN_PASSANT_CHECK_BOARD3) == EN_PASSANT_CHECK_MOVED_BOARD3);
 }

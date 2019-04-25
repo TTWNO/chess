@@ -191,10 +191,28 @@ std::vector<int> get_all_moves(int pos, std::array<PieceType, 120> board, bool r
 std::array<PieceType, 120> dumb_move(int move, std::array<PieceType, 120> board){
 	std::array<PieceType, 120> new_board;
 	std::copy(std::begin(board), std::end(board), std::begin(new_board));
+	int en_passant_flag = get_en_pass_flag(move);
 	int from = get_from_sq(move);
 	int to = get_to_sq(move);
 	PieceType piece = new_board[from];
-	new_board[to] = piece;
-	new_board[from] = PieceType::NONE;
+	if (en_passant_flag == 1) {
+		int diff = to-from;
+		int other_pawn_pos = 0;
+		if (diff == -11){
+			other_pawn_pos = from-1;
+		} else if (diff == -9){
+			other_pawn_pos = from+1;
+		} else if (diff == 11){
+			other_pawn_pos = from+1;
+		} else if (diff == 9){
+			other_pawn_pos = from-1;
+		}
+		new_board[other_pawn_pos] = PieceType::NONE;
+		new_board[to] = piece;
+		new_board[from] = PieceType::NONE;
+	} else {
+		new_board[to] = piece;
+		new_board[from] = PieceType::NONE;
+	}
 	return new_board;
 }
