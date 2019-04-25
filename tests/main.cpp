@@ -153,6 +153,11 @@ TEST_CASE("Test for castling moves.", "[get_all_moves]"){
 	auto bcast_checked_moves = get_all_moves(BCASTLING_POS, CASTLING_CHECK_BOARD, true, 0, 0xF);
 	CHECK(get_to_squares(bcast_checked_moves) == BCASTLING_CHECK_MOVES);
 	CHECK(get_castle_flags(bcast_checked_moves) == checked_cast_flags);
+	// Check that castling moves are not allowed when the rook is blocked.
+	auto blocked_castling_moves = get_all_moves(CASTLE_BLOCKED_POS, CASTLE_BLOCKED_BOARD, true, 0, 0xF);
+	CHECK(get_to_squares(blocked_castling_moves) == CASTLE_BLOCKED_MOVES);
+	auto blocked_castling_qmoves = get_all_moves(CASTLE_BLOCKED_QPOS, CASTLE_BLOCKED_QBOARD, true, 0, 0xF);
+	CHECK(get_to_squares(blocked_castling_qmoves) == CASTLE_BLOCKED_QMOVES);
 }
 
 TEST_CASE("Test that en passant moves are properly handled by dumb_move", "dumb_move"){
@@ -160,4 +165,11 @@ TEST_CASE("Test that en passant moves are properly handled by dumb_move", "dumb_
 	CHECK(dumb_move(make_move(EN_PASSANT_CHECK_POS1, EN_PASSANT_EN_PASSANT_SQUARE1, PieceType::B_PAWN, PieceType::NONE, 1), EN_PASSANT_CHECK_BOARD1) == EN_PASSANT_CHECK_MOVED_BOARD1);
 	CHECK(dumb_move(make_move(EN_PASSANT_CHECK_POS2, EN_PASSANT_EN_PASSANT_SQUARE2, PieceType::B_PAWN, PieceType::NONE, 1), EN_PASSANT_CHECK_BOARD2) == EN_PASSANT_CHECK_MOVED_BOARD2);
 	CHECK(dumb_move(make_move(EN_PASSANT_CHECK_POS3, EN_PASSANT_EN_PASSANT_SQUARE3, PieceType::B_PAWN, PieceType::NONE, 1), EN_PASSANT_CHECK_BOARD3) == EN_PASSANT_CHECK_MOVED_BOARD3);
+}
+
+TEST_CASE("Test that castle moves are poperly handled by dumb_mobe", "[dumb_move]"){
+	CHECK(dumb_move(make_move(CASTLE_FROM_POS, CASTLE_TO_POS, PieceType::NONE, PieceType::NONE, 0, 0, 1), CASTLE_BOARD) == CASTLE_BOARD_WK);
+	CHECK(dumb_move(make_move(CASTLE_FROM_QPOS, CASTLE_TO_QPOS, PieceType::NONE, PieceType::NONE, 0, 0, 1), CASTLE_BOARD) == CASTLE_BOARD_WQ);
+	CHECK(dumb_move(make_move(BCASTLE_FROM_POS, BCASTLE_TO_POS, PieceType::NONE, PieceType::NONE, 0, 0, 1), CASTLE_BOARD) == CASTLE_BOARD_BK);
+	CHECK(dumb_move(make_move(BCASTLE_FROM_QPOS, BCASTLE_TO_QPOS, PieceType::NONE, PieceType::NONE, 0, 0, 1), CASTLE_BOARD) == CASTLE_BOARD_BQ);
 }

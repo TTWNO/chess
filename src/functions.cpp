@@ -192,6 +192,7 @@ std::array<PieceType, 120> dumb_move(int move, std::array<PieceType, 120> board)
 	std::array<PieceType, 120> new_board;
 	std::copy(std::begin(board), std::end(board), std::begin(new_board));
 	int en_passant_flag = get_en_pass_flag(move);
+	int castle_flag = get_castle_flag(move);
 	int from = get_from_sq(move);
 	int to = get_to_sq(move);
 	PieceType piece = new_board[from];
@@ -210,7 +211,25 @@ std::array<PieceType, 120> dumb_move(int move, std::array<PieceType, 120> board)
 		new_board[other_pawn_pos] = PieceType::NONE;
 		new_board[to] = piece;
 		new_board[from] = PieceType::NONE;
-	} else {
+	} else if(castle_flag == 1){
+		int diff = to-from;
+		int rook_from_pos = 0;
+		int rook_to_pos = 0;
+		// If castling queenside
+		if (diff == -2){
+			rook_from_pos = to-2;
+			rook_to_pos = from-1;
+		// If caslting kingside
+		} else if (diff == 2){
+			rook_from_pos = to+1;
+			rook_to_pos = from+1;
+		}
+		PieceType rook_pt = new_board[rook_from_pos];
+		new_board[rook_from_pos] = PieceType::NONE;
+		new_board[rook_to_pos] = rook_pt;
+		new_board[from] = PieceType::NONE;
+		new_board[to] = piece;
+       	} else {
 		new_board[to] = piece;
 		new_board[from] = PieceType::NONE;
 	}

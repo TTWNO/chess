@@ -184,7 +184,7 @@ void _get_all_moves_king(int pos, std::vector<int> *pns, std::array<PieceType, 1
 		if (castle_perms & CastlePerms::WKS){
 			_king_add_if_not_blocked(pos+2, pos, pns, board, pc, rc, right_castle, 1);
 		}
-		if (castle_perms & CastlePerms::WQS){
+		if (castle_perms & CastlePerms::WQS && (*board)[pos-3] == PieceType::NONE){
 			_king_add_if_not_blocked(pos-2, pos, pns, board, pc, rc, left_castle, 1);
 		}
 	} else {
@@ -193,7 +193,7 @@ void _get_all_moves_king(int pos, std::vector<int> *pns, std::array<PieceType, 1
 		if (castle_perms & CastlePerms::BKS){
 			_king_add_if_not_blocked(pos+2, pos, pns, board, pc, rc, right_castle, 1);
 		}
-		if (castle_perms & CastlePerms::BQS){
+		if (castle_perms & CastlePerms::BQS && (*board)[pos-3] == PieceType::NONE){
 			_king_add_if_not_blocked(pos-2, pos, pns, board, pc, rc, left_castle, 1);
 		}
 	}
