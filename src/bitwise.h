@@ -22,6 +22,7 @@
  *	0000 0100 0000 0000 0000 0000 0000 -> en passant (& 0x400000)
  *	0000 1000 0000 0000 0000 0000 0000 -> pawn starting move (& 0x800000)
  *	0001 0000 0000 0000 0000 0000 0000 -> castle move (& 0x1000000)
+ * 	0010 0000 0000 0000 0000 0000 0000 -> check flag (& 0x2000000) 
  * */
 
 /* OLD, DO NOT USE
@@ -55,6 +56,9 @@ inline int get_pawn_st_flag(int mv){
 }
 inline int get_castle_flag(int mv){
 	return ((mv >> 24) & 0x1);
+}
+inline int get_check_flag(int mv){
+	return ((mv >> 25) & 0x1);
 }
 
 inline bool is_valid_position(int position){
@@ -104,6 +108,9 @@ inline int make_move(int from, int to, PieceType captured, PieceType promotion, 
 }
 inline int make_move(int from, int to, PieceType captured, PieceType promotion, int en_passant, int pawn_start, int castle_move){
 	return from | (to << 7) | ((int) captured << 14) | ((int) promotion << 18) | (en_passant << 22) | (pawn_start << 23) | (castle_move << 24);
+}
+inline int make_move(int from, int to, PieceType captured, PieceType promotion, int en_passant, int pawn_start, int castle_move, int check_flag){
+	return from | (to << 7) | ((int) captured << 14) | ((int) promotion << 18) | (en_passant << 22) | (pawn_start << 23) | (castle_move << 24) | (check_flag << 25);
 }
 
 

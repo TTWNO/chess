@@ -20,8 +20,8 @@ bool is_valid_position(int pos);
 Rank get_rank(int pos);
 
 // Checks if given piece matches a certain color.
-bool is_white(PieceType pt);
-bool is_black(PieceType pt);
+bool is_white(int pt);
+bool is_black(int pt);
 
 Color get_color(int pn, std::array<PieceType, 120> const *board);
 Color get_color(PieceType pt);
@@ -29,6 +29,7 @@ Color get_color(PieceType pt);
 // WHITE returns BLACK
 // BLACK returns WHITE
 Color rev_color(Color c);
+PieceType rev_color(PieceType pt);
 
 // Get all positions of pieces which can move to this square
 // This may require helper functions for each individual peice.
@@ -42,9 +43,14 @@ void get_possible_moves(Position pn, std::array<PieceType, 120> *pt,std::vector<
 // This functions removes moves that put your own king in check.
 void filter_checked_moves(int pos, std::array<PieceType, 120> *board, std::vector<int> *moves);
 
+// This function is like get_all_moves, except it doesn't check pos and base the piecetype on that,
+// ... but instead acts as if the PieceType pt is on pos, and returns possible move sbased on that.
+void get_all_moves_as_if(int pos, PieceType pt, std::array<PieceType, 120> *board, std::vector<int> *moves, bool recursvie=true, int en_passant=Position::NA, int castle_perms=0);
+
 // Get all moves for piece in Position pn.
 void get_all_moves(int pos, std::array<PieceType, 120> *pt, std::vector<int> *moves, bool recursive=true, int en_passant=Position::NA, int castle_perms=0);
 std::vector<int> get_all_moves(int pos, std::array<PieceType, 120> board, bool recursive=true, int en_passant=Position::NA, int castle_perms=0);
+
 
 // Dumb function to do board moves.
 // Does not check if move is valid, just does it.

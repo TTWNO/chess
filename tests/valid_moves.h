@@ -77,10 +77,10 @@ const std::vector<int> BISHOP_BLOCKED1_CAPTS = {
 	NONE, B_KING,
 };
 const std::vector<std::string> BISHOP_BLOCKED1_NOTATION = {
-	"Bc6", "Bxb7",
+	"Bc6+", "Bxb7+",
 	"Be6",
 	"Bc4", "Bb3", "Ba2",
-	"Be4", "Bxf3"
+	"Be4+", "Bxf3+"
 };
 
 // Should NOT include B2 (black queen) as it is obstructed by the bishop on D5
@@ -120,7 +120,7 @@ const std::vector<int> ROOK_BLOCKED1_CAPTS = {
 const std::vector<std::string> ROOK_BLOCKED1_NOTATION = {
 	"Ra7",
 	"Rb8",
-	"Rc7", "Rxd7",
+	"Rc7", "Rxd7+",
 	"Rb6", "Rb5", "Rb4"
 };
 
@@ -146,7 +146,7 @@ const std::vector<int> PAWN_DIAG_TEST1_CAPTS = {
 	NONE, NONE, W_QUEEN
 };
 const std::vector<std::string> PAWN_DIAG_TEST1_NOTATION = {
-	"e6", "e5", "xd6"
+	"e6", "e5", "exd6"
 };
 
 // For testing the invalidating of moves because of putting own king in check
@@ -208,7 +208,7 @@ const std::vector<int> EN_PASSANT_TEST_MOVES = {
 	D6, E6
 };
 const std::vector<std::string> EN_PASSANT_TEST_NOTATION = {
-	"d6", "dxe6"
+	"d6", "dxe6e.p."
 };
 // Test pawn promotion
 const int PROM_PAWN_POS = G7;
@@ -649,3 +649,64 @@ const std::array<PieceType, 120> EN_PASSANT_CHECK_MOVED_BOARD3 = {
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV	
 };
+
+// This tests for disambiguating moves with algebraic notation
+
+const int DISAMB_BISHOP1_POS = D6;
+const int DISAMB_BISHOP2_POS = A7;
+const int DISAMB_BROOK1_POS = D8;
+const int DISAMB_BROOK2_POS = H8;
+const int DISAMB_WROOK1_POS = A5;
+const int DISAMB_WROOK2_POS = A1;
+const int DISAMB_QUEEN1_POS = E4;
+const int DISAMB_QUEEN2_POS = H4;
+const int DISAMB_QUEEN3_POS = H8;
+
+const std::array<PieceType, 120> DISAMB_BOARD = {
+	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
+	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
+	INV, NONE, NONE, NONE, B_ROOK, NONE, NONE, NONE, B_ROOK,  INV,	
+	INV, B_BISHOP, NONE, NONE, NONE, NONE, NONE, NONE, NONE,  INV,	
+	INV, NONE, NONE, NONE, B_BISHOP, NONE, NONE, NONE, NONE,  INV,	
+	INV, W_ROOK, NONE, NONE, NONE, NONE, NONE, NONE, NONE, INV,
+	INV, NONE, NONE, NONE, NONE, W_QUEEN, NONE, NONE, W_QUEEN,  INV,	
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE,  INV,	
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE,  INV,	
+	INV, W_ROOK, NONE, NONE, NONE, NONE, NONE, NONE, W_QUEEN, INV,
+	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
+	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV	
+};
+
+const std::vector<std::string> DISAMB_BISHOP1_NOTATION = {};
+const std::vector<std::string> DISAMB_BISHOP2_NOTATION = {};
+const std::vector<std::string> DISAMB_BROOK1_NOTATION = {};
+const std::vector<std::string> DISAMB_BROOK2_NOTATION = {};
+const std::vector<std::string> DISAMB_WROOK1_NOTATION = {};
+const std::vector<std::string> DISAMB_WROOK2_NOTATION = {};
+const std::vector<std::string> DISAMB_QUEEN1_NOTATION = {};
+const std::vector<std::string> DISAMB_QUEEN2_NOTATION = {};
+const std::vector<std::string> DISAMB_QUEEN3_NOTATION = {};
+
+
+// CHeck that converting moves to algebraic notation have checkmate marks (#)
+const int CHECKMATE_ROOK_POS = D8;
+const std::array<PieceType, 120> CHECKMATE_ROOK_BOARD = {
+	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
+	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
+	INV, NONE, NONE, NONE, B_ROOK, NONE, NONE, NONE, NONE,  INV,	
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE,  INV,	
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE,  INV,	
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, INV,
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE,  INV,	
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE,  INV,	
+	INV, NONE, B_ROOK, NONE, NONE, NONE, NONE, NONE, NONE,  INV,	
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, W_KING, NONE, INV,
+	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
+	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV	
+};
+const std::vector<std::string> CHECKMATE_ROOK_NOTATION = {
+	"Rc8", "Rdb8", "Ra8",
+	"Re8", "Rf8", "Rg8+", "Rh8",
+	"Rd7", "Rd6", "Rd5", "Rd4", "Rd3", "Rdd2", "Rd1#"
+};
+

@@ -54,6 +54,21 @@ TEST_CASE("Test reversing color", "[rev_color]"){
 	CHECK(rev_color(Color::BLACK) == Color::WHITE);
 }
 
+TEST_CASE("Test reversing color on pieve", "[rev_color]"){
+	CHECK(rev_color(PieceType::B_KING) == W_KING);
+	CHECK(rev_color(PieceType::B_QUEEN) == W_QUEEN);
+	CHECK(rev_color(PieceType::B_ROOK) == W_ROOK);
+	CHECK(rev_color(PieceType::B_BISHOP) == W_BISHOP);
+	CHECK(rev_color(PieceType::B_KNIGHT) == W_KNIGHT);
+	CHECK(rev_color(PieceType::B_PAWN) == W_PAWN);
+	CHECK(rev_color(PieceType::W_KING) == B_KING);
+	CHECK(rev_color(PieceType::W_QUEEN) == B_QUEEN);
+	CHECK(rev_color(PieceType::W_ROOK) == B_ROOK);
+	CHECK(rev_color(PieceType::W_BISHOP) == B_BISHOP);
+	CHECK(rev_color(PieceType::W_KNIGHT) == B_KNIGHT);
+	CHECK(rev_color(PieceType::W_PAWN) == B_PAWN);
+}
+
 TEST_CASE("Test that is_black, and is_white are working", "[is_black][is_white]"){
 	CHECK(is_white(DUMB_MOVE_1[Position::A2]));
 	CHECK(is_black(DUMB_MOVE_1[Position::F7]));
@@ -214,4 +229,32 @@ TEST_CASE("Test that algebraic notation conversion is working.", "[to_notation]"
 	CHECK(get_notations(king_castle_moves, CASTLE_BOARD) == CASTLING_MOVES_NOTATION);
 	CHECK(get_notations(king_bcastle_moves, CASTLE_BOARD) == BCASTLING_MOVES_NOTATION);
 	CHECK(get_notations(en_passant_moves, EN_PASSANT_TEST_BOARD) == EN_PASSANT_TEST_NOTATION);
+}
+
+TEST_CASE("Test for disambiguating moves in algebraic notation", "[to_notation]"){
+	auto brook1_moves = get_all_moves(DISAMB_BROOK1_POS, DISAMB_BOARD);
+	auto brook2_moves = get_all_moves(DISAMB_BROOK2_POS, DISAMB_BOARD);
+	auto wrook1_moves = get_all_moves(DISAMB_WROOK1_POS, DISAMB_BOARD);
+	auto wrook2_moves = get_all_moves(DISAMB_WROOK2_POS, DISAMB_BOARD);
+	auto bishop1_moves = get_all_moves(DISAMB_BISHOP1_POS, DISAMB_BOARD);
+	auto bishop2_moves = get_all_moves(DISAMB_BISHOP2_POS, DISAMB_BOARD);
+	auto queen1_moves = get_all_moves(DISAMB_QUEEN1_POS, DISAMB_BOARD);
+	auto queen2_moves = get_all_moves(DISAMB_QUEEN2_POS, DISAMB_BOARD);
+	auto queen3_moves = get_all_moves(DISAMB_QUEEN3_POS, DISAMB_BOARD);
+	
+	CHECK(get_notations(brook1_moves, DISAMB_BOARD) == DISAMB_BROOK1_NOTATION);
+	CHECK(get_notations(brook2_moves, DISAMB_BOARD) == DISAMB_BROOK2_NOTATION);
+	CHECK(get_notations(wrook1_moves, DISAMB_BOARD) == DISAMB_WROOK1_NOTATION);
+	CHECK(get_notations(wrook2_moves, DISAMB_BOARD) == DISAMB_WROOK2_NOTATION);
+	CHECK(get_notations(bishop1_moves, DISAMB_BOARD) == DISAMB_BISHOP1_NOTATION);
+	CHECK(get_notations(bishop2_moves, DISAMB_BOARD) == DISAMB_BISHOP1_NOTATION);
+	CHECK(get_notations(queen1_moves, DISAMB_BOARD) == DISAMB_QUEEN1_NOTATION);
+	CHECK(get_notations(queen2_moves, DISAMB_BOARD) == DISAMB_QUEEN2_NOTATION);
+	CHECK(get_notations(queen3_moves, DISAMB_BOARD) == DISAMB_QUEEN3_NOTATION);
+}
+
+TEST_CASE("Test for disambiguating moves, and checkmate mark (#)", "[to_notation]"){
+	auto check_rook_moves = get_all_moves(CHECKMATE_ROOK_POS, CHECKMATE_ROOK_BOARD);
+
+	CHECK(get_notations(check_rook_moves, CHECKMATE_ROOK_BOARD) == CHECKMATE_ROOK_NOTATION);
 }

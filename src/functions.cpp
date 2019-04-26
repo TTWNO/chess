@@ -22,13 +22,13 @@ Rank get_rank(int pos){
 	return static_cast<Rank>(rank - 3);
 }
 
-bool is_white(PieceType pt){
+bool is_white(int pt){
 	for (auto pn : Pieces::WHITE){
 		if (pn == pt) return true;
 	}
 	return false;
 }
-bool is_black(PieceType pt){
+bool is_black(int pt){
 	for (auto pn : Pieces::BLACK){
 		if (pn == pt) return true;
 	}
@@ -48,6 +48,19 @@ Color get_color(int pn, std::array<PieceType, 120> const *board){
 Color rev_color(Color c){
 	if (c==Color::NO_COLOR) return Color::NO_COLOR;
 	return c==Color::WHITE?Color::BLACK:Color::WHITE;
+}
+PieceType rev_color(PieceType pt){
+	for (int i=0; i!=Pieces::WHITE.size(); i++){
+		if (pt == Pieces::WHITE[i]){
+			return Pieces::BLACK[i];
+		}
+	}
+	for (int i=0; i!=Pieces::BLACK.size(); i++){
+		if (pt == Pieces::BLACK[i]){
+			return Pieces::WHITE[i];
+		}
+	}
+	return PieceType::NONE;
 }
 
 std::vector<int> get_possible_movers(Position pn, std::array<PieceType, 120> board){
@@ -98,6 +111,18 @@ bool is_checked(int pos, std::array<PieceType, 120> board){
 	return false;
 }
 
+void add_checked_flags(PieceType pt, std::array<PieceType, 120> *board, std::vector<int> *pns){
+	PieceType other_king = is_white(pt)?PieceType::B_KING:PieceType::W_KING;
+	int other_king_pos = get_pos_of(other_king, board);
+	for (auto move_pn=pns->begin(); move_pn!=pns->end();){
+		auto moved_board = dumb_move(*move_pn, *board);
+		if (is_checked(other_king_pos, moved_board)){
+			*move_pn |= (1 << 25);
+		}
+		++move_pn;
+	}
+}
+
 //TODO: Make faster by running from king squar eonly, instead of running on every piece of opposite team.
 void filter_checked_moves(PieceType pt, std::array<PieceType, 120> *board, std::vector<int> *pns){
 	PieceType my_king = is_white(pt)?PieceType::W_KING:PieceType::B_KING;
@@ -145,8 +170,7 @@ void filter_checked_moves(PieceType pt, std::array<PieceType, 120> *board, std::
 	}
 }
 
-void get_all_moves(int pos, std::array<PieceType, 120>* board, std::vector<int>* moves, bool recursive, int en_passant, int castle_perms){
-	PieceType pt = (*board)[pos];
+void get_all_moves_as_if(int pos, PieceType pt, std::array<PieceType, 120>* board, std::vector<int>* moves, bool recursive, int en_passant, int castle_perms){
 	Color color_of_piece = get_color(pt);
 	Color color_of_opponent = rev_color(color_of_piece);
 	switch(pt){
@@ -180,7 +204,12 @@ void get_all_moves(int pos, std::array<PieceType, 120>* board, std::vector<int>*
 	}
 	if (recursive){
 		filter_checked_moves(pt, board, moves);
+		add_checked_flags(pt, board, moves);
 	}
+}
+
+void get_all_moves(int pos, std::array<PieceType, 120> *board, std::vector<int> *moves, bool recursive, int en_passant, int castle_perms){
+	get_all_moves_as_if(pos, (*board)[pos], board, moves, recursive, en_passant, castle_perms);
 }
 
 std::vector<int> get_all_moves(int pos, std::array<PieceType, 120> board, bool recursive, int en_passant, int castle_perms){
@@ -246,7 +275,10 @@ std::string to_notation(int move, std::array<PieceType, 120> *board){
 	int captured_piece = get_captured_pc(move);
 	std::string piece_character = "";
 	std::string capture_character = "";
-	int piecetype = (*board)[from];
+	std::string en_passant = "";
+	std::string check = "";
+	int piecetype = (*board)[from];	
+	auto other_pieces = is_white(piecetype)?Pieces::BLACK:Pieces::WHITE;
 	switch(piecetype){
 		case PieceType::W_KNIGHT:
 		case PieceType::B_KNIGHT:
@@ -272,16 +304,32 @@ std::string to_notation(int move, std::array<PieceType, 120> *board){
 	if (captured_piece > 0){
 		capture_character = "x";
 		// If is a pawn
-	}
-	if (get_en_pass_flag(move) == 1){
 		if (piece_character == ""){
 			ss << from_string[0];
+		}
+	}
+	if (get_en_pass_flag(move) == 1){
+		en_passant = "e.p.";
+	}
+	if (get_check_flag(move) == 1){
+		check = "+";
+		auto moved_board = dumb_move(move, *board);
+		// This checks if the other team has any valid moves.
+		// If not, the check sign changes to a hashtag (#).
+		std::vector<int> other_moves = {};
+		for (PieceType opt : other_pieces){
+			for (int pos_of_opt : get_poss_of(opt, board)){
+				get_all_moves(pos_of_opt, &moved_board, &other_moves);
+			}
+		}
+		if (other_moves.empty()){
+			check = "#";
 		}
 	}
 	if (get_castle_flag(move) == 1){
 		return to-from<0 ? "O-O-O" : "O-O";
 	} else {
-		ss << piece_character << capture_character << POSITION_STRING[to];
+		ss << piece_character << capture_character << POSITION_STRING[to] << en_passant << check;
 	}
 	return ss.str();
 }
