@@ -106,5 +106,10 @@ const std::array<std::string, 13> CHESS_CHARS_INSENSITIVE = {
 	"P", "N", "B", "R", "Q", "K",
 	"P", "N", "B", "R", "Q", "K"
 };
+const std::array<std::string, 13> FANCY_CHESS_CHARS = {
+	" ",
+	"♟", "♞", "♝", "♜", "♛", "♚",
+	"♙", "♘", "♗", "♖", "♕", "♔"
+};
 #endif
 
