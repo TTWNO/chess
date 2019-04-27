@@ -100,5 +100,11 @@ const std::array<char, 13> CHESS_CHARS = {
 	'P', 'N', 'B', 'R', 'Q', 'K',
 	'p', 'n', 'b', 'r', 'q', 'k'
 };
+// This returns the same letter weather the team is black or white
+const std::array<std::string, 13> CHESS_CHARS_INSENSITIVE = {
+	" ",
+	"P", "N", "B", "R", "Q", "K",
+	"P", "N", "B", "R", "Q", "K"
+};
 #endif
 

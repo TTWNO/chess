@@ -271,12 +271,17 @@ std::string to_notation(int move, std::array<PieceType, 120> *board){
 	
 	auto moved_board = dumb_move(move, *board);
 	int from = get_from_sq(move);
+	PieceType piecetype = (*board)[from];	
 	std::string from_string = POSITION_STRING[from];
 	int to = get_to_sq(move);
 	int captured_piece = get_captured_pc(move);
+	int promoting_to = get_promoted_to_pc(move);
+	// Blank if not pawn
+	// file if pawn and capture move
+	std::string pawn_file = "";
 	// Blank if pawn
 	// otherwise N/B/R/Q/K corresponding to each piece
-	// same black and white
+	// same for black and white
 	std::string piece_character = "";
 	// Blank if not a capture
 	// x if a capture move
@@ -293,37 +298,21 @@ std::string to_notation(int move, std::array<PieceType, 120> *board){
 	// includes rank (1-8) if pieces have same file
 	// includes both (f)(r) if 2+ identical piece can move to the to square
 	std::string disambig = "";
-	PieceType piecetype = (*board)[from];	
+	// Blank if not a pawn promotion move.
+	// Otherwise is equal to "=P/N/B/R/Q".
+	std::stringstream promotion;
 	auto other_pieces = is_white(piecetype)?Pieces::BLACK:Pieces::WHITE;
 
-	switch(piecetype){
-		case PieceType::W_KNIGHT:
-		case PieceType::B_KNIGHT:
-			piece_character = "N";
-			break;
-		case PieceType::W_BISHOP:
-		case PieceType::B_BISHOP:
-			piece_character = "B";
-			break;
-		case PieceType::W_ROOK:
-		case PieceType::B_ROOK:
-			piece_character = "R";
-			break;
-		case PieceType::W_QUEEN:
-		case PieceType::B_QUEEN:
-			piece_character = "Q";
-			break;
-		case PieceType::W_KING:
-		case PieceType::B_KING:
-			piece_character = "K";
-			break;
-	}
-	if (captured_piece > 0){
+	if (captured_piece != 0){
 		capture_character = "x";
-		// If is a pawn
-		if (piece_character == ""){
-			ss << from_string[0];
+		if (piecetype == PieceType::W_PAWN ||
+			piecetype == PieceType::B_PAWN){
+			pawn_file = POSITION_STRING[from][0];
 		}
+	}
+	if (piecetype != PieceType::W_PAWN &&
+		piecetype != PieceType::B_PAWN){
+			piece_character = CHESS_CHARS_INSENSITIVE[piecetype];
 	}
 	if (get_en_pass_flag(move) == 1){
 		en_passant = "e.p.";
@@ -374,11 +363,15 @@ std::string to_notation(int move, std::array<PieceType, 120> *board){
 			disambig = POSITION_STRING[from];
 		}
 	}
+
+	if (promoting_to != PieceType::NONE){
+		promotion << "=" << CHESS_CHARS_INSENSITIVE[promoting_to];
+	}
 	// end of checking for multiple pieces
 	if (get_castle_flag(move) == 1){
 		return to-from<0 ? "O-O-O" : "O-O";
 	} else {
-		ss << piece_character << disambig << capture_character << POSITION_STRING[to] << en_passant << check;
+		ss << pawn_file << piece_character << disambig << capture_character << POSITION_STRING[to] << en_passant << promotion.str() << check;
 	}
 	return ss.str();
 }

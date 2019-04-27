@@ -220,6 +220,8 @@ TEST_CASE("Test that algebraic notation conversion is working.", "[to_notation]"
 	auto king_castle_moves = get_all_moves(CASTLING_POS, CASTLE_BOARD, true, 0, 0xF);
 	auto king_bcastle_moves = get_all_moves(BCASTLING_POS, CASTLE_BOARD, true, 0, 0xF);
 	auto en_passant_moves = get_all_moves(EN_PASSANT_TEST_POS, EN_PASSANT_TEST_BOARD, true, EN_PASSANT_SQUARE, 0);
+	auto pawn_prom_moves = get_all_moves(PROM_PAWN_POS, PROM_PAWN_BOARD);
+	auto bpawn_prom_moves = get_all_moves(PROM_BPAWN_POS, PROM_BPAWN_BOARD);
 
 	CHECK(get_notations(knight_moves, KNIGHT_BLOCKED1_BOARD) == KNIGHT_BLOCKED1_NOTATION);
 	CHECK(get_notations(bishop_moves, BISHOP_BLOCKED1_BOARD) == BISHOP_BLOCKED1_NOTATION);
@@ -229,6 +231,8 @@ TEST_CASE("Test that algebraic notation conversion is working.", "[to_notation]"
 	CHECK(get_notations(king_castle_moves, CASTLE_BOARD) == CASTLING_MOVES_NOTATION);
 	CHECK(get_notations(king_bcastle_moves, CASTLE_BOARD) == BCASTLING_MOVES_NOTATION);
 	CHECK(get_notations(en_passant_moves, EN_PASSANT_TEST_BOARD) == EN_PASSANT_TEST_NOTATION);
+	CHECK(get_notations(pawn_prom_moves, PROM_PAWN_BOARD) == PROM_PAWN_NOTATION);
+	CHECK(get_notations(bpawn_prom_moves, PROM_BPAWN_BOARD) == PROM_BPAWN_NOTATION);
 }
 
 TEST_CASE("Test for disambiguating moves in algebraic notation", "[to_notation]"){

@@ -234,6 +234,10 @@ const std::vector<int> PROM_PAWN_PROMS = {
 	W_KNIGHT, W_BISHOP, W_ROOK, W_QUEEN,
 	W_KNIGHT, W_BISHOP, W_ROOK, W_QUEEN
 };
+const std::vector<std::string> PROM_PAWN_NOTATION = {
+	"gxh8=N","gxh8=B","gxh8=R","gxh8=Q",
+	"gxf8=N","gxf8=B","gxf8=R","gxf8=Q"
+};
 
 // Black pawn promotion
 const int PROM_BPAWN_POS = B2;
@@ -259,6 +263,10 @@ const std::vector<int> PROM_BPAWN_MOVES = {
 const std::vector<int> PROM_BPAWN_PROMS = {
 	B_KNIGHT, B_BISHOP, B_ROOK, B_QUEEN,
 	B_KNIGHT, B_BISHOP, B_ROOK, B_QUEEN
+};
+const std::vector<std::string> PROM_BPAWN_NOTATION = {
+	"bxc1=N","bxc1=B","bxc1=R","bxc1=Q",	
+	"bxa1=N","bxa1=B","bxa1=R","bxa1=Q"	
 };
 
 const int NO_EN_PASSANT_TEST_POS = D5;
