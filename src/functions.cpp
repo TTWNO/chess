@@ -128,8 +128,9 @@ void filter_checked_moves(PieceType pt, std::array<PieceType, 120> *board, std::
 	PieceType my_king = is_white(pt)?PieceType::W_KING:PieceType::B_KING;
 	int my_king_pos = get_pos_of(my_king, board);
 	int attackers = 0;
+	std::cout << "PC: " << FANCY_CHESS_CHARS[pt] << "\nPos: " << my_king_pos << std::endl;
 	for (auto p_pn= pns->begin(); p_pn!=pns->end();){
-		if (get_castle_flag(*p_pn)){
+		if (get_castle_flag(*p_pn) == 1){
 			// If moved left
 			// B1 - A1 = -1
 			// A1 - B1 = +1
@@ -158,10 +159,13 @@ void filter_checked_moves(PieceType pt, std::array<PieceType, 120> *board, std::
 			// This is for when the king is the same piece that is moving.
 			// If this is the case, reset to king position to the new position given by the get_to_sq() of the move.
 			if (pt == my_king){
+				std::cout << "King move!" << std::endl;
 				my_king_pos = get_to_sq(*p_pn);
 			}
 
+			std::cout << "Is " << POSITION_STRING[my_king_pos] << " in check?" <<std::endl;
 			if (is_checked(my_king_pos, moved_board)){
+				std::cout << "...yes :)" << std::endl;
 				p_pn = pns->erase(p_pn);
 			} else {
 				++p_pn;
@@ -379,14 +383,18 @@ std::string to_notation(int move, std::array<PieceType, 120> *board){
 void get_all_white_moves(std::array<PieceType, 120> *board, std::vector<int> *moves){
 	for (PieceType pt : Pieces::WHITE){
 		for (int pos_of : get_poss_of(pt, board)){
-			get_all_moves_as_if(pos_of, pt, board, moves);
+			std::vector<int> local_moves = {};
+			get_all_moves_as_if(pos_of, pt, board, &local_moves);
+			moves->insert(moves->end(), local_moves.begin(), local_moves.end());
 		}
 	}
 }
 void get_all_black_moves(std::array<PieceType, 120> *board, std::vector<int> *moves){
 	for (PieceType pt : Pieces::BLACK){
 		for (int pos_of : get_poss_of(pt, board)){
-			get_all_moves_as_if(pos_of, pt, board, moves);
+			std::vector<int> local_moves = {};
+			get_all_moves_as_if(pos_of, pt, board, &local_moves);
+			moves->insert(moves->end(), local_moves.begin(), local_moves.end());
 		}
 	}
 }
