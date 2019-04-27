@@ -660,7 +660,7 @@ const int DISAMB_WROOK1_POS = A5;
 const int DISAMB_WROOK2_POS = A1;
 const int DISAMB_QUEEN1_POS = E4;
 const int DISAMB_QUEEN2_POS = H4;
-const int DISAMB_QUEEN3_POS = H8;
+const int DISAMB_QUEEN3_POS = H1;
 
 const std::array<PieceType, 120> DISAMB_BOARD = {
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
@@ -677,15 +677,15 @@ const std::array<PieceType, 120> DISAMB_BOARD = {
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV	
 };
 
-const std::vector<std::string> DISAMB_BISHOP1_NOTATION = {};
-const std::vector<std::string> DISAMB_BISHOP2_NOTATION = {};
-const std::vector<std::string> DISAMB_BROOK1_NOTATION = {};
-const std::vector<std::string> DISAMB_BROOK2_NOTATION = {};
-const std::vector<std::string> DISAMB_WROOK1_NOTATION = {};
-const std::vector<std::string> DISAMB_WROOK2_NOTATION = {};
-const std::vector<std::string> DISAMB_QUEEN1_NOTATION = {};
-const std::vector<std::string> DISAMB_QUEEN2_NOTATION = {};
-const std::vector<std::string> DISAMB_QUEEN3_NOTATION = {};
+const std::vector<std::string> DISAMB_BROOK1_NOTATION = {"Rc8", "Rb8", "Ra8", "Rde8", "Rdf8", "Rdg8", "Rd7"};
+const std::vector<std::string> DISAMB_BROOK2_NOTATION = {"Rhg8", "Rhf8", "Rhe8", "Rh7", "Rh6", "Rh5", "Rxh4"};
+const std::vector<std::string> DISAMB_WROOK1_NOTATION = {"Ra6", "Rxa7", "Rb5", "Rc5", "Rd5", "Re5", "Rf5", "Rg5", "Rh5", "R5a4", "R5a3", "R5a2"};
+const std::vector<std::string> DISAMB_WROOK2_NOTATION = {"R1a2", "R1a3", "R1a4", "Rb1", "Rc1", "Rd1", "Re1", "Rf1", "Rg1"};
+const std::vector<std::string> DISAMB_BISHOP1_NOTATION = {"Bc7", "Bdb8", "Be7", "Bf8", "Bdc5", "Bb4", "Ba3", "Be5", "Bf4", "Bg3", "Bh2"};
+const std::vector<std::string> DISAMB_BISHOP2_NOTATION = {"Bab8", "Bb6", "Bac5", "Bd4", "Be3", "Bf2", "Bg1"};
+const std::vector<std::string> DISAMB_QUEEN1_NOTATION = {"Qd4", "Qc4", "Qb4", "Qa4", "Qe5", "Qe6", "Qee7", "Qe8", "Qef4", "Qeg4", "Qe3", "Qe2", "Qe4e1", "Qd5", "Qc6", "Qb7", "Qa8", "Qf5", "Qg6", "Qeh7", "Qd3", "Qc2", "Qeb1", "Qef3", "Qeg2"};
+const std::vector<std::string> DISAMB_QUEEN2_NOTATION = {"Qhg4", "Qhf4", "Qh5", "Qh6", "Qhh7", "Qxh8", "Q4h3", "Q4h2", "Qg5", "Qf6", "Qhe7", "Qxd8", "Qg3", "Qf2", "Qh4e1"};
+const std::vector<std::string> DISAMB_QUEEN3_NOTATION = {"Qg1", "Qf1", "Qh1e1", "Qd1", "Qc1", "Qhb1", "Q1h2", "Q1h3", "Qhg2", "Qhf3"};
 
 
 // CHeck that converting moves to algebraic notation have checkmate marks (#)

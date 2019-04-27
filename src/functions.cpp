@@ -269,16 +269,33 @@ std::array<PieceType, 120> dumb_move(int move, std::array<PieceType, 120> board)
 std::string to_notation(int move, std::array<PieceType, 120> *board){
 	std::stringstream ss;
 	
+	auto moved_board = dumb_move(move, *board);
 	int from = get_from_sq(move);
 	std::string from_string = POSITION_STRING[from];
 	int to = get_to_sq(move);
 	int captured_piece = get_captured_pc(move);
+	// Blank if pawn
+	// otherwise N/B/R/Q/K corresponding to each piece
+	// same black and white
 	std::string piece_character = "";
+	// Blank if not a capture
+	// x if a capture move
 	std::string capture_character = "";
+	// Blank if not en passant move
+	// otherwise e.p.
 	std::string en_passant = "";
+	// Black if no check,
+	// + if check
+	// # if checkmate
 	std::string check = "";
-	int piecetype = (*board)[from];	
+	// Blank if only this piece can move to the to square
+	// include file (a-h) if another piece can move to the to square
+	// includes rank (1-8) if pieces have same file
+	// includes both (f)(r) if 2+ identical piece can move to the to square
+	std::string disambig = "";
+	PieceType piecetype = (*board)[from];	
 	auto other_pieces = is_white(piecetype)?Pieces::BLACK:Pieces::WHITE;
+
 	switch(piecetype){
 		case PieceType::W_KNIGHT:
 		case PieceType::B_KNIGHT:
@@ -313,7 +330,6 @@ std::string to_notation(int move, std::array<PieceType, 120> *board){
 	}
 	if (get_check_flag(move) == 1){
 		check = "+";
-		auto moved_board = dumb_move(move, *board);
 		// This checks if the other team has any valid moves.
 		// If not, the check sign changes to a hashtag (#).
 		std::vector<int> other_moves = {};
@@ -326,10 +342,43 @@ std::string to_notation(int move, std::array<PieceType, 120> *board){
 			check = "#";
 		}
 	}
+	// Simulated a piece of the same type, and opposite coor moving from the to square
+	// to check if any other pieces can also move here.
+	PieceType opposite_piece = rev_color(piecetype);
+	std::vector<int> moves = {};
+	get_all_moves_as_if(to, opposite_piece, board, &moves, false);
+	// Pawns do not require this, as their file is ALWAYS enough to identify them,
+	// and the file is always speicified on a pawn capture.
+	if (piecetype != PieceType::W_PAWN &&
+		piecetype != PieceType::B_PAWN){
+		for (auto move_pn=moves.begin(); move_pn!=moves.end();){
+			if (get_captured_pc(*move_pn) == piecetype &&
+				get_to_sq(*move_pn) != from){
+				++move_pn;
+			} else {
+				move_pn = moves.erase(move_pn);
+			}
+		}
+		if (moves.size() == 1){
+			disambig = POSITION_STRING[from][0];
+			int other_from = get_to_sq(moves.at(0));
+			int min_from = other_from<from?other_from:from;
+			int max_from = other_from>from?other_from:from;
+			// If the remainder of the difference divided by 10 is 0
+			// they are on the same file.
+			// Use rank to disambiguate
+			if ((max_from-min_from) % 10 == 0){
+				disambig = POSITION_STRING[from][1];
+			}
+		} else if (moves.size() > 1){
+			disambig = POSITION_STRING[from];
+		}
+	}
+	// end of checking for multiple pieces
 	if (get_castle_flag(move) == 1){
 		return to-from<0 ? "O-O-O" : "O-O";
 	} else {
-		ss << piece_character << capture_character << POSITION_STRING[to] << en_passant << check;
+		ss << piece_character << disambig << capture_character << POSITION_STRING[to] << en_passant << check;
 	}
 	return ss.str();
 }

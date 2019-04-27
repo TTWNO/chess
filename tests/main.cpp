@@ -247,7 +247,7 @@ TEST_CASE("Test for disambiguating moves in algebraic notation", "[to_notation]"
 	CHECK(get_notations(wrook1_moves, DISAMB_BOARD) == DISAMB_WROOK1_NOTATION);
 	CHECK(get_notations(wrook2_moves, DISAMB_BOARD) == DISAMB_WROOK2_NOTATION);
 	CHECK(get_notations(bishop1_moves, DISAMB_BOARD) == DISAMB_BISHOP1_NOTATION);
-	CHECK(get_notations(bishop2_moves, DISAMB_BOARD) == DISAMB_BISHOP1_NOTATION);
+	CHECK(get_notations(bishop2_moves, DISAMB_BOARD) == DISAMB_BISHOP2_NOTATION);
 	CHECK(get_notations(queen1_moves, DISAMB_BOARD) == DISAMB_QUEEN1_NOTATION);
 	CHECK(get_notations(queen2_moves, DISAMB_BOARD) == DISAMB_QUEEN2_NOTATION);
 	CHECK(get_notations(queen3_moves, DISAMB_BOARD) == DISAMB_QUEEN3_NOTATION);
