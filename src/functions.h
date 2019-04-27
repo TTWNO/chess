@@ -62,3 +62,7 @@ bool is_checked(int pos, std::array<PieceType, 120> board);
 // Convert move (and board becuase notation needs more info than the move itself)
 // ...into algbraic notation.
 std::string to_notation(int move, std::array<PieceType, 120> *board);
+
+// These functions are just for printing (for now) so they are not included in the tests.
+void get_all_white_moves(std::array<PieceType, 120> *board, std::vector<int> *moves);
+void get_all_black_moves(std::array<PieceType, 120> *board, std::vector<int> *moves);

@@ -375,3 +375,18 @@ std::string to_notation(int move, std::array<PieceType, 120> *board){
 	}
 	return ss.str();
 }
+
+void get_all_white_moves(std::array<PieceType, 120> *board, std::vector<int> *moves){
+	for (PieceType pt : Pieces::WHITE){
+		for (int pos_of : get_poss_of(pt, board)){
+			get_all_moves_as_if(pos_of, pt, board, moves);
+		}
+	}
+}
+void get_all_black_moves(std::array<PieceType, 120> *board, std::vector<int> *moves){
+	for (PieceType pt : Pieces::BLACK){
+		for (int pos_of : get_poss_of(pt, board)){
+			get_all_moves_as_if(pos_of, pt, board, moves);
+		}
+	}
+}

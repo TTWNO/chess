@@ -262,3 +262,12 @@ TEST_CASE("Test for disambiguating moves, and checkmate mark (#)", "[to_notation
 
 	CHECK(get_notations(check_rook_moves, CHECKMATE_ROOK_BOARD) == CHECKMATE_ROOK_NOTATION);
 }
+
+TEST_CASE("Do extra (random board tests) on notation and move generation", "[to_notation][get_all_moves]"){
+	auto knight_moves = get_all_moves(KNIGHT_EXTRA1_POS, EXTRA1_BOARD);
+	auto knight_moves2 = get_all_moves(KNIGHT_EXTRA2_POS, EXTRA2_BOARD);
+	CHECK(get_notations(knight_moves, EXTRA1_BOARD) == KNIGHT_EXTRA1_NOTATION);
+	CHECK(get_notations(knight_moves2, EXTRA2_BOARD) == KNIGHT_EXTRA2_NOTATION);
+	CHECK(get_to_squares(knight_moves2) == KNIGHT_EXTRA2_MOVES);
+
+}
