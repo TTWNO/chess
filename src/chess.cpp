@@ -175,18 +175,18 @@ int main(){
 			}
 			if (moving_piece == W_ROOK){
 				if (moving_from_pos == Position::A1 &&
-						(castle_perms & CastlePerms::WQS == 1)){
+						((castle_perms & CastlePerms::WQS) == CastlePerms::WQS)){
 					castle_perms -= CastlePerms::WQS;
 				} else if (moving_from_pos == Position::H1 &&
-						(castle_perms & CastlePerms::WKS == 1)){
+						((castle_perms & CastlePerms::WKS) == CastlePerms::WKS)){
 					castle_perms -= CastlePerms::WKS;
 				}
 			} else if (moving_piece == B_ROOK){
 				if (moving_from_pos == Position::H8 &&
-						(castle_perms & CastlePerms::BKS == 1)){
+						((castle_perms & CastlePerms::BKS) == CastlePerms::BKS)){
 					castle_perms -= CastlePerms::BKS;
 				} else if (moving_from_pos == Position::A8 &&
-						(castle_perms & CastlePerms::BQS == 1)){
+						((castle_perms & CastlePerms::BQS) == CastlePerms::BQS)){
 					castle_perms -= CastlePerms::BQS;
 				}	
 			}
