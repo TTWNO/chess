@@ -49,7 +49,7 @@ void _king_add_if_not_blocked(int pos, int from, std::vector<int> *pns, std::arr
 			if (_xy_is_color(pos, board, color_of_piece)){
 				*is_not_blocked = false;
 			} else if (_xy_is_color(pos, board, color_of_opposite)){
-				pns->push_back(make_move(from, pos, (*board)[pos], PieceType::NONE, 0, 0, castle_flag));
+				pns->push_back(make_move(from, pos, (*board)[pos], PieceType::NONE));
 				*is_not_blocked = false;
 			} else {
 				pns->push_back(make_move(from, pos, (*board)[pos], PieceType::NONE, 0, 0, castle_flag));
@@ -194,6 +194,8 @@ void _get_all_moves_king(int pos, std::vector<int> *pns, std::array<PieceType, 1
 	if (pc == Color::WHITE){
 		_king_add_if_not_blocked(pos+1, pos, pns, board, pc, rc, right_castle, 0);
 		_king_add_if_not_blocked(pos-1, pos, pns, board, pc, rc, left_castle, 0);
+		// THe right castle doesn't need to know if pos-/+ something is blank, because there is only
+		// ... 2 blank squares between the king and the rook.
 		if (castle_perms & CastlePerms::WKS){
 			_king_add_if_not_blocked(pos+2, pos, pns, board, pc, rc, right_castle, 1);
 		}
