@@ -133,25 +133,31 @@ void filter_checked_moves(PieceType pt, std::array<PieceType, 120> *board, std::
 	for (auto p_pn= pns->begin(); p_pn!=pns->end();){
 		if (get_castle_flag(*p_pn) == 1){
 			// If moved left
-			// B1 - A1 = -1
-			// A1 - B1 = +1
+			// Queenside
 			if ((get_from_sq(*p_pn) - get_to_sq(*p_pn)) > 0){
 				int right_move = make_move(get_from_sq(*p_pn), get_to_sq(*p_pn)+1);
+				int full_move = make_move(get_from_sq(*p_pn), get_to_sq(*p_pn));
 				auto right_board = dumb_move(right_move, *board);
-				if (is_checked(get_to_sq(*p_pn)+1, right_board)){
-					p_pn = pns->erase(p_pn);	
+				auto full_board = dumb_move(full_move, *board);
+				if (is_checked(get_to_sq(*p_pn)+1, right_board) ||
+					is_checked(get_to_sq(*p_pn), full_board)){
+					p_pn = pns->erase(p_pn);
 				} else {
 					++p_pn;
 					break;
 				}
+			// Kingside
 			} else {
 				int left_move = make_move(get_from_sq(*p_pn), get_to_sq(*p_pn)-1);
+				int full_move = make_move(get_from_sq(*p_pn), get_to_sq(*p_pn));
 				auto left_board = dumb_move(left_move, *board);
-				if (is_checked(get_to_sq(*p_pn)-1, left_board)){
+				auto full_board = dumb_move(full_move, *board);
+				if (is_checked(get_to_sq(*p_pn)-1, left_board) ||
+					is_checked(get_to_sq(*p_pn), full_board)){
 					p_pn = pns->erase(p_pn);
 				} else {
 					++p_pn;
-					continue;
+					break;
 				}
 			}
 		} else {

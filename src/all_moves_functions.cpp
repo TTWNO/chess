@@ -129,19 +129,6 @@ void _get_all_moves_rook(int pos, std::vector<int> *pns, std::array<PieceType, 1
 			_add_if_not_blocked(pos+(rk_off*offset), pos, pns, board, pc, rc, not_blocked);
 		}
 	}
-	
-	/*
-	bool* not_blocked_addx = new bool(true);
-	bool* not_blocked_minx = new bool(true);
-	bool* not_blocked_addy = new bool(true);
-	bool* not_blocked_miny = new bool(true);
-	for (int offset=1; offset<8; offset++){
-		_add_if_not_blocked(x+offset, y, pns, board, pc, rc, not_blocked_addx);
-		_add_if_not_blocked(x, y+offset, pns, board, pc, rc, not_blocked_addy);
-		_add_if_not_blocked(x-offset, y, pns, board, pc, rc, not_blocked_minx);
-		_add_if_not_blocked(x, y-offset, pns, board, pc, rc, not_blocked_miny);
-	}
-	*/
 }
 
 void _get_all_moves_bishop(int pos, std::vector<int> *pns, std::array<PieceType, 120>* board, Color pc, Color rc){
@@ -151,37 +138,12 @@ void _get_all_moves_bishop(int pos, std::vector<int> *pns, std::array<PieceType,
 			_add_if_not_blocked(pos+(bs_off*offset), pos, pns, board, pc, rc, not_blocked);
 		}
 	}
-	/*
-	bool* not_blocked_addx_addy = new bool(true);
-	bool* not_blocked_addx_miny = new bool(true);
-	bool* not_blocked_minx_addy = new bool(true);
-	bool* not_blocked_minx_miny = new bool(true);
-	
-	for (int offset=1; offset<8; offset++){
-		int xpoff = x+offset;
-		int ypoff = y+offset;
-		int xnoff = x-offset;
-		int ynoff = y-offset;
-		_add_if_not_blocked(xpoff, ypoff, pns, board, pc, rc, not_blocked_addx_addy);
-		_add_if_not_blocked(xpoff, ynoff, pns, board, pc, rc, not_blocked_addx_miny);
-		_add_if_not_blocked(xnoff, ypoff, pns, board, pc, rc, not_blocked_minx_addy);
-		_add_if_not_blocked(xnoff, ynoff, pns, board, pc, rc, not_blocked_minx_miny);	
-	}
-	*/
 }
+
 void _get_all_moves_knight(int pos, std::vector<int> *pns, std::array<PieceType, 120>* board, Color pc, Color rc){
 	for (int kn_off : KNIGHT_PIECE_OFFSETS){
 		_add_if_not_blocked(pos+kn_off, pos, pns, board, pc, rc);
 	}
-	/*
-	for (int xo=1;xo<=2;xo++){
-		int yo=(xo==1)?2:1;
-		_add_if_not_blocked(x+xo, y+yo, pns, board, pc, rc);
-		_add_if_not_blocked(x-xo, y+yo, pns, board, pc, rc);
-		_add_if_not_blocked(x+xo, y-yo, pns, board, pc, rc);
-		_add_if_not_blocked(x-xo, y-yo, pns, board, pc, rc);
-	}
-	*/
 }
 
 void _get_all_moves_king(int pos, std::vector<int> *pns, std::array<PieceType, 120>* board, Color pc, Color rc, int castle_perms){
@@ -212,16 +174,6 @@ void _get_all_moves_king(int pos, std::vector<int> *pns, std::array<PieceType, 1
 			_king_add_if_not_blocked(pos-2, pos, pns, board, pc, rc, left_castle, 1);
 		}
 	}
-	/*
-	_add_if_not_blocked(x+1, y+1, pns, board, pc, rc);
-	_add_if_not_blocked(x+1, y-1, pns, board, pc, rc);
-	_add_if_not_blocked(x-1, y+1, pns, board, pc, rc);
-	_add_if_not_blocked(x-1, y-1, pns, board, pc, rc);
-	_add_if_not_blocked(x, y+1, pns, board, pc, rc);
-	_add_if_not_blocked(x, y-1, pns, board, pc, rc);
-	_add_if_not_blocked(x+1, y, pns, board, pc, rc);
-	_add_if_not_blocked(x-1, y, pns, board, pc, rc);
-	*/
 }
 
 void _get_all_moves_pawn(int pos, std::vector<int> *pns, std::array<PieceType, 120>* board, Color pc, Color rc, int en_passant){
