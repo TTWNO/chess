@@ -129,7 +129,7 @@ TEST_CASE("Tests is_king_checked works", "[is_checked]"){
 	CHECK(is_checked(BLACK_CHECK_POS2, BLACK_CHECK_BOARD2));
 }
 
-TEST_CASE("Test that moves that put king in check are not returned", "[get_all_moves]"){
+TEST_CASE("Test that moves that put own king in check are not returned", "[get_all_moves]"){
 	CHECK(get_to_squares(get_all_moves(ROOK_CHECK_TEST_POS, ROOK_CHECK_TEST_BOARD)) == ROOK_CHECK_TEST_MOVES);
 	CHECK(get_to_squares(get_all_moves(PAWN_CHECK_TEST_POS, PAWN_CHECK_TEST_BOARD)) == PAWN_CHECK_TEST_MOVES);
 	auto pawn_diag_moves = get_all_moves(PAWN_DIAG_TEST1_POS, PAWN_DIAG_TEST1_BOARD);
@@ -287,3 +287,15 @@ TEST_CASE("Tests for check on square of queenside capture", "[get_all_moves]"){
 	CHECK(get_notations(cannot_queenside3, CASTLE_CHECK3_BOARD) == CASTLE_CHECK3_NOTATION);
 	CHECK(get_notations(cannot_queenside4, CASTLE_CHECK4_BOARD) == CASTLE_CHECK4_NOTATION);
 }
+
+TEST_CASE("Test that king check detection is working correctly.", "[is_checked]"){
+	CHECK(is_checked(ROOK_CHECK_KING_POS, ROOK_CHECK_MOVED_BOARD));
+}
+
+TEST_CASE("Test for add_checked_flags is working correctly.", "[get_all_moves][add_checked_flags]"){
+	auto rook_checked_flags  = get_all_moves(ROOK_CHECK_POS, ROOK_CHECK_BOARD);
+
+	CHECK(get_notations(rook_checked_flags, ROOK_CHECK_BOARD) == ROOK_CHECK_NOTATION);
+	CHECK(get_checked_flags(rook_checked_flags) == ROOK_CHECK_FLAGS);
+}
+

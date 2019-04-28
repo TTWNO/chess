@@ -49,6 +49,7 @@ int main(){
 		// Gets all moves for color who's turn it is.
 		get_all_moves_for_pieces(my_pieces, &my_board, &all_moves, en_passant_square, castle_perms);
 
+		cout << "Castle perms: " << castle_perms << endl;
 		print_board(my_board);
 		// Gets a string from cin called input
 		string input;
@@ -99,20 +100,29 @@ int main(){
 			if (moving_piece == W_ROOK){
 				if (moving_from_pos == Position::A1 &&
 						(castle_perms & CastlePerms::WQS == 1)){
-					castle_perms - CastlePerms::WQS;
+					castle_perms -= CastlePerms::WQS;
 				} else if (moving_from_pos == Position::H1 &&
 						(castle_perms & CastlePerms::WKS == 1)){
-					castle_perms - CastlePerms::WKS;
+					castle_perms -= CastlePerms::WKS;
 				}
 			} else if (moving_piece == B_ROOK){
 				if (moving_from_pos == Position::H8 &&
 						(castle_perms & CastlePerms::BKS == 1)){
-					castle_perms - CastlePerms::BKS;
+					castle_perms -= CastlePerms::BKS;
 				} else if (moving_from_pos == Position::A8 &&
 						(castle_perms & CastlePerms::BQS == 1)){
-					castle_perms - CastlePerms::BQS;
-				}
-			
+					castle_perms -= CastlePerms::BQS;
+				}	
+			}
+			// Removes castle perms after castling
+			if (is_white(moving_piece) &&
+					get_castle_flag(move_to_exec)){
+				castle_perms -= CastlePerms::WQS;
+				castle_perms -= CastlePerms::WKS;
+			} else if (is_black(moving_piece) &&
+					get_castle_flag(move_to_exec)) {
+				castle_perms -= CastlePerms::BQS;
+				castle_perms -= CastlePerms::BKS;
 			}
 			// This will keep the en passant sqaure for one whole turn.
 			if (reset_en_passant){

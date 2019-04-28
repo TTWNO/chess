@@ -12,5 +12,6 @@ std::vector<int> get_promoted_pieces(std::vector<int> moves);
 std::vector<int> get_en_passant_flags(std::vector<int> moves);
 std::vector<int> get_pawn_start_flags(std::vector<int> moves);
 std::vector<int> get_castle_flags(std::vector<int> moves);
+std::vector<int> get_checked_flags(std::vector<int> moves);
 std::vector<std::string> get_notations(std::vector<int> moves, std::array<PieceType, 120> board);
 #endif

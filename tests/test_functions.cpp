@@ -55,6 +55,13 @@ std::vector<int> get_castle_flags(std::vector<int> moves){
 	}
 	return transformed;
 }
+std::vector<int> get_checked_flags(std::vector<int> moves){
+	std::vector<int> transformed;
+	for (int mv : moves){
+		transformed.push_back(get_check_flag(mv));
+	}
+	return transformed;
+}
 std::vector<std::string> get_notations(std::vector<int> moves, std::array<PieceType, 120> board){
 	std::vector<std::string> notations;
 	for (int move : moves){
