@@ -119,14 +119,14 @@ TEST_CASE("Test all moves for black in edge cases.", "[get_all_moves][black]"){
 	CHECK(get_to_squares(get_all_moves(B_PAWN_SIDE1_POS, B_PAWN_SIDE1_BOARD)) == B_PAWN_SIDE1_ALL_MOVES);
 }
 
-TEST_CASE("Tests is_king_checked works", "[is_checked]"){
+TEST_CASE("Tests is_king_checked works", "[is_attacked]"){
 	auto king_checked_moves = get_all_moves(KING_CHECK_TEST_POS, KING_CHECK_TEST_BOARD); 
 	auto rook_checked_moves = get_all_moves(ROOK_CHECK_TEST_POS, KING_CHECK_TEST_BOARD);
 	CHECK(get_to_squares(king_checked_moves) == KING_CHECK_TEST_MOVES);
 	CHECK(get_to_squares(rook_checked_moves) == KING_CHECK_ROOK_MOVES);
-	CHECK(is_checked(KING_CHECK_TEST_POS, KING_CHECK_TEST_BOARD));
-	CHECK(is_checked(BLACK_CHECK_POS1, BLACK_CHECK_BOARD1));
-	CHECK(is_checked(BLACK_CHECK_POS2, BLACK_CHECK_BOARD2));
+	CHECK(is_attacked(KING_CHECK_TEST_POS, KING_CHECK_TEST_BOARD));
+	CHECK(is_attacked(BLACK_CHECK_POS1, BLACK_CHECK_BOARD1));
+	CHECK(is_attacked(BLACK_CHECK_POS2, BLACK_CHECK_BOARD2));
 }
 
 TEST_CASE("Test that moves that put own king in check are not returned", "[get_all_moves]"){
@@ -161,11 +161,14 @@ TEST_CASE("Test that the captures moves are returned", "[get_all_moves]"){
 	auto rook_moves = get_all_moves(ROOK_BLOCKED1_POS, ROOK_BLOCKED1_BOARD);
 	auto pawn_moves = get_all_moves(PAWN_DIAG_TEST1_POS, PAWN_DIAG_TEST1_BOARD);
 	auto king_moves = get_all_moves(KING_CHECK_TEST_POS, KING_CHECK_TEST_BOARD);
+	auto rook_check_moves = get_all_moves(ROOK_CHECK_MOVED_POS, ROOK_CHECK_MOVED_BOARD);
+	
 	CHECK(get_captured_pieces(knight_moves) == KNIGHT_BLOCKED1_CAPTS);
 	CHECK(get_captured_pieces(bishop_moves) == BISHOP_BLOCKED1_CAPTS);
 	CHECK(get_captured_pieces(rook_moves) == ROOK_BLOCKED1_CAPTS);
 	CHECK(get_captured_pieces(pawn_moves) == PAWN_DIAG_TEST1_CAPTS);
 	CHECK(get_captured_pieces(king_moves) == KING_CHECK_TEST_CAPTS);
+	CHECK(get_captured_pieces(rook_check_moves) == ROOK_CHECK_MOVED_CAPTURES);
 }
 
 TEST_CASE("Test that being blocked, stops moves from generating", "[get_all_moves]"){
@@ -288,8 +291,8 @@ TEST_CASE("Tests for check on square of queenside capture", "[get_all_moves]"){
 	CHECK(get_notations(cannot_queenside4, CASTLE_CHECK4_BOARD) == CASTLE_CHECK4_NOTATION);
 }
 
-TEST_CASE("Test that king check detection is working correctly.", "[is_checked]"){
-	CHECK(is_checked(ROOK_CHECK_KING_POS, ROOK_CHECK_MOVED_BOARD));
+TEST_CASE("Test that king check detection is working correctly.", "[is_attacked]"){
+	CHECK(is_attacked(ROOK_CHECK_KING_POS, ROOK_CHECK_MOVED_BOARD));
 }
 
 TEST_CASE("Test for add_checked_flags is working correctly.", "[get_all_moves][add_checked_flags]"){

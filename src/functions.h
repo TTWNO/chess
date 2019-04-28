@@ -57,7 +57,7 @@ std::vector<int> get_all_moves(int pos, std::array<PieceType, 120> board, bool r
 std::array<PieceType, 120> dumb_move(int move, std::array<PieceType, 120> board);
 
 // Decides if there this piece in position is in check
-bool is_checked(int pos, std::array<PieceType, 120> board);
+bool is_attacked(int pos, std::array<PieceType, 120> board);
 
 // Convert move (and board becuase notation needs more info than the move itself)
 // ...into algbraic notation.

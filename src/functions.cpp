@@ -97,16 +97,17 @@ void get_poss_of(PieceType pt, std::array<PieceType, 120>* board, std::vector<in
 	}
 }
 
-bool is_checked(int pos, std::array<PieceType, 120> board){
+bool is_attacked(int pos, std::array<PieceType, 120> board){
 	PieceType ptt = board[pos];
 	Color pc = get_color(ptt);
 	auto other_pieces = pc==Color::WHITE?Pieces::BLACK:Pieces::WHITE;
-	for (PieceType pt : other_pieces){
-		for (int pos_of_other : get_poss_of(pt, &board)) {
-			for (int possible_takes : get_all_moves(pos_of_other, board, false)){
-				if (get_to_sq(possible_takes) == pos) {
-					return true;
-				}
+	for (PieceType opposite_color_piece : other_pieces){
+		PieceType same_color_piece = rev_color(opposite_color_piece);
+		std::vector<int> moves;
+		get_all_moves_as_if(pos, same_color_piece, &board, &moves, false);
+		for (int reverse_move : moves){
+			if (get_captured_pc(reverse_move) == opposite_color_piece){
+				return true;
 			}
 		}
 	}
@@ -118,7 +119,7 @@ void add_checked_flags(PieceType pt, std::array<PieceType, 120> *board, std::vec
 	int other_king_pos = get_pos_of(other_king, board);
 	for (auto move_pn=pns->begin(); move_pn!=pns->end();){
 		auto moved_board = dumb_move(*move_pn, *board);
-		if (is_checked(other_king_pos, moved_board)){
+		if (is_attacked(other_king_pos, moved_board)){
 			*move_pn |= (1 << 25);
 		}
 		++move_pn;
@@ -148,8 +149,8 @@ void filter_checked_moves(PieceType pt, std::array<PieceType, 120> *board, std::
 				int full_move = make_move(get_from_sq(*p_pn), get_to_sq(*p_pn));
 				auto right_board = dumb_move(right_move, *board);
 				auto full_board = dumb_move(full_move, *board);
-				if (is_checked(get_to_sq(*p_pn)+1, right_board) ||
-					is_checked(get_to_sq(*p_pn), full_board)){
+				if (is_attacked(get_to_sq(*p_pn)+1, right_board) ||
+					is_attacked(get_to_sq(*p_pn), full_board)){
 					p_pn = pns->erase(p_pn);
 				} else {
 					++p_pn;
@@ -161,8 +162,8 @@ void filter_checked_moves(PieceType pt, std::array<PieceType, 120> *board, std::
 				int full_move = make_move(get_from_sq(*p_pn), get_to_sq(*p_pn));
 				auto left_board = dumb_move(left_move, *board);
 				auto full_board = dumb_move(full_move, *board);
-				if (is_checked(get_to_sq(*p_pn)-1, left_board) ||
-					is_checked(get_to_sq(*p_pn), full_board)){
+				if (is_attacked(get_to_sq(*p_pn)-1, left_board) ||
+					is_attacked(get_to_sq(*p_pn), full_board)){
 					p_pn = pns->erase(p_pn);
 				} else {
 					++p_pn;
@@ -174,7 +175,7 @@ void filter_checked_moves(PieceType pt, std::array<PieceType, 120> *board, std::
 			// remove all castle moves
 			if ((pt == PieceType::W_KING ||
 					pt == PieceType::B_KING) &&
-				is_checked(get_from_sq(*p_pn), *board)){
+				is_attacked(get_from_sq(*p_pn), *board)){
 				remove_all_castles = true;
 			}
 			// Make move
@@ -185,7 +186,7 @@ void filter_checked_moves(PieceType pt, std::array<PieceType, 120> *board, std::
 				my_king_pos = get_to_sq(*p_pn);
 			}
 
-			if (is_checked(my_king_pos, moved_board)){
+			if (is_attacked(my_king_pos, moved_board)){
 				p_pn = pns->erase(p_pn);
 			} else {
 				++p_pn;

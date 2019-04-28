@@ -874,7 +874,8 @@ const std::vector<std::string> CASTLE_CHECK4_NOTATION = {
 
 // This is a check that moves are being marked as "check moves" poperly
 const int ROOK_CHECK_POS = H3;
-const int ROOK_CHECK_KING_POS = H3;
+const int ROOK_CHECK_MOVED_POS = H1;
+const int ROOK_CHECK_KING_POS = G1;
 const std::array<PieceType, 120> ROOK_CHECK_BOARD = {
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
@@ -905,6 +906,12 @@ const std::array<PieceType, 120> ROOK_CHECK_MOVED_BOARD = {
 };
 const std::vector<std::string> ROOK_CHECK_NOTATION = {
 	"Rh2", "Rh1+"
+};
+const std::vector<int> ROOK_CHECK_MOVED_MOVES = {
+	H3, H2, G1
+};
+const std::vector<int> ROOK_CHECK_MOVED_CAPTURES = {
+	W_KING, NONE, NONE
 };
 const std::vector<int> ROOK_CHECK_FLAGS = {
 	0, 1
