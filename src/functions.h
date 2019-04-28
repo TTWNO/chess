@@ -58,6 +58,7 @@ std::array<PieceType, 120> dumb_move(int move, std::array<PieceType, 120> board)
 
 // Decides if there this piece in position is in check
 bool is_attacked(int pos, std::array<PieceType, 120> board);
+bool king_checked(std::array<PieceType, 120> *board, Color king_color);
 
 // Convert move (and board becuase notation needs more info than the move itself)
 // ...into algbraic notation.

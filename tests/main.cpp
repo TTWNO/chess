@@ -291,8 +291,9 @@ TEST_CASE("Tests for check on square of queenside capture", "[get_all_moves]"){
 	CHECK(get_notations(cannot_queenside4, CASTLE_CHECK4_BOARD) == CASTLE_CHECK4_NOTATION);
 }
 
-TEST_CASE("Test that king check detection is working correctly.", "[is_attacked]"){
-	CHECK(is_attacked(ROOK_CHECK_KING_POS, ROOK_CHECK_MOVED_BOARD));
+TEST_CASE("Test that king check detection is working correctly.", "[king_checked]"){
+	auto rook_check_moved_board = ROOK_CHECK_MOVED_BOARD;
+	CHECK(king_checked(&rook_check_moved_board, Color::WHITE));
 }
 
 TEST_CASE("Test for add_checked_flags is working correctly.", "[get_all_moves][add_checked_flags]"){

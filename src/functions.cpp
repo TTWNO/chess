@@ -114,6 +114,12 @@ bool is_attacked(int pos, std::array<PieceType, 120> board){
 	return false;
 }
 
+bool king_checked(std::array<PieceType, 120> *board, Color color_of_king){
+	PieceType king = color_of_king==WHITE?W_KING:B_KING;
+	int king_pos = get_pos_of(king, board);
+	return is_attacked(king_pos, *board);
+}
+
 void add_checked_flags(PieceType pt, std::array<PieceType, 120> *board, std::vector<int> *pns){
 	PieceType other_king = is_white(pt)?PieceType::B_KING:PieceType::W_KING;
 	int other_king_pos = get_pos_of(other_king, board);
