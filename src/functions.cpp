@@ -290,6 +290,35 @@ std::array<PieceType, 120> dumb_move(int move, std::array<PieceType, 120> board)
 	return new_board;
 }
 
+void _filter_unneeded_squares(std::vector<int> *moves, int piecetype, int origin){
+	for (auto move_pn=moves->begin(); move_pn!=moves->end();){
+		if (get_captured_pc(*move_pn) == piecetype &&
+			get_to_sq(*move_pn) != origin){
+			++move_pn;
+		} else {
+			move_pn = moves->erase(move_pn);
+		}
+	}
+
+};
+
+void _non_pawn_disambiguate(int from, int to, int piecetype, std::vector<int> *moves, std::string *disambig){
+	if (moves->size() == 1){
+		*disambig = POSITION_STRING[from][0];
+		int other_from = get_to_sq(moves->at(0));
+		int min_from = other_from<from?other_from:from;
+		int max_from = other_from>from?other_from:from;
+		// If the remainder of the difference divided by 10 is 0
+		// they are on the same file.
+		// Use rank to disambiguate
+		if ((max_from-min_from) % 10 == 0){
+			*disambig = POSITION_STRING[from][1];
+		}
+	} else if (moves->size() > 1){
+		*disambig = POSITION_STRING[from];
+	}
+}
+
 std::string to_notation(int move, std::array<PieceType, 120> *board){
 	std::stringstream ss;
 	
@@ -329,14 +358,31 @@ std::string to_notation(int move, std::array<PieceType, 120> *board){
 
 	if (captured_piece != 0){
 		capture_character = "x";
+		// Comment #6
+		// if a pawn is capturing, have the disambiguation be the pawn's file
+		// stored in a seperate variable because pawn disabiguation by file happens at the start of a notation. For example:
+		// exf4 as opposed to Qh1xf4
 		if (piecetype == PieceType::W_PAWN ||
 			piecetype == PieceType::B_PAWN){
 			pawn_file = POSITION_STRING[from][0];
 		}
 	}
+	// Pawns do not require this, as their file is ALWAYS enough to identify them,
+	// and the file is always speicified on a pawn capture.
+	// (See comment #6)
 	if (piecetype != PieceType::W_PAWN &&
 		piecetype != PieceType::B_PAWN){
+			// Simulated a piece of the same type, and opposite color moving from the to square
+			// to check if any other pieces can also move here.
+			// Basically it searches to see if there are duplicate pieces which can move to the same spot.
+			// and stores any duplicates in the other_moves variable.
+			PieceType opposite_piece = rev_color(piecetype);
+			std::vector<int> other_moves = {};
+			get_all_moves_as_if(to, opposite_piece, board, &other_moves, false);
+			// This takes out any mention of other squares involing blank pieces, or any peices that do not invole the current one.
+			_filter_unneeded_squares(&other_moves, piecetype, from);
 			piece_character = CHESS_CHARS_INSENSITIVE[piecetype];
+			_non_pawn_disambiguate(from, to, piecetype, &other_moves, &disambig);
 	}
 	if (get_en_pass_flag(move) == 1){
 		en_passant = "e.p.";
@@ -346,48 +392,12 @@ std::string to_notation(int move, std::array<PieceType, 120> *board){
 		// This checks if the other team has any valid moves.
 		// If not, the check sign changes to a hashtag (#).
 		std::vector<int> other_moves = {};
-		for (PieceType opt : other_pieces){
-			for (int pos_of_opt : get_poss_of(opt, board)){
-				get_all_moves(pos_of_opt, &moved_board, &other_moves);
-			}
-		}
+		get_all_moves_for_pieces(other_pieces, &moved_board, &other_moves);
 		if (other_moves.empty()){
 			check = "#";
 		}
 	}
-	// Simulated a piece of the same type, and opposite coor moving from the to square
-	// to check if any other pieces can also move here.
-	PieceType opposite_piece = rev_color(piecetype);
-	std::vector<int> moves = {};
-	get_all_moves_as_if(to, opposite_piece, board, &moves, false);
-	// Pawns do not require this, as their file is ALWAYS enough to identify them,
-	// and the file is always speicified on a pawn capture.
-	if (piecetype != PieceType::W_PAWN &&
-		piecetype != PieceType::B_PAWN){
-		for (auto move_pn=moves.begin(); move_pn!=moves.end();){
-			if (get_captured_pc(*move_pn) == piecetype &&
-				get_to_sq(*move_pn) != from){
-				++move_pn;
-			} else {
-				move_pn = moves.erase(move_pn);
-			}
-		}
-		if (moves.size() == 1){
-			disambig = POSITION_STRING[from][0];
-			int other_from = get_to_sq(moves.at(0));
-			int min_from = other_from<from?other_from:from;
-			int max_from = other_from>from?other_from:from;
-			// If the remainder of the difference divided by 10 is 0
-			// they are on the same file.
-			// Use rank to disambiguate
-			if ((max_from-min_from) % 10 == 0){
-				disambig = POSITION_STRING[from][1];
-			}
-		} else if (moves.size() > 1){
-			disambig = POSITION_STRING[from];
-		}
-	}
-
+	// If promoting, add an equals sign and the piece promoting to.
 	if (promoting_to != PieceType::NONE){
 		promotion << "=" << CHESS_CHARS_INSENSITIVE[promoting_to];
 	}
