@@ -130,8 +130,17 @@ void filter_checked_moves(PieceType pt, std::array<PieceType, 120> *board, std::
 	PieceType my_king = is_white(pt)?PieceType::W_KING:PieceType::B_KING;
 	int my_king_pos = get_pos_of(my_king, board);
 	int attackers = 0;
+	bool remove_all_castles = false;
 	for (auto p_pn= pns->begin(); p_pn!=pns->end();){
 		if (get_castle_flag(*p_pn) == 1){
+			// If removing all castle flags is triggered
+			// (by being in check)
+			// remove all of them.
+			if (remove_all_castles){
+				p_pn = pns->erase(p_pn);
+				++p_pn;
+				break;
+			}
 			// If moved left
 			// Queenside
 			if ((get_from_sq(*p_pn) - get_to_sq(*p_pn)) > 0){
@@ -161,6 +170,13 @@ void filter_checked_moves(PieceType pt, std::array<PieceType, 120> *board, std::
 				}
 			}
 		} else {
+			// if it is a king, that is in check
+			// remove all castle moves
+			if ((pt == PieceType::W_KING ||
+					pt == PieceType::B_KING) &&
+				is_checked(get_from_sq(*p_pn), *board)){
+				remove_all_castles = true;
+			}
 			// Make move
 			std::array<PieceType, 120> moved_board = dumb_move(*p_pn, *board);
 			// This is for when the king is the same piece that is moving.

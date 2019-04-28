@@ -868,4 +868,6 @@ const std::array<PieceType, 120> CASTLE_CHECK4_BOARD = {
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV	
 };
-const std::vector<std::string> CASTLE_CHECK4_NOTATION = {};
+const std::vector<std::string> CASTLE_CHECK4_NOTATION = {
+	"Kf8"
+};
