@@ -1,6 +1,8 @@
 #include "bitwise.h"
 #include "functions.h"
 #include "all_moves_functions.cpp"
+#include <algorithm>
+#include <cstring>
 #include <string>
 #include <sstream>
 #include <stdexcept>
@@ -376,21 +378,18 @@ std::string to_notation(int move, std::array<PieceType, 120> *board){
 	return ss.str();
 }
 
-void get_all_white_moves(std::array<PieceType, 120> *board, std::vector<int> *moves){
-	for (PieceType pt : Pieces::WHITE){
+void get_all_moves_for_pieces(std::array<PieceType, 6> pieces, std::array<PieceType, 120> *board, std::vector<int> *moves, int en_passant, int castle_perms){
+	for (PieceType pt : pieces){
 		for (int pos_of : get_poss_of(pt, board)){
 			std::vector<int> local_moves = {};
-			get_all_moves_as_if(pos_of, pt, board, &local_moves);
+			get_all_moves_as_if(pos_of, pt, board, &local_moves, true, en_passant, castle_perms);
 			moves->insert(moves->end(), local_moves.begin(), local_moves.end());
 		}
 	}
 }
-void get_all_black_moves(std::array<PieceType, 120> *board, std::vector<int> *moves){
-	for (PieceType pt : Pieces::BLACK){
-		for (int pos_of : get_poss_of(pt, board)){
-			std::vector<int> local_moves = {};
-			get_all_moves_as_if(pos_of, pt, board, &local_moves);
-			moves->insert(moves->end(), local_moves.begin(), local_moves.end());
-		}
-	}
+// From StackOverflow (https://stackoverflow.com/questions/5891610/how-to-remove-certain-characters-from-a-string-in-c#5891643)
+void remove_chars_from_string(std::string &str, std::string charsToRemove ) {
+   for ( unsigned int i = 0; i < charsToRemove.length(); ++i ) {
+      str.erase( remove(str.begin(), str.end(), charsToRemove.at(i)), str.end() );
+   }
 }

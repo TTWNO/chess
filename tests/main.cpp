@@ -269,5 +269,14 @@ TEST_CASE("Do extra (random board tests) on notation and move generation", "[to_
 	CHECK(get_notations(knight_moves, EXTRA1_BOARD) == KNIGHT_EXTRA1_NOTATION);
 	CHECK(get_notations(knight_moves2, EXTRA2_BOARD) == KNIGHT_EXTRA2_NOTATION);
 	CHECK(get_to_squares(knight_moves2) == KNIGHT_EXTRA2_MOVES);
+}
 
+TEST_CASE("Test for promotions on empty squares", "[get_all_moves]"){
+	auto pawn_prom = get_all_moves(PAWN_PROM_BLANK_POS, PAWN_PROM_BLANK_BOARD);
+	CHECK(get_notations(pawn_prom, PAWN_PROM_BLANK_BOARD) == PAWN_PROM_BLANK_NOTATION);
+}
+
+TEST_CASE("Tests for check on square of queenside capture", "[get_all_moves]"){
+	auto cannot_queenside = get_all_moves(CASTLE_CHECK1_POS, CASTLE_CHECK1_BOARD);
+	CHECK(get_notations(cannot_queenside, CASTLE_CHECK1_BOARD) == CASTLE_CHECK1_NOTATION);
 }

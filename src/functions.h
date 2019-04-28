@@ -64,5 +64,5 @@ bool is_checked(int pos, std::array<PieceType, 120> board);
 std::string to_notation(int move, std::array<PieceType, 120> *board);
 
 // These functions are just for printing (for now) so they are not included in the tests.
-void get_all_white_moves(std::array<PieceType, 120> *board, std::vector<int> *moves);
-void get_all_black_moves(std::array<PieceType, 120> *board, std::vector<int> *moves);
+void get_all_moves_for_pieces(std::array<PieceType, 6> pieces, std::array<PieceType, 120> *board, std::vector<int> *moves, int en_passant, int castle_perms);
+void remove_chars_from_string(std::string &std, std::string to_remove);

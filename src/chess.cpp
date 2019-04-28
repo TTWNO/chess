@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <string>
+#include "bitwise.h"
 #include "constants.h"
 #include "functions.h"
 #include "color.hpp"
@@ -37,26 +38,21 @@ int main(){
 	vector<int> all_moves = {};
 	vector<string> all_moves_notation = {};
 
+	int en_passant_square = 0;
+	int castle_perms = 0xF;
+	bool reset_en_passant = false;
 	while (true){
+
 		all_moves = {};
 		all_moves_notation = {};
-		
+		array<PieceType, 6> my_pieces = whos_turn==Color::WHITE?Pieces::WHITE:Pieces::BLACK;
 		// Gets all moves for color who's turn it is.
-		if (whos_turn == Color::WHITE){
-			get_all_white_moves(&my_board, &all_moves);
-		} else {
-			get_all_black_moves(&my_board, &all_moves);
-		}
+		get_all_moves_for_pieces(my_pieces, &my_board, &all_moves, en_passant_square, castle_perms);
 
 		print_board(my_board);
 		// Gets a string from cin called input
 		string input;
 		getline(cin, input);
-		// Quits
-		if (input == "q"){
-			break;
-		}
-		
 		// Gets all moves and stores them in a notation list
 		// TODO make into own function
 		bool move_exec = false;
@@ -70,15 +66,65 @@ int main(){
 				break;
 			}
 		}
+		// Quits
+		if (input == "q"){
+			break;
+		} else if (input == "l"){
+			cout << "Listing moves: \n";
+			for (string notation : all_moves_notation){
+				cout << notation << " ";
+			}
+			cout << endl;
+			continue;
+		}	
 		// If the input did not match any legal move.
 		if (!move_exec){
+			cout << "Invalid move!" << std::endl;
 			cout << "These are the only valid moves: ";
 			for (string notation : all_moves_notation){
 				cout << notation << " ";
 			}
 			cout << endl;
+			continue;
 		// If the input did match a legal move.
 		} else {
+			int moving_from_pos = get_from_sq(move_to_exec);
+			int moving_piece = my_board[moving_from_pos];
+			// Depending on move, change castle perms, or en_passant square
+			if (get_pawn_st_flag(move_to_exec) == 1){
+				int en_pass_offset = whos_turn==Color::WHITE?10:-10;
+				en_passant_square = get_to_sq(move_to_exec)+en_pass_offset;
+				reset_en_passant = false;
+			}
+			if (moving_piece == W_ROOK){
+				if (moving_from_pos == Position::A1 &&
+						(castle_perms & CastlePerms::WQS == 1)){
+					castle_perms - CastlePerms::WQS;
+				} else if (moving_from_pos == Position::H1 &&
+						(castle_perms & CastlePerms::WKS == 1)){
+					castle_perms - CastlePerms::WKS;
+				}
+			} else if (moving_piece == B_ROOK){
+				if (moving_from_pos == Position::H8 &&
+						(castle_perms & CastlePerms::BKS == 1)){
+					castle_perms - CastlePerms::BKS;
+				} else if (moving_from_pos == Position::A8 &&
+						(castle_perms & CastlePerms::BQS == 1)){
+					castle_perms - CastlePerms::BQS;
+				}
+			
+			}
+			// This will keep the en passant sqaure for one whole turn.
+			if (reset_en_passant){
+				en_passant_square = 0;
+				reset_en_passant = false;
+			}
+			if (en_passant_square != 0){
+				cout << "En passant move at: " << POSITION_STRING[en_passant_square] << endl;
+				reset_en_passant = true;
+			}
+			// This reverses the whos_turn variable.
+			// and runs the move on the my_board variable.
 			my_board = dumb_move(move_to_exec, my_board);
 			whos_turn = rev_color(whos_turn);
 		}

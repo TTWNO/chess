@@ -735,7 +735,7 @@ const std::array<PieceType, 120> EXTRA1_BOARD = {
 	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV	
 };
 const std::vector<std::string> KNIGHT_EXTRA1_NOTATION = {
-	"Nh3", "Nf3", "Ne4", "Ne6", "Nf7", "Nxh7"
+	"Ne6", "Nf7", "Nxh7", "Ne4", "Nf3", "Nh3"
 };
 
 const int KNIGHT_EXTRA2_POS = D4;
@@ -754,10 +754,10 @@ const std::array<PieceType, 120> EXTRA2_BOARD = {
 	INV,INV,INV,INV,INV,INV,INV,INV,INV,INV
 };
 const std::vector<int> KNIGHT_EXTRA2_MOVES = {
-	B3, F3, F5, E6, C6, B5
+	B5, C6, E6, F5, B3, F3
 };
 const std::vector<std::string> KNIGHT_EXTRA2_NOTATION = {
-	
+	"Nb5", "Nc6", "Nxe6", "Nf5", "Nb3", "Ndf3"	
 };
 
 const std::array<PieceType, 120> EXTRA3_BOARD = {
@@ -774,4 +774,48 @@ const std::array<PieceType, 120> EXTRA3_BOARD = {
 	INV,INV,INV,INV,INV,INV,INV,INV,INV,INV,
 	INV,INV,INV,INV,INV,INV,INV,INV,INV,INV
 };
+
+
+// Tests that a pawn has promotion moves, even if there are only blank sqaures to move to.
+const int PAWN_PROM_BLANK_POS = D7;
+const std::array<PieceType, 120> PAWN_PROM_BLANK_BOARD = {
+	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
+	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE,  INV,	
+	INV, NONE, NONE, NONE, W_PAWN, NONE, NONE, NONE, NONE,  INV,	
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE,  INV,	
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, INV,
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE,  INV,	
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE,  INV,	
+	INV, NONE, B_ROOK, NONE, NONE, NONE, NONE, NONE, NONE,  INV,	
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, W_KING, NONE, INV,
+	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
+	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV	
+};
+const std::vector<std::string> PAWN_PROM_BLANK_NOTATION = {
+	"d8=N", "d8=B", "d8=R", "d8=Q"
+};
+
+// This is another test for castling.
+// As of the writing of this, the castling works even if the king is in check
+// in the square it moves to... WTF?
+const int CASTLE_CHECK1_POS = E8;
+const std::array<PieceType, 120> CASTLE_CHECK1_BOARD = {
+	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
+	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
+	INV, B_ROOK, NONE, NONE, NONE, B_KING, B_PAWN, NONE, NONE,  INV,	
+	INV, NONE, NONE, NONE, NONE, B_PAWN, B_PAWN, NONE, NONE,  INV,	
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE,  INV,	
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, INV,
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE,  INV,	
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, NONE, W_BISHOP,  INV,	
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE,  INV,	
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, W_KING, NONE, INV,
+	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
+	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV	
+};
+const std::vector<std::string> CASTLE_CHECK1_NOTATION = {
+	"Kd8"
+};
+
 
