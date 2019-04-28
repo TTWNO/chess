@@ -280,8 +280,10 @@ TEST_CASE("Tests for check on square of queenside capture", "[get_all_moves]"){
 	auto cannot_queenside = get_all_moves(CASTLE_CHECK1_POS, CASTLE_CHECK1_BOARD, true, 0, 0xF);
 	auto cannot_queenside2 = get_all_moves(CASTLE_CHECK2_POS, CASTLE_CHECK2_BOARD, true, 0, 0xF);
 	auto cannot_queenside3 = get_all_moves(CASTLE_CHECK3_POS, CASTLE_CHECK3_BOARD, true, 0, 0xF);
+	auto cannot_queenside4 = get_all_moves(CASTLE_CHECK4_POS, CASTLE_CHECK4_BOARD, true, 0, 0xF);
 
 	CHECK(get_notations(cannot_queenside, CASTLE_CHECK1_BOARD) == CASTLE_CHECK1_NOTATION);
 	CHECK(get_notations(cannot_queenside2, CASTLE_CHECK2_BOARD) == CASTLE_CHECK2_NOTATION);
 	CHECK(get_notations(cannot_queenside3, CASTLE_CHECK3_BOARD) == CASTLE_CHECK3_NOTATION);
+	CHECK(get_notations(cannot_queenside4, CASTLE_CHECK4_BOARD) == CASTLE_CHECK4_NOTATION);
 }
