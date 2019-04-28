@@ -278,5 +278,8 @@ TEST_CASE("Test for promotions on empty squares", "[get_all_moves]"){
 
 TEST_CASE("Tests for check on square of queenside capture", "[get_all_moves]"){
 	auto cannot_queenside = get_all_moves(CASTLE_CHECK1_POS, CASTLE_CHECK1_BOARD);
+	auto cannot_queenside2 = get_all_moves(CASTLE_CHECK2_POS, CASTLE_CHECK2_BOARD);
+
 	CHECK(get_notations(cannot_queenside, CASTLE_CHECK1_BOARD) == CASTLE_CHECK1_NOTATION);
+	CHECK(get_notations(cannot_queenside2, CASTLE_CHECK2_BOARD) == CASTLE_CHECK2_NOTATION);
 }
