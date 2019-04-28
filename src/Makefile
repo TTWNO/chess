@@ -12,4 +12,4 @@
 default: build
 
 build:
-	g++ -O2 -o chess.out functions.cpp chess.cpp -std=c++11
+	g++ -O2 -Wall -o chess.out functions.cpp chess.cpp -std=c++11
