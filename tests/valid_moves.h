@@ -2,7 +2,6 @@
 #include <string>
 #include <constants.h>
 
-
 /// This is for possible moves on a default board
 const std::vector<int> DEFAULT_B_A_PAWN_POSSIBLE_MOVES = {
 	A6, A5

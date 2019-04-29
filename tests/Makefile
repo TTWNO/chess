@@ -1,6 +1,7 @@
 defualt: all.out
 bitwise: bitwise.out
 release: all_optimized.out
+speed_tests: speed_tests.out
 
 clean:
 	rm all.out
@@ -32,3 +33,6 @@ bitwise_optimized.out: catch_main_optimized.o
 
 all_optimized.out: catch_main_optimized.o custom_printing_optimized.o
 	g++ -std=c++11 -O2 -Wall -I../src/ -o all_optimized.out ../src/functions.cpp catch_main_optimized.o custom_printing_optimized.o test_functions.cpp main.cpp
+
+speed_tests.out:
+	g++ -O2 -Wall -I../src/ -o speed_tests.out ../src/functions.cpp speed.cpp
