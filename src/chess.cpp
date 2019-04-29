@@ -10,12 +10,12 @@
 
 using namespace std;
 
-void print_board(array<PieceType, 120> *board, vector<int> &highlighted_moves){
+void print_board(const array<PieceType, 120>& board, vector<int> &highlighted_moves){
 	for (int i = 2; i < 10; ++i){
 		cout << 10-i << " |";
 		for (int j = 1; j < 9; ++j){
 			int ix = (i*10) + j;
-			int piece = (*board)[ix];
+			int piece = board[ix];
 			string piece_string = FANCY_CHESS_CHARS[piece];
 			string foreground_color = is_white(piece)?"White":"Black";
 			string background_color = "";
@@ -74,14 +74,14 @@ int main(){
 		all_moves_notation = {};
 		array<PieceType, 6> my_pieces = whos_turn==Color::WHITE?Pieces::WHITE:Pieces::BLACK;
 		// Gets all moves for color who's turn it is.
-		get_all_moves_for_pieces(my_pieces, &my_board, &all_moves, en_passant_square, castle_perms);
+		get_all_moves_for_pieces(my_pieces, my_board, all_moves, en_passant_square, castle_perms);
 
-		print_board(&my_board, highlighted_moves);
+		print_board(my_board, highlighted_moves);
 		
 		// If there are no moves. The game is over.
 		// If the king is ALSO in check, then the other team won!
 		if (all_moves.empty()){
-			if (king_checked(&my_board, whos_turn)){
+			if (king_checked(my_board, whos_turn)){
 				string winning_team = rev_color(whos_turn)==Color::WHITE?"White":"Black";
 				cout << "GG! " << winning_team << " won!" << endl;
 				break;
@@ -99,7 +99,7 @@ int main(){
 		bool move_exec = false;
 		int move_to_exec = 0;
 		for (int move : all_moves){
-			string move_notation = to_notation(move, &my_board);
+			string move_notation = to_notation(move, my_board);
 			all_moves_notation.push_back(move_notation);
 			if (move_notation == input){
 				move_exec = true;
@@ -149,7 +149,7 @@ int main(){
 					for (int move : all_moves){
 						if (POSITION_STRING[get_from_sq(move)] == possible_position){
 							highlighted_moves.push_back(move);
-							cout << to_notation(move, &my_board) << " ";
+							cout << to_notation(move, my_board) << " ";
 						}
 					}
 					cout << endl;
