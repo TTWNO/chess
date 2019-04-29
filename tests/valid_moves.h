@@ -917,3 +917,24 @@ const std::vector<int> ROOK_CHECK_FLAGS = {
 	0, 1
 };
 
+// This tests that kings cannot move backward into check from check
+const int BACK_CHECK_POS = E6;
+const std::array<PieceType, 120> BACK_CHECK_BOARD = {
+	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
+	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE,  INV,	
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE,  INV,	
+	INV, NONE, NONE, NONE, NONE, B_KING, NONE, NONE, NONE,  INV,	
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, INV,
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE,  INV,	
+	INV, NONE, NONE, NONE, NONE, W_ROOK, NONE, NONE, NONE,  INV,	
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE,  INV,	
+	INV, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, INV,
+	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV, 	
+	INV, INV, INV, INV, INV, INV, INV, INV, INV, INV	
+};
+const std::vector<int> BACK_CHECK_KING_MOVES = {
+	D7, F7,
+	D5, F5,
+	F6, D6
+};

@@ -181,7 +181,7 @@ void filter_checked_moves(PieceType pt, const std::array<PieceType, 120>& board,
 			}
 			// Make move
 			std::array<PieceType, 120> moved_board;
-			dumb_move(*p_pn, board, moved_board);
+			dumb_move(*p_pn, board, moved_board);	
 			// This is for when the king is the same piece that is moving.
 			// If this is the case, reset to king position to the new position given by the get_to_sq() of the move.
 			if (pt == my_king){

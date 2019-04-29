@@ -308,3 +308,8 @@ TEST_CASE("Test for add_checked_flags is working correctly.", "[get_all_moves][a
 	CHECK(get_checked_flags(rook_checked_flags) == ROOK_CHECK_FLAGS);
 }
 
+TEST_CASE("Test that kings cannot move backwards into check", "[get_all_moves]"){
+	auto king_back_checked = get_all_moves(BACK_CHECK_POS, BACK_CHECK_BOARD);
+
+	CHECK(get_to_squares(king_back_checked) == BACK_CHECK_KING_MOVES);
+}
