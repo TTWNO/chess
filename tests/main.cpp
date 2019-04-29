@@ -34,13 +34,13 @@ TEST_CASE("Test that get_rank() works)", "[get_rank]"){
 }
 
 TEST_CASE("Test that an unordered set of positions are returned when looking for a piece type through a board", "[get_pos_of]"){
-	CHECK(get_poss_of(PieceType::B_PAWN, &DEFAULT_BOARD) == B_PAWNS_SQUARES);
+	CHECK(get_poss_of(PieceType::B_PAWN, DEFAULT_BOARD) == B_PAWNS_SQUARES);
 }
 
 TEST_CASE("Test that a color can be gotten from a given square on the board", "[get_color]"){
-	CHECK(get_color(Position::C8, &DUMB_MOVE_1) == Color::BLACK);
-	CHECK(get_color(Position::F4, &DUMB_MOVE_1) == Color::NO_COLOR);
-	CHECK(get_color(Position::C2, &DUMB_MOVE_1) == Color::WHITE);
+	CHECK(get_color(Position::C8, DUMB_MOVE_1) == Color::BLACK);
+	CHECK(get_color(Position::F4, DUMB_MOVE_1) == Color::NO_COLOR);
+	CHECK(get_color(Position::C2, DUMB_MOVE_1) == Color::WHITE);
 }
 TEST_CASE("Test that a color can be gotten from a PieceType", "[get_color]"){
 	CHECK(get_color(PieceType::NONE) == Color::NO_COLOR);
@@ -127,6 +127,11 @@ TEST_CASE("Tests is_king_checked works", "[is_attacked]"){
 	CHECK(is_attacked(KING_CHECK_TEST_POS, KING_CHECK_TEST_BOARD));
 	CHECK(is_attacked(BLACK_CHECK_POS1, BLACK_CHECK_BOARD1));
 	CHECK(is_attacked(BLACK_CHECK_POS2, BLACK_CHECK_BOARD2));
+}
+
+TEST_CASE("Test the hypothetical positions can be tests for attacking", "[would_be_checked]"){
+	CHECK_FALSE(would_be_attacked(BCASTLE_FROM_POS+1, PieceType::B_KING, CASTLE_BOARD));
+	CHECK_FALSE(would_be_attacked(BCASTLE_FROM_POS+2, PieceType::B_KING, CASTLE_BOARD));
 }
 
 TEST_CASE("Test that moves that put own king in check are not returned", "[get_all_moves]"){
@@ -293,7 +298,7 @@ TEST_CASE("Tests for check on square of queenside capture", "[get_all_moves]"){
 
 TEST_CASE("Test that king check detection is working correctly.", "[king_checked]"){
 	auto rook_check_moved_board = ROOK_CHECK_MOVED_BOARD;
-	CHECK(king_checked(&rook_check_moved_board, Color::WHITE));
+	CHECK(king_checked(rook_check_moved_board, Color::WHITE));
 }
 
 TEST_CASE("Test for add_checked_flags is working correctly.", "[get_all_moves][add_checked_flags]"){

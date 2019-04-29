@@ -12,9 +12,6 @@
 #include <stdio.h>
 #include <math.h>
 
-// TODO implement functions.h functions.
-// NOTE tests will NOT run unless you implement these functions.
-
 Rank get_rank(int pos){
 	int rank = 0;
 	while (pos >= 0){
@@ -43,8 +40,8 @@ Color get_color(PieceType pt){
 	return Color::NO_COLOR;
 }
 
-Color get_color(int pn, std::array<PieceType, 120> const *board){
-	return get_color((*board)[pn]);
+Color get_color(int pn, const std::array<PieceType, 120>& board){
+	return get_color(board[pn]);
 }
 
 Color rev_color(Color c){
@@ -65,46 +62,45 @@ PieceType rev_color(PieceType pt){
 	return PieceType::NONE;
 }
 
-std::vector<int> get_possible_movers(Position pn, std::array<PieceType, 120> board){
+std::vector<int> get_possible_movers(Position pn, const std::array<PieceType, 120>& board){
 	std::vector<int> pns = {Position::A1};
 	return pns;
 }
 
-int get_pos_of(PieceType pt, std::array<PieceType, 120> const *board){
+int get_pos_of(PieceType pt, const std::array<PieceType, 120>& board){
 	for (int pn = Position::A8; pn!=Position::H1; pn++){
-		if ((*board)[pn] == pt){
+		if (board[pn] == pt){
 			return pn;
 		}
 	}
 	return Position::NA;
 }
 
-std::vector<int> get_poss_of(PieceType pt, std::array<PieceType, 120> const *board){
+std::vector<int> get_poss_of(PieceType pt, const std::array<PieceType, 120>& board){
 	std::vector<int> results;
 	for (int pn = Position::A8; pn!=Position::H1; pn++){
-		if ((*board)[pn] == pt){
+		if (board[pn] == pt){
 			results.push_back(pn);
 		}
 	}
 	return results;
 }
 
-void get_poss_of(PieceType pt, std::array<PieceType, 120>* board, std::vector<int>* pns){
+void get_poss_of(PieceType pt, const std::array<PieceType, 120>& board, std::vector<int>& pns){
 	for (int pn = Position::A8; pn!=Position::H1; pn++){
-		if ((*board)[pn] == pt){
-			pns->push_back(pn);
+		if (board[pn] == pt){
+			pns.push_back(pn);
 		}
 	}
 }
 
-bool is_attacked(int pos, std::array<PieceType, 120> board){
-	PieceType ptt = board[pos];
-	Color pc = get_color(ptt);
+bool would_be_attacked(int pos, PieceType piece, const std::array<PieceType, 120>& board){
+	Color pc = get_color(piece);
 	auto other_pieces = pc==Color::WHITE?Pieces::BLACK:Pieces::WHITE;
 	for (PieceType opposite_color_piece : other_pieces){
 		PieceType same_color_piece = rev_color(opposite_color_piece);
 		std::vector<int> moves;
-		get_all_moves_as_if(pos, same_color_piece, &board, &moves, false);
+		get_all_moves_as_if(pos, same_color_piece, board, moves, false);
 		for (int reverse_move : moves){
 			if (get_captured_pc(reverse_move) == opposite_color_piece){
 				return true;
@@ -112,19 +108,25 @@ bool is_attacked(int pos, std::array<PieceType, 120> board){
 		}
 	}
 	return false;
+	
 }
 
-bool king_checked(std::array<PieceType, 120> *board, Color color_of_king){
+bool is_attacked(int pos, const std::array<PieceType, 120>& board){
+	return would_be_attacked(pos, board[pos], board);
+}
+
+bool king_checked(const std::array<PieceType, 120>& board, Color color_of_king){
 	PieceType king = color_of_king==WHITE?W_KING:B_KING;
 	int king_pos = get_pos_of(king, board);
-	return is_attacked(king_pos, *board);
+	return is_attacked(king_pos, board);
 }
 
-void add_checked_flags(PieceType pt, std::array<PieceType, 120> *board, std::vector<int> *pns){
+void add_checked_flags(PieceType pt, const std::array<PieceType, 120>& board, std::vector<int>& pns){
 	PieceType other_king = is_white(pt)?PieceType::B_KING:PieceType::W_KING;
 	int other_king_pos = get_pos_of(other_king, board);
-	for (auto move_pn=pns->begin(); move_pn!=pns->end();){
-		auto moved_board = dumb_move(*move_pn, *board);
+	for (auto move_pn=pns.begin(); move_pn!=pns.end();){
+		std::array<PieceType, 120> moved_board;
+		dumb_move(*move_pn, board, moved_board);
 		if (is_attacked(other_king_pos, moved_board)){
 			*move_pn |= (1 << 25);
 		}
@@ -133,17 +135,17 @@ void add_checked_flags(PieceType pt, std::array<PieceType, 120> *board, std::vec
 }
 
 //TODO: Make faster by running from king squar eonly, instead of running on every piece of opposite team.
-void filter_checked_moves(PieceType pt, std::array<PieceType, 120> *board, std::vector<int> *pns){
+void filter_checked_moves(PieceType pt, const std::array<PieceType, 120>& board, std::vector<int>& pns){
 	PieceType my_king = is_white(pt)?PieceType::W_KING:PieceType::B_KING;
 	int my_king_pos = get_pos_of(my_king, board);
 	bool remove_all_castles = false;
-	for (auto p_pn= pns->begin(); p_pn!=pns->end();){
+	for (auto p_pn= pns.begin(); p_pn!=pns.end();){
 		if (get_castle_flag(*p_pn) == 1){
 			// If removing all castle flags is triggered
 			// (by being in check)
 			// remove all of them.
 			if (remove_all_castles){
-				p_pn = pns->erase(p_pn);
+				p_pn = pns.erase(p_pn);
 				++p_pn;
 				break;
 			}
@@ -152,26 +154,18 @@ void filter_checked_moves(PieceType pt, std::array<PieceType, 120> *board, std::
 			// If moved left
 			// Queenside
 			if ((get_from_sq(*p_pn) - get_to_sq(*p_pn)) > 0){
-				int right_move = make_move(get_from_sq(*p_pn), get_to_sq(*p_pn)+1);
-				int full_move = make_move(get_from_sq(*p_pn), get_to_sq(*p_pn));
-				auto right_board = dumb_move(right_move, *board);
-				auto full_board = dumb_move(full_move, *board);
-				if (is_attacked(get_to_sq(*p_pn)+1, right_board) ||
-					is_attacked(get_to_sq(*p_pn), full_board)){
-					p_pn = pns->erase(p_pn);
+				if(would_be_attacked(get_to_sq(*p_pn), my_king, board) ||
+					would_be_attacked(get_to_sq(*p_pn)+1, my_king, board)){
+					p_pn = pns.erase(p_pn);
 				} else {
 					++p_pn;
 					break;
 				}
 			// Kingside
 			} else {
-				int left_move = make_move(get_from_sq(*p_pn), get_to_sq(*p_pn)-1);
-				int full_move = make_move(get_from_sq(*p_pn), get_to_sq(*p_pn));
-				auto left_board = dumb_move(left_move, *board);
-				auto full_board = dumb_move(full_move, *board);
-				if (is_attacked(get_to_sq(*p_pn)-1, left_board) ||
-					is_attacked(get_to_sq(*p_pn), full_board)){
-					p_pn = pns->erase(p_pn);
+				if(would_be_attacked(get_to_sq(*p_pn), my_king, board) ||
+					would_be_attacked(get_to_sq(*p_pn)-1, my_king, board)){
+					p_pn = pns.erase(p_pn);
 				} else {
 					++p_pn;
 					break;
@@ -182,11 +176,12 @@ void filter_checked_moves(PieceType pt, std::array<PieceType, 120> *board, std::
 			// remove all castle moves
 			if ((pt == PieceType::W_KING ||
 					pt == PieceType::B_KING) &&
-				is_attacked(get_from_sq(*p_pn), *board)){
+				is_attacked(get_from_sq(*p_pn), board)){
 				remove_all_castles = true;
 			}
 			// Make move
-			std::array<PieceType, 120> moved_board = dumb_move(*p_pn, *board);
+			std::array<PieceType, 120> moved_board;
+			dumb_move(*p_pn, board, moved_board);
 			// This is for when the king is the same piece that is moving.
 			// If this is the case, reset to king position to the new position given by the get_to_sq() of the move.
 			if (pt == my_king){
@@ -194,7 +189,7 @@ void filter_checked_moves(PieceType pt, std::array<PieceType, 120> *board, std::
 			}
 
 			if (is_attacked(my_king_pos, moved_board)){
-				p_pn = pns->erase(p_pn);
+				p_pn = pns.erase(p_pn);
 			} else {
 				++p_pn;
 			}
@@ -202,7 +197,7 @@ void filter_checked_moves(PieceType pt, std::array<PieceType, 120> *board, std::
 	}
 }
 
-void get_all_moves_as_if(int pos, PieceType pt, std::array<PieceType, 120>* board, std::vector<int>* moves, bool recursive, int en_passant, int castle_perms){
+void get_all_moves_as_if(int pos, PieceType pt, const std::array<PieceType, 120>& board, std::vector<int>& moves, bool recursive, int en_passant, int castle_perms){
 	Color color_of_piece = get_color(pt);
 	Color color_of_opponent = rev_color(color_of_piece);
 	switch(pt){
@@ -240,18 +235,16 @@ void get_all_moves_as_if(int pos, PieceType pt, std::array<PieceType, 120>* boar
 	}
 }
 
-void get_all_moves(int pos, std::array<PieceType, 120> *board, std::vector<int> *moves, bool recursive, int en_passant, int castle_perms){
-	get_all_moves_as_if(pos, (*board)[pos], board, moves, recursive, en_passant, castle_perms);
+void get_all_moves(int pos, const std::array<PieceType, 120>& board, std::vector<int>& moves, bool recursive, int en_passant, int castle_perms){
+	get_all_moves_as_if(pos, board[pos], board, moves, recursive, en_passant, castle_perms);
 }
-
-std::vector<int> get_all_moves(int pos, std::array<PieceType, 120> board, bool recursive, int en_passant, int castle_perms){
-	std::vector<int> moves;
-	get_all_moves(pos, &board, &moves, recursive, en_passant, castle_perms);
+std::vector<int> get_all_moves(int pos, const std::array<PieceType, 120>& board, bool recursive, int en_passant, int castle_perms){
+	std::vector<int> moves = {};
+	get_all_moves_as_if(pos, board[pos], board, moves, recursive, en_passant, castle_perms);
 	return moves;
 }
 
-std::array<PieceType, 120> dumb_move(int move, std::array<PieceType, 120> board){
-	std::array<PieceType, 120> new_board;
+void dumb_move(int move, const std::array<PieceType, 120>& board, std::array<PieceType, 120>& new_board){
 	std::copy(std::begin(board), std::end(board), std::begin(new_board));
 	int en_passant_flag = get_en_pass_flag(move);
 	int castle_flag = get_castle_flag(move);
@@ -295,44 +288,49 @@ std::array<PieceType, 120> dumb_move(int move, std::array<PieceType, 120> board)
 		new_board[to] = piece;
 		new_board[from] = PieceType::NONE;
 	}
+}
+std::array<PieceType, 120> dumb_move(int pos, const std::array<PieceType, 120>& board){
+	std::array<PieceType, 120> new_board = {};
+	dumb_move(pos, board, new_board);
 	return new_board;
 }
 
-void _filter_unneeded_squares(std::vector<int> *moves, int piecetype, int origin){
-	for (auto move_pn=moves->begin(); move_pn!=moves->end();){
+void _filter_unneeded_squares(std::vector<int>& moves, int piecetype, int origin){
+	for (auto move_pn=moves.begin(); move_pn!=moves.end();){
 		if (get_captured_pc(*move_pn) == piecetype &&
 			get_to_sq(*move_pn) != origin){
 			++move_pn;
 		} else {
-			move_pn = moves->erase(move_pn);
+			move_pn = moves.erase(move_pn);
 		}
 	}
 
 };
 
-void _non_pawn_disambiguate(int from, int to, int piecetype, std::vector<int> *moves, std::string *disambig){
-	if (moves->size() == 1){
-		*disambig = POSITION_STRING[from][0];
-		int other_from = get_to_sq(moves->at(0));
+void _non_pawn_disambiguate(int from, int to, int piecetype, const std::vector<int>& moves, std::string& disambig){
+	if (moves.size() == 1){
+		disambig = POSITION_STRING[from][0];
+		int other_from = get_to_sq(moves.at(0));
 		int min_from = other_from<from?other_from:from;
 		int max_from = other_from>from?other_from:from;
 		// If the remainder of the difference divided by 10 is 0
 		// they are on the same file.
 		// Use rank to disambiguate
 		if ((max_from-min_from) % 10 == 0){
-			*disambig = POSITION_STRING[from][1];
+			disambig = POSITION_STRING[from][1];
 		}
-	} else if (moves->size() > 1){
-		*disambig = POSITION_STRING[from];
+	} else if (moves.size() > 1){
+		disambig = POSITION_STRING[from];
 	}
 }
 
-std::string to_notation(int move, std::array<PieceType, 120> *board){
+std::string to_notation(int move, const std::array<PieceType, 120>& board){
 	std::stringstream ss;
 	
-	auto moved_board = dumb_move(move, *board);
+	std::array<PieceType, 120> moved_board;
+	dumb_move(move, board, moved_board);
 	int from = get_from_sq(move);
-	PieceType piecetype = (*board)[from];	
+	PieceType piecetype = board[from];	
 	std::string from_string = POSITION_STRING[from];
 	int to = get_to_sq(move);
 	int captured_piece = get_captured_pc(move);
@@ -386,11 +384,11 @@ std::string to_notation(int move, std::array<PieceType, 120> *board){
 			// and stores any duplicates in the other_moves variable.
 			PieceType opposite_piece = rev_color(piecetype);
 			std::vector<int> other_moves = {};
-			get_all_moves_as_if(to, opposite_piece, board, &other_moves, false);
+			get_all_moves_as_if(to, opposite_piece, board, other_moves, false);
 			// This takes out any mention of other squares involing blank pieces, or any peices that do not invole the current one.
-			_filter_unneeded_squares(&other_moves, piecetype, from);
+			_filter_unneeded_squares(other_moves, piecetype, from);
 			piece_character = CHESS_CHARS_INSENSITIVE[piecetype];
-			_non_pawn_disambiguate(from, to, piecetype, &other_moves, &disambig);
+			_non_pawn_disambiguate(from, to, piecetype, other_moves, disambig);
 	}
 	if (get_en_pass_flag(move) == 1){
 		en_passant = "e.p.";
@@ -400,7 +398,7 @@ std::string to_notation(int move, std::array<PieceType, 120> *board){
 		// This checks if the other team has any valid moves.
 		// If not, the check sign changes to a hashtag (#).
 		std::vector<int> other_moves = {};
-		get_all_moves_for_pieces(other_pieces, &moved_board, &other_moves);
+		get_all_moves_for_pieces(other_pieces, moved_board, other_moves);
 		if (other_moves.empty()){
 			check = "#";
 		}
@@ -418,12 +416,12 @@ std::string to_notation(int move, std::array<PieceType, 120> *board){
 	return ss.str();
 }
 
-void get_all_moves_for_pieces(std::array<PieceType, 6> pieces, std::array<PieceType, 120> *board, std::vector<int> *moves, int en_passant, int castle_perms){
+void get_all_moves_for_pieces(std::array<PieceType, 6> pieces, const std::array<PieceType, 120>& board, std::vector<int>& moves, int en_passant, int castle_perms){
 	for (PieceType pt : pieces){
 		for (int pos_of : get_poss_of(pt, board)){
 			std::vector<int> local_moves = {};
-			get_all_moves_as_if(pos_of, pt, board, &local_moves, true, en_passant, castle_perms);
-			moves->insert(moves->end(), local_moves.begin(), local_moves.end());
+			get_all_moves_as_if(pos_of, pt, board, local_moves, true, en_passant, castle_perms);
+			moves.insert(moves.end(), local_moves.begin(), local_moves.end());
 		}
 	}
 }
