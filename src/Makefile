@@ -10,6 +10,10 @@
 #	g++ -c -std=c++11 functions.cpp
 #
 default: build
+release: optimized
+
+optimized:
+	g++ -std=c++11 -O2 -Wall -o chess.out functions.cpp chess.cpp
 
 build:
-	g++ -O2 -Wall -o chess.out functions.cpp chess.cpp -std=c++11
+	g++ -Wall -o chess_unoptimized.out functions.cpp chess.cpp -std=c++11
