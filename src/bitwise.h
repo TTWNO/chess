@@ -25,37 +25,47 @@
  * 	0010 0000 0000 0000 0000 0000 0000 -> check flag (& 0x2000000) 
  * */
 
-/* OLD, DO NOT USE
-#define FROMSQ(m) ((m)     & 0x3f)
-#define TOSQ(m)   ((m>>6)  & 0x3f)
-#define CAPT(m)   ((m>>12) & 0xf )
-#define PROM(m)   ((m>>16) & 0xf )
-#define ENPASS(m) ((m>>20) & 0x1 )
-#define PAWNST(m) ((m>>21) & 0x1 )
-#define CAST(m)   ((m>>22) & 0x1 )
-*/
+// No offset becuase at beginning of int
+#define FROM_MASK  0x7F
 
-// Redefine as functions for fun :shrug:
+#define TO_MASK 0x7F
+#define TO_SHIFT 7
+
+#define CAPTURED_MASK 0xF
+#define CAPTURED_SHIFT 14
+
+#define PROMOTED_MASK 0xF
+#define PROMOTED_SHIFT 18
+
+#define EN_PASS_MASK 0x1
+#define EN_PASS_SHIFT 22 
+
+#define PAWN_ST_MASK 0x1
+#define PAWN_ST_SHIFT 23
+
+#define CASTLE_MASK 0x1
+#define CASTLE_SHIFT 24
+
 inline int get_from_sq(int mv){
-	return (mv & 0x7f);
+	return (mv & FROM_MASK);
 }
 inline int get_to_sq(int mv){
-	return ((mv >> 7) & 0x7f);
+	return ((mv >> TO_SHIFT) & TO_MASK);
 }
 inline int get_captured_pc(int mv){
-	return ((mv >> 14) & 0xf);
+	return ((mv >> CAPTURED_SHIFT) & CAPTURED_MASK);
 }
 inline int get_promoted_to_pc(int mv){
-	return ((mv >> 18) & 0xf);
+	return ((mv >> PROMOTED_SHIFT) & PROMOTED_MASK);
 }
 inline int get_en_pass_flag(int mv){
-	return ((mv >> 22) & 0x1);
+	return ((mv >> EN_PASS_SHIFT) & EN_PASS_MASK);
 }
 inline int get_pawn_st_flag(int mv){
-	return ((mv >> 23) & 0x1);
+	return ((mv >> PAWN_ST_SHIFT) & PAWN_ST_MASK);
 }
 inline int get_castle_flag(int mv){
-	return ((mv >> 24) & 0x1);
+	return ((mv >> CASTLE_SHIFT) & CASTLE_MASK);
 }
 inline int get_check_flag(int mv){
 	return ((mv >> 25) & 0x1);

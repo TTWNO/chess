@@ -7,8 +7,8 @@
 
 enum Color {
 	NO_COLOR,
-	WHITE,
-	BLACK
+	BLACK,
+	WHITE
 };
 
 enum CastlePerms {
@@ -22,7 +22,7 @@ enum PieceType {
 	INV=-1,
 	NONE,
 	B_PAWN, B_KNIGHT, B_BISHOP, B_ROOK, B_QUEEN, B_KING,
-	W_PAWN, W_KNIGHT, W_BISHOP, W_ROOK, W_QUEEN, W_KING
+	W_PAWN, W_KNIGHT, W_BISHOP, W_ROOK, W_QUEEN, W_KING,
 };
 
 namespace Pieces{
@@ -109,21 +109,21 @@ const std::array<Color, 120> BOARD_COLORS = {
 	NO_COLOR,NO_COLOR,NO_COLOR,NO_COLOR,NO_COLOR,NO_COLOR,NO_COLOR,NO_COLOR,NO_COLOR,NO_COLOR
 };
 
-const std::array<char, 13> CHESS_CHARS = {
+const std::array<char, 16> CHESS_CHARS = {
 	' ',
 	'P', 'N', 'B', 'R', 'Q', 'K',
-	'p', 'n', 'b', 'r', 'q', 'k'
+	'p', 'n', 'b', 'r', 'q', 'k',
 };
 // This returns the same letter weather the team is black or white
-const std::array<std::string, 13> CHESS_CHARS_INSENSITIVE = {
+const std::array<std::string, 16> CHESS_CHARS_INSENSITIVE = {
 	" ",
 	"P", "N", "B", "R", "Q", "K",
-	"P", "N", "B", "R", "Q", "K"
+	"P", "N", "B", "R", "Q", "K",
 };
-const std::array<std::string, 13> FANCY_CHESS_CHARS = {
+const std::array<std::string, 16> FANCY_CHESS_CHARS = {
 	" ",
 	"♟", "♞", "♝", "♜", "♛", "♚",
-	"♙", "♘", "♗", "♖", "♕", "♔"
+	"♙", "♘", "♗", "♖", "♕", "♔",
 };
 #endif
 

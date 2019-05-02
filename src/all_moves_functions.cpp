@@ -3,10 +3,10 @@
 #include <array>
 #include <iostream>
 
-const std::array<int, 4> ROOK_PIECE_OFFSETS = {-1, -10, 1, 10};
-const std::array<int, 4> BISHOP_PIECE_OFFSETS = {-11, -9, 9, 11};
-const std::array<int, 8> KNIGHT_PIECE_OFFSETS = {-12, -21, -19, -8, 8, 12, 19, 21};
-const std::array<int, 8> KING_PIECE_OFFSETS = {-11, -10, -9, 9, 10, 11};
+const std::vector<int> ROOK_PIECE_OFFSETS = {-1, -10, 1, 10};
+const std::vector<int> BISHOP_PIECE_OFFSETS = {-11, -9, 9, 11};
+const std::vector<int> KNIGHT_PIECE_OFFSETS = {-12, -21, -19, -8, 8, 12, 19, 21};
+const std::vector<int> KING_PIECE_OFFSETS = {-11, -10, -9, 9, 10, 11};
 
 
 inline Position _pair_to_pos_unsafe(int x, int y){
@@ -118,31 +118,6 @@ void _pawn_add_if_not_blocked(int pos, int from, std::vector<int>& pns, const st
 		} else {
 			pns.push_back(make_move(from, pos, board[pos]));
 		}
-	}
-}
-
-
-void _get_all_moves_rook(int pos, std::vector<int>& pns, const std::array<PieceType, 120>& board, Color pc, Color rc){
-	for (int rk_off : ROOK_PIECE_OFFSETS){
-		bool* not_blocked = new bool(true);
-		for (int offset=1; offset<8; offset++){
-			_add_if_not_blocked(pos+(rk_off*offset), pos, pns, board, pc, rc, not_blocked);
-		}
-	}
-}
-
-void _get_all_moves_bishop(int pos, std::vector<int>& pns, const std::array<PieceType, 120>& board, Color pc, Color rc){
-	for (int bs_off : BISHOP_PIECE_OFFSETS){
-		bool* not_blocked = new bool(true);
-		for (int offset=1; offset<8; offset++){
-			_add_if_not_blocked(pos+(bs_off*offset), pos, pns, board, pc, rc, not_blocked);
-		}
-	}
-}
-
-void _get_all_moves_knight(int pos, std::vector<int>& pns, const std::array<PieceType, 120>& board, Color pc, Color rc){
-	for (int kn_off : KNIGHT_PIECE_OFFSETS){
-		_add_if_not_blocked(pos+kn_off, pos, pns, board, pc, rc);
 	}
 }
 

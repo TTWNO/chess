@@ -12,6 +12,74 @@
 #include <stdio.h>
 #include <math.h>
 
+/*
+ *
+ * 	These functions use an int to pass a lot of information.
+ * 	The notation is like this:
+ * 	0000 0000 0000 0000 0111 1111 -> position of piece
+ * 	0000 0000 0000 0111 1000 0000 -> piece type
+ * 	0000 0000 0111 1000 0000 0000 -> piece of opposite type (eg. opposite of W_KING, is B_KING; B_ROOK, W_ROOK etc...)
+ * 	0000 0000 1000 0000 0000 0000 -> team of the piece (1=white, 0=black)
+ * 	0111 1111 0000 0000 0000 0000 -> new position (if applicable)
+ *	
+**/
+
+/*
+ *	These functions also use an int for king info. This is so:
+ *		a) I don't have to recompute the info each time I nedd it in a functoin.
+ *		b) So that I don't have the overhead of a struct. (I know, "micro optimizations are the root of all evil", I can't help myself)
+ *	The notation is as follows:
+ * 	0000 0000 0000 0000 0111 1111 -> position of piece
+ * 	0000 0000 0000 0111 1000 0000 -> piece type
+ * 	0000 0011 1111 1000 0000 0000 -> opposite piece position
+ * 	0011 1100 0000 0000 0000 0000 -> piece of opposite type
+ * 	0100 0000 0000 0000 0000 0000 -> team of the piece (1=white, 0=black)
+ */
+
+inline int get_piece_pos(int pieceinfo){
+	return (pieceinfo & 0x7f);
+}
+inline int get_piece_type(int pieceinfo){
+	return ((pieceinfo << 7) & 0xf);
+}
+inline int get_opposite_piece_type(int pieceinfo){
+	return ((pieceinfo << 11) & 0xf);
+}
+// TO find out if white/black use:
+// get_team_of_piece_type == Color::WHITE/BLACK
+inline int get_team_of_piece_type(int pieceinfo){
+	return ((pieceinfo << 15) & 0x1);
+}
+inline int get_new_position_of_piece(int pieceinfo){
+	return ((pieceinfo << 16) & 0xf); 	
+}
+
+
+/*	Move ints contain a lot of information as well. However, these are DIFFERENt from the other dense ints. Moves are universalyl passed by reference (&) to a vector of ints, whereas the above is passed only is 1 int by itself.
+ *	Here is the notation for moves (although it is obscured by the make_move(), get_to/from_sq(), get_captured_pc() etc... functions.
+ *
+ * From (Position): 7 bits (2^7 == 128) possibilities
+ * To (Position): same as above
+ * Captured piece, if any: 4 bits (16) possibilities
+ * Promoted to, if any: 4 bits (16) possibilities
+ * en passant flag: 1 bit
+ * pawn starting move flag: 1 bit
+ * castle move flag: 1 bit
+ *
+ *	0000 0000 0000 0000 0000 0111 1111 -> From square position (& 0x7F)
+ *	0000 0000 0000 0011 1111 1000 0000 -> To square position (>> 7 & 0x7F)
+ *	0000 0000 0011 1100 0000 0000 0000 -> captured piece, if any (>> 14 & 0xF)
+ *	0000 0011 1100 0000 0000 0000 0000 -> if prmoted, what to? (>> 18 & 0xF)
+ *	0000 0100 0000 0000 0000 0000 0000 -> en passant (>> 22 &0x1)
+ *	0000 1000 0000 0000 0000 0000 0000 -> pawn starting move (>> 23 &0x1)
+ *	0001 0000 0000 0000 0000 0000 0000 -> castle move (>> 24 0x1)
+ * 	0010 0000 0000 0000 0000 0000 0000 -> check flag (>> 25 &0x1) 
+ * */
+
+//const std::array<int, 4> ROOK_PIECE_OFFSETS = {-1, -10, 1, 10};
+//const std::array<int, 4> BISHOP_PIECE_OFFSETS = {-11, -9, 9, 11};
+const std::vector<int> QUEEN_PIECE_OFFSETS = {-1, -10, 1, 10, -11, -9, 9, 11};
+
 Rank get_rank(int pos){
 	int rank = 0;
 	while (pos >= 0){
@@ -49,6 +117,7 @@ Color rev_color(Color c){
 	return c==Color::WHITE?Color::BLACK:Color::WHITE;
 }
 PieceType rev_color(PieceType pt){
+	//return static_cast<PieceType>((~pt) & 0xf);
 	for (int i=0; i!=Pieces::WHITE.size(); i++){
 		if (pt == Pieces::WHITE[i]){
 			return Pieces::BLACK[i];
@@ -124,6 +193,10 @@ bool king_checked(const std::array<PieceType, 120>& board, Color color_of_king){
 void add_checked_flags(PieceType pt, const std::array<PieceType, 120>& board, std::vector<int>& pns){
 	PieceType other_king = is_white(pt)?PieceType::B_KING:PieceType::W_KING;
 	int other_king_pos = get_pos_of(other_king, board);
+	// If the other team doesn't have a king, don't add any checked flags
+	if (other_king_pos == Position::NA){
+		return;
+	}
 	for (auto move_pn=pns.begin(); move_pn!=pns.end();){
 		std::array<PieceType, 120> moved_board;
 		dumb_move(*move_pn, board, moved_board);
@@ -139,6 +212,10 @@ void filter_checked_moves(PieceType pt, const std::array<PieceType, 120>& board,
 	PieceType my_king = is_white(pt)?PieceType::W_KING:PieceType::B_KING;
 	int my_king_pos = get_pos_of(my_king, board);
 	bool remove_all_castles = false;
+	// If this team doesn't have a king, don't do anything, jsut return.
+	if (my_king_pos == Position::NA){
+		return;
+	}
 	for (auto p_pn= pns.begin(); p_pn!=pns.end();){
 		if (get_castle_flag(*p_pn) == 1){
 			// If removing all castle flags is triggered
@@ -197,26 +274,58 @@ void filter_checked_moves(PieceType pt, const std::array<PieceType, 120>& board,
 	}
 }
 
+void _get_all_moves_as_if_ray_type(int pos, std::vector<int> offsets, std::vector<int>& moves, const std::array<PieceType, 120>& board, Color color_of_piece, Color color_of_opponent){
+	for (int offset : offsets){
+		for (int times = 1; times < 8; ++times){
+			int true_offset = pos+(offset*times);
+			if (get_color(board[true_offset]) == color_of_opponent){
+				moves.push_back(make_move(pos, true_offset, board[true_offset]));
+				break;
+			} else if (get_color(board[true_offset]) == color_of_piece ||
+					board[true_offset] == PieceType::INV){
+				break;
+			} else {
+				moves.push_back(make_move(pos, true_offset, board[true_offset]));
+			}
+		}
+	}
+}
+
+void _get_all_moves_as_if_not_ray(int pos, std::vector<int> offsets, std::vector<int>& moves, const std::array<PieceType, 120>& board, Color color_of_piece, Color color_of_opponent){
+	for (int offset : offsets){
+		int true_offset = pos+offset;
+		if (board[true_offset] == PieceType::NONE ||
+				get_color(board[true_offset]) == color_of_opponent){
+			moves.push_back(make_move(pos, true_offset, board[true_offset]));
+		}
+	}
+}
+
 void get_all_moves_as_if(int pos, PieceType pt, const std::array<PieceType, 120>& board, std::vector<int>& moves, bool recursive, int en_passant, int castle_perms){
+	int piece_info = 0;
 	Color color_of_piece = get_color(pt);
 	Color color_of_opponent = rev_color(color_of_piece);
 	switch(pt){
 		case PieceType::B_QUEEN:
 		case PieceType::W_QUEEN:
-			_get_all_moves_rook(pos, moves, board, color_of_piece, color_of_opponent);
-			_get_all_moves_bishop(pos, moves, board, color_of_piece, color_of_opponent);
+			_get_all_moves_as_if_ray_type(pos, QUEEN_PIECE_OFFSETS, moves, board, color_of_piece, color_of_opponent);
+			//_get_all_moves_rook(pos, moves, board, color_of_piece, color_of_opponent);
+			//_get_all_moves_bishop(pos, moves, board, color_of_piece, color_of_opponent);
 			break;
 		case PieceType::B_ROOK:
 		case PieceType::W_ROOK:
-			_get_all_moves_rook(pos, moves, board, color_of_piece, color_of_opponent);
+			_get_all_moves_as_if_ray_type(pos, ROOK_PIECE_OFFSETS, moves, board, color_of_piece, color_of_opponent);
+			//_get_all_moves_rook(pos, moves, board, color_of_piece, color_of_opponent);
 			break;
 		case PieceType::B_BISHOP:
 		case PieceType::W_BISHOP:
-			_get_all_moves_bishop(pos, moves, board, color_of_piece, color_of_opponent);
+			_get_all_moves_as_if_ray_type(pos, BISHOP_PIECE_OFFSETS, moves, board, color_of_piece, color_of_opponent);
+			//_get_all_moves_bishop(pos, moves, board, color_of_piece, color_of_opponent);
 			break;
 		case PieceType::B_KNIGHT:
 		case PieceType::W_KNIGHT:
-			_get_all_moves_knight(pos, moves, board, color_of_piece, color_of_opponent);
+			_get_all_moves_as_if_not_ray(pos, KNIGHT_PIECE_OFFSETS, moves, board, color_of_piece, color_of_opponent);
+			//_get_all_moves_knight(pos, moves, board, color_of_piece, color_of_opponent);
 			break;
 		case PieceType::B_KING:
 		case PieceType::W_KING:
@@ -362,7 +471,7 @@ std::string to_notation(int move, const std::array<PieceType, 120>& board){
 	std::stringstream promotion;
 	auto other_pieces = is_white(piecetype)?Pieces::BLACK:Pieces::WHITE;
 
-	if (captured_piece != 0){
+	if (captured_piece != PieceType::NONE){
 		capture_character = "x";
 		// Comment #6
 		// if a pawn is capturing, have the disambiguation be the pawn's file
@@ -431,3 +540,4 @@ void remove_chars_from_string(std::string &str, std::string charsToRemove ) {
       str.erase( remove(str.begin(), str.end(), charsToRemove.at(i)), str.end() );
    }
 }
+
