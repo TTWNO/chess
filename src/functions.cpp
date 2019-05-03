@@ -452,10 +452,16 @@ void _non_pawn_disambiguate(int from, int to, int piecetype, const std::vector<i
 std::string to_notation(int move, const std::array<PieceType, 120>& board){
 	std::stringstream ss;
 	
+	int to = get_to_sq(move);
 	int from = get_from_sq(move);
+	
+	// This can be ran right away due to the simplicity of the notation.
+	if (get_castle_flag(move) == 1){
+		return to-from<0 ? "O-O-O" : "O-O";
+	}
+	
 	PieceType piecetype = board[from];	
 	std::string from_string = POSITION_STRING[from];
-	int to = get_to_sq(move);
 	int captured_piece = get_captured_pc(move);
 	int promoting_to = get_promoted_to_pc(move);
 	// Blank if not pawn
@@ -534,11 +540,7 @@ std::string to_notation(int move, const std::array<PieceType, 120>& board){
 		promotion << "=" << CHESS_CHARS_INSENSITIVE[promoting_to];
 	}
 	// end of checking for multiple pieces
-	if (get_castle_flag(move) == 1){
-		return to-from<0 ? "O-O-O" : "O-O";
-	} else {
-		ss << pawn_file << piece_character << disambig << capture_character << POSITION_STRING[to] << en_passant << promotion.str() << check;
-	}
+	ss << pawn_file << piece_character << disambig << capture_character << POSITION_STRING[to] << en_passant << promotion.str() << check;
 	return ss.str();
 }
 
