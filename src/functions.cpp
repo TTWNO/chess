@@ -301,6 +301,18 @@ void _get_all_moves_as_if_not_ray(int pos, std::vector<int> offsets, std::vector
 	}
 }
 
+
+// WARNING: This function depends on the order of the moves being correct.
+// The last two king moves MUST be for the king's position +1, and -1 respectively.
+// TODO finish function
+void _get_all_castle_moves(int pos, int castle_perms, std::vector<int>& moves, const std::array<PieceType, 120>& board, Color color_of_piece, Color color_of_opponent){
+	if (color_of_piece == Color::WHITE){
+		
+	} else {
+		
+	}
+}
+
 void get_all_moves_as_if(int pos, PieceType pt, const std::array<PieceType, 120>& board, std::vector<int>& moves, bool recursive, int en_passant, int castle_perms){
 	int piece_info = 0;
 	Color color_of_piece = get_color(pt);
@@ -329,6 +341,10 @@ void get_all_moves_as_if(int pos, PieceType pt, const std::array<PieceType, 120>
 			break;
 		case PieceType::B_KING:
 		case PieceType::W_KING:
+//			_get_all_moves_as_if_not_ray(pos, KING_PIECE_OFFSETS, moves, board, color_of_piece, color_of_opponent);
+//			if (castle_perms != 0){
+//				_get_all_castle_moves();
+//			}
 			_get_all_moves_king(pos, moves, board, color_of_piece, color_of_opponent, castle_perms);
 			break;
 		case PieceType::B_PAWN:
@@ -436,8 +452,6 @@ void _non_pawn_disambiguate(int from, int to, int piecetype, const std::vector<i
 std::string to_notation(int move, const std::array<PieceType, 120>& board){
 	std::stringstream ss;
 	
-	std::array<PieceType, 120> moved_board;
-	dumb_move(move, board, moved_board);
 	int from = get_from_sq(move);
 	PieceType piecetype = board[from];	
 	std::string from_string = POSITION_STRING[from];
@@ -506,6 +520,9 @@ std::string to_notation(int move, const std::array<PieceType, 120>& board){
 		check = "+";
 		// This checks if the other team has any valid moves.
 		// If not, the check sign changes to a hashtag (#).
+		std::array<PieceType, 120> moved_board;
+		dumb_move(move, board, moved_board);
+		
 		std::vector<int> other_moves = {};
 		get_all_moves_for_pieces(other_pieces, moved_board, other_moves);
 		if (other_moves.empty()){
