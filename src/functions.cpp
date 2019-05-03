@@ -450,8 +450,6 @@ void _non_pawn_disambiguate(int from, int to, int piecetype, const std::vector<i
 }
 
 std::string to_notation(int move, const std::array<PieceType, 120>& board){
-	std::stringstream ss;
-	
 	int to = get_to_sq(move);
 	int from = get_from_sq(move);
 	
@@ -488,7 +486,7 @@ std::string to_notation(int move, const std::array<PieceType, 120>& board){
 	std::string disambig = "";
 	// Blank if not a pawn promotion move.
 	// Otherwise is equal to "=P/N/B/R/Q".
-	std::stringstream promotion;
+	std::string promotion;
 	auto other_pieces = is_white(piecetype)?Pieces::BLACK:Pieces::WHITE;
 
 	if (captured_piece != PieceType::NONE){
@@ -537,11 +535,13 @@ std::string to_notation(int move, const std::array<PieceType, 120>& board){
 	}
 	// If promoting, add an equals sign and the piece promoting to.
 	if (promoting_to != PieceType::NONE){
-		promotion << "=" << CHESS_CHARS_INSENSITIVE[promoting_to];
+		promotion += "=";
+		promotion += CHESS_CHARS_INSENSITIVE[promoting_to];
 	}
 	// end of checking for multiple pieces
-	ss << pawn_file << piece_character << disambig << capture_character << POSITION_STRING[to] << en_passant << promotion.str() << check;
-	return ss.str();
+	std::string result = "";
+	result += pawn_file + piece_character + disambig + capture_character + POSITION_STRING[to] + en_passant + promotion + check;
+	return result;
 }
 
 void get_all_moves_for_pieces(std::array<PieceType, 6> pieces, const std::array<PieceType, 120>& board, std::vector<int>& moves, int en_passant, int castle_perms){
