@@ -1,15 +1,19 @@
 #CC=g++-4.2
 #
-#a.out: main.o SerialComm.o
-#	g++ main.o SerialComm.o -lboost_system -lboost_filesystem -lboost_serialization -lpthread -std=c++11
+#chess.out: functions.o
+#	g++ chess.o functions.o -std=c++11
 #
-#main.o: main.cpp
-#	g++ -c -std=c++11 main.cpp
+#chess.o: chess.cpp
+#	g++ -c -std=c++11 chess.cpp
 #
-#SerialComm.o: SerialComm.cpp SerialComm.hpp
-#	g++ -c -std=c++11 SerialComm.cpp
-
+#functions.o: functions.cpp functions.h
+#	g++ -c -std=c++11 functions.cpp
+#
 default: build
+release: optimized
+
+optimized:
+	g++ -std=c++11 -O2 -Wall -o chess.out functions.cpp chess.cpp
 
 build:
-	g++ -o chess.out chess.cpp -std=c++11
+	g++ -Wall -o chess_unoptimized.out functions.cpp chess.cpp -std=c++11
