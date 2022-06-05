@@ -118,12 +118,12 @@ Color rev_color(Color c){
 }
 PieceType rev_color(PieceType pt){
 	//return static_cast<PieceType>((~pt) & 0xf);
-	for (int i=0; i!=Pieces::WHITE.size(); i++){
+	for (long unsigned int i=0; i!=Pieces::WHITE.size(); i++){
 		if (pt == Pieces::WHITE[i]){
 			return Pieces::BLACK[i];
 		}
 	}
-	for (int i=0; i!=Pieces::BLACK.size(); i++){
+	for (long unsigned int i=0; i!=Pieces::BLACK.size(); i++){
 		if (pt == Pieces::BLACK[i]){
 			return Pieces::WHITE[i];
 		}
@@ -314,7 +314,6 @@ void _get_all_castle_moves(int pos, int castle_perms, std::vector<int>& moves, c
 }
 
 void get_all_moves_as_if(int pos, PieceType pt, const std::array<PieceType, 120>& board, std::vector<int>& moves, bool recursive, int en_passant, int castle_perms){
-	int piece_info = 0;
 	Color color_of_piece = get_color(pt);
 	Color color_of_opponent = rev_color(color_of_piece);
 	switch(pt){
